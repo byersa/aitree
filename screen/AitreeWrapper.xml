@@ -2,36 +2,12 @@
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-3.xsd"
         require-authentication="false" screen-theme-type-enum-id="STT_INTERNAL_QUASAR2" default-menu-title="Staff Meeting" allow-extra-path="true">
 
-    <pre-actions><script><![CDATA[
-        // if user not logged in save current path and params then redirect to Login
-        if (!ec.user.userId) { ec.web.saveScreenLastInfo(null, null); sri.sendRedirectAndStopRender('/Login') }
-
-        html_scripts.add('/libs/moment.js/moment-with-locales.min.js')
-        html_scripts.add('/libs/jquery/jquery.min.js')
-
-        String instancePurpose = System.getProperty("instance_purpose")
-        if (!instancePurpose || instancePurpose == 'production') {
-            html_scripts.add('/js/MoquiLib.min.js')
-            footer_scripts.add('/libs/vue/vue.global.prod.min.js')
-            footer_scripts.add('/libs/vue/vue.global.js')
-            footer_scripts.add('/libs/vue-router/vue-router.global.js')
-            footer_scripts.add('/js/http-vue-loader/httpVueLoader.js')
-            footer_scripts.add("/libs/quasar/quasar.umd.prod.js")
-            footer_scripts.add('/libs/vue3-sfc-loader/vue3-sfc-loader.min.js')
-            footer_scripts.add('/routes.js' + ec.web.request.pathInfo)
-            footer_scripts.add('/js/WebrootVue.qvt2.min.js')
-        } else {
-            html_scripts.add('/js/MoquiLib.js')
-            footer_scripts.add('/libs/vue/vue.global.js')
-            footer_scripts.add('/libs/vue/vue.global.js')
-            footer_scripts.add('/libs/vue-router/vue-router.global.js')
-            footer_scripts.add('/js/http-vue-loader/httpVueLoader.js')
-            footer_scripts.add("/libs/quasar/quasar.umd.prod.js")
-            footer_scripts.add('/libs/vue3-sfc-loader/vue3-sfc-loader.min.js')
-            footer_scripts.add('/routes.js' + ec.web.request.pathInfo)
-            footer_scripts.add('/js/WebrootVue.qvt2.js')
-        }
-    ]]></script></pre-actions>
+    <pre-actions>
+        <render-mode>
+            <!-- Injects the standardized Vue/Quasar boilerplate scripts from moqui-ai -->
+            <text type="html" location="component://moqui-ai/template/spa/Quasar2Wrapper.qvt2.ftl"/>
+        </render-mode>
+    </pre-actions>
 
     <subscreens default-item="aitree">
         <subscreens-item name="aitree" location="component://aitree/screen/aitree.xml"/>
