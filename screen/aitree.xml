@@ -1,0 +1,40 @@
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsl"
+        require-authentication="false" screen-theme-type-enum-id="STT_INTERNAL_QUASAR2" allow-extra-path="true"
+        default-menu-title="Staff Meeting" default-menu-index="1">
+
+    <always-actions>
+        <set field="appRoot" value="aitree"/>
+    </always-actions>
+
+    <subscreens default-item="Home">
+        <subscreens-item name="Home" location="component://aitree/screen/aitree/Home.xml"/>
+        <subscreens-item name="PeopleOrgs" location="component://aitree/screen/aitree/PeopleOrgs.xml"/>
+        <subscreens-item name="MedicalRecords" location="component://aitree/screen/aitree/MedicalRecords.xml"/>
+        <subscreens-item name="Meetings" location="component://aitree/screen/aitree/Meetings.xml"/>
+    </subscreens>
+
+    <widgets>
+        <!-- APP CONTAINER (Mount point for WebrootVue.qvt2.js) -->
+        <container id="apps-root">
+            <screen-layout view="hHh lpR fFf" class="bg-grey-1">
+                <screen-header elevated="true" class="bg-primary text-white">
+                    <screen-toolbar>
+                        <render-mode><text type="html"><![CDATA[<q-btn dense flat round icon="menu" aria-label="Menu"></q-btn>]]></text></render-mode>
+                        <label text="Staff Meeting" style="q-toolbar-title"/>
+                        <container type="q-space"/>
+                        <subscreens-menu pathIndex="0" style="toolbar"/>
+                    </screen-toolbar>
+                </screen-header>
+
+                <screen-drawer side="left" model="leftOpen">
+                </screen-drawer>
+
+                <screen-content class="q-pa-md">
+                    <subscreens-active/>
+                </screen-content>
+
+            </screen-layout>
+        </container>
+    </widgets>
+</screen>

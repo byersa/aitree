@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-3.xsd"
+        standalone="false"
+        default-menu-title="Medical Records" default-menu-index="3">
+
+    <widgets>
+        <container style="q-pa-md">
+            <label text="Medical Records (HIPAA Secure)" type="h4" style="q-mb-md text-primary"/>
+            <label text="(Placeholder: Secure patient record management)" type="p" style="text-italic"/>
+        </container>
+    </widgets>
+</screen>
