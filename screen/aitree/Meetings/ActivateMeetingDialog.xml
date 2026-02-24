@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsd"
+        require-authentication="false">
+    
+    <actions>
+        <!-- For Phase 3, we simply fetch all "Abstract" (not yet initialized) containers -->
+        <script>
+            // Bypass authz for UI demo purposes, consistent with earlier drop-down changes
+            ec.artifactExecution.disableAuthz()
+            try {
+                containers = ec.entityFacade.find("aitree.meeting.AgendaContainer")
+                    .condition("containerTypeEnumId", "AitContainerAbstract")
+                    .list()
+            } finally {
+                ec.artifactExecution.enableAuthz()
+            }
+        </script>
+    </actions>
+
+    <widgets>
+        <container class="q-pa-md">
+            <container class="q-mb-md">
+                <label text="Select a scheduled meeting template to activate and manage." class="text-body2 text-grey-8"/>
+            </container>
+            
+            <form-list name="ScheduledMeetings" list="containers" skip-start="true" skip-end="true">
+                <field name="agendaContainerId"><default-field><hidden/></default-field></field>
+                
+                <field name="name">
+                    <default-field title="Meeting Title"><display/></default-field>
+                </field>
+                
+                <field name="startDateTime">
+                    <default-field title="Scheduled For"><display type="date-time"/></default-field>
+                </field>
+                
+                <field name="activateAction">
+                    <default-field title="Action">
+                        <!-- Execute inline JS to push the item to the Pinia active store -->
+                        <link text="Activate" icon="play_arrow" url-type="plain"
+                              url="javascript:window.useMeetingsStore().addMeeting({agendaContainerId: '${agendaContainerId}', name: '${name?js_string}'}); document.body.click();" 
+                              class="text-weight-bold text-primary"/>
+                    </default-field>
+                </field>
+            </form-list>
+        </container>
+    </widgets>
+</screen>

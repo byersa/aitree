@@ -26,6 +26,11 @@ footer_scripts.add('/libs/vue-router/vue-router.global.js')
 footer_scripts.add('/js/http-vue-loader/httpVueLoader.js')
 footer_scripts.add("/libs/quasar/quasar.umd.prod.js")
 footer_scripts.add('/libs/vue3-sfc-loader/vue3-sfc-loader.min.js')
+footer_scripts.add('https://unpkg.com/vue-demi@0.14.7/lib/index.iife.js')
+footer_scripts.add('https://unpkg.com/pinia@2.1.7/dist/pinia.iife.js')
+
+// Load Pinia Stores
+footer_scripts.add('/aitree/moquiaiJs/stores/meetingsStore.js')
 
 // Load Routing
 String pathInfo = ec.web.request.pathInfo ?: ""

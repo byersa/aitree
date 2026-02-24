@@ -1,35 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsd"
-        require-authentication="false">
+        require-authentication="false" default-menu-title="Meetings" default-menu-index="2">
+    
+    <subscreens default-item="ActiveSessions">
+        <subscreens-item name="ActiveSessions" location="component://aitree/screen/aitree/Meetings/ActiveSessions.xml" menu-title="Active" menu-index="1"/>
+    </subscreens>
+    
     <widgets>
         <container class="q-pa-lg">
-            <label text="Staff Meetings" class="text-h4 q-mb-md"/>
-            <label text="Coordination and planning for clinical teams." class="text-subtitle1 text-grey-7"/>
-            <q-banner class="bg-blue-1 text-blue-9 q-mb-lg rounded-borders">
-                <template v-slot:avatar=""><q-icon name="info" color="blue-9" /></template>
-                <label text="Daily morning huddle starts in 15 minutes. Ensure all patient charts are synchronized."/>
-            </q-banner>
-            <q-list bordered="true" separator="true" class="rounded-borders">
-                <q-item clickable="true" v-ripple="true">
-                    <q-item-section avatar="true">
-                        <q-avatar color="primary" text-white="true" icon="groups" />
-                    </q-item-section>
-                    <q-item-section>
-                        <q-item-label><label text="Morning Huddle - Clinical A"/></q-item-label>
-                        <q-item-label caption="true"><label text="Today, 8:30 AM | Conference Room 2"/></q-item-label>
-                    </q-item-section>
-                </q-item>
-                <q-item clickable="true" v-ripple="true">
-                    <q-item-section avatar="true">
-                        <q-avatar color="secondary" text-white="true" icon="medical_services" />
-                    </q-item-section>
-                    <q-item-section>
-                        <q-item-label><label text="Case Review: Oncology"/></q-item-label>
-                        <q-item-label caption="true"><label text="Today, 11:00 AM | Virtual Meeting"/></q-item-label>
-                    </q-item-section>
-                </q-item>
-            </q-list>
+            <container-row class="q-mb-md items-center">
+                <row-col lg="8">
+                    <label text="Staff Meetings" class="text-h4"/>
+                    <label text="Coordination and planning for clinical teams." class="text-subtitle1 text-grey-7"/>
+                </row-col>
+            </container-row>
+            
+            <q-tabs align="left" no-caps="true" class="text-grey-8 bg-grey-2 rounded-borders">
+                <q-tab name="ActiveSessions" text="Active Sessions" icon="bolt" url="/aitree/Meetings/ActiveSessions"/>
+                <q-tab name="History" text="Meeting History" icon="history" url="/aitree/Meetings/History"/>
+            </q-tabs>
+            
+            <container class="q-mt-md q-pa-md bg-white rounded-borders shadow-1">
+                <subscreens-active/>
+            </container>
         </container>
     </widgets>
 </screen>
