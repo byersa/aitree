@@ -1,40 +1,37 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-        xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsd"
-        require-authentication="false" screen-theme-type-enum-id="STT_INTERNAL_QUASAR2" allow-extra-path="true"
-        default-menu-title="Staff Meeting" default-menu-index="1">
+# Screen Blueprints
 
-    <pre-actions>
-        <script location="component://aitree/script/AitreePreActions.groovy"/>
-    </pre-actions>
+This folder contains blueprints for defining UI screens and frontend components for the aitree Staff Meeting App (SMA).
 
+## Instructions (Critical Scaffolding Rules)
+- **Strict XML Well-Formedness**: Moqui's XML parser will throw `SAXParseException`s if standard HTML/Vue boolean shorthands are used. You *must* use explicit string values for all attributes.
+  - ❌ Incorrect: `<q-card flat bordered>` or `<q-item-label caption>`
+  - ✅ Correct: `<q-card flat="true" bordered="true">` or `<q-item-label caption="true">`
+- **Slot Syntax**: Vue slot shorthands must also have explicit assignments.
+  - ❌ Incorrect: `<template v-slot:avatar>`
+  - ✅ Correct: `<template v-slot:avatar="">`
+- **Text Rendering**: Moqui drops standard HTML text nodes embedded inside unknown XML elements during JSON serialization. All text bound for the frontend must use the Moqui `<label>` tag explicitly.
+  - ❌ Incorrect: `<q-item-label>Case Review: Oncology</q-item-label>`
+  - ✅ Correct: `<q-item-label><label text="Case Review: Oncology"/></q-item-label>`
+- **Subscreen Authorization**: Moqui enables screen-level authorization by default (`require-authentication="true"`). When scaffolding internal subscreens that are part of a larger SPA shell (like `Home.xml` inside `aitree.xml`), you must explicitly add `require-authentication="false"` to the root `<screen>` component of the subscreen so it inherits access from the master screen, avoiding `403 Forbidden` errors.
+- Adhere to the Vue macro usage and layout standards defined for the `moqui-ai` project.
+- Follow the Single Page Architecture (SPA) model.
+- Always include ARIA id tags for `moqui-mcp` testability.
+
+## Root SPA Shell Bolierplate (`aitree.xml`)
+When defining the root screen representing the base of the standalone SPA layout (`aitree/screen/aitree.xml`), you must always include the following critical blocks.
+
+1. **Pre/Always Actions**: Set paths mapping to the mount point (e.g. `/aitree`).
+```xml
     <always-actions>
         <set field="appRoot" value="aitree"/>
-        <set field="appRootPath" value=""/>
+        <set field="appRootPath" value="/aitree"/>
         <set field="linkBasePath" value="/aitree"/>
         <set field="basePath" value="/aitree"/>
     </always-actions>
+```
 
-    <transition name="getAgendaContainers" read-only="true" require-session-token="false">
-        <actions>
-            <script>
-                def containers = ec.entity.find("aitree.meeting.AgendaContainer")
-                    .condition("containerTypeEnumId", "AitContainerAbstract")
-                    .disableAuthz().list()
-                ec.web.sendJsonResponse(containers)
-            </script>
-        </actions>
-        <default-response type="none"/>
-    </transition>
-
-    <transition name="moquiaiJs" read-only="true" require-session-token="false">
-        <path-parameter name="filename"/>
-        <actions>
-            <script>ec.web.sendResourceResponse("component://moqui-ai/screen/moquiai/js/" + filename)</script>
-        </actions>
-        <default-response type="none"/>
-    </transition>
-
+2. **Routes.js & MenuData Transitions**: Required to generate routing JSON for the Vue app.
+```xml
     <transition name="menuDataQvt2" read-only="true" begin-transaction="false" require-session-token="false">
         <actions><script><![CDATA[
             def sd = ec.screen.getScreenDefinition("component://aitree/screen/aitree.xml")
@@ -44,16 +41,16 @@
                 subscreens.add([
                     name: ssi.name,
                     title: ssi.menuTitle ?: ssi.name,
-                    path: "/aitree/" + ssi.name,
-                    pathWithParams: "/aitree/" + ssi.name,
+                    path: "/" + ssi.name,
+                    pathWithParams: "/" + ssi.name,
                     active: sri.screenUrlInfo.extraPathNameList.contains(ssi.name)
                 ])
             }
             ec.web.sendJsonResponse([[
                 name: "aitree",
                 title: "Staff Meeting",
-                path: "/aitree",
-                pathWithParams: "/aitree",
+                path: "/",
+                pathWithParams: "/",
                 subscreens: subscreens
             ]])
         ]]></script></actions>
@@ -72,13 +69,9 @@
                     def subscreenList = currentScreenDefinition?.getSubscreensItemsSorted()
                     for (subscreen in subscreenList) {
                         if (subscreen.location == null) { continue }
-                        try {
-                            subscreenDefinition = ec.screen.getScreenDefinition(subscreen.location)
-                            String currentPath = (basePath == '/' ? '/' : basePath + '/') + currentScreenDefinition.getScreenName()
-                            pathList = getSubscreenPaths(subscreenDefinition, pathList, currentPath)
-                        } catch (Exception e) {
-                            ec.logger.warn("Skipping broken screen definition during routes.js generation: " + subscreen.location)
-                        }
+                        subscreenDefinition = ec.screen.getScreenDefinition(subscreen.location)
+                        String currentPath = (basePath == '/' ? '/' : basePath + '/') + currentScreenDefinition.getScreenName()
+                        pathList = getSubscreenPaths(subscreenDefinition, pathList, currentPath)
                     }
                     String leafPath = (basePath == '/' ? '/' : basePath + '/') + currentScreenDefinition.getScreenName()
                     return pathList + [leafPath]
@@ -99,14 +92,10 @@
         </actions>
         <default-response type="none"/>
     </transition>
+```
 
-    <subscreens default-item="Home">
-        <subscreens-item name="Home" location="component://aitree/screen/aitree/Home.xml"/>
-        <subscreens-item name="PeopleOrgs" location="component://aitree/screen/aitree/PeopleOrgs.xml"/>
-        <subscreens-item name="MedicalRecords" location="component://aitree/screen/aitree/MedicalRecords.xml"/>
-        <subscreens-item name="Meetings" location="component://aitree/screen/aitree/Meetings.xml"/>
-    </subscreens>
-
+3. **Vue Renderer Injection**: Must be at the top of the widgets block.
+```xml
     <widgets>
         <render-mode>
             <text type="html" location="component://moqui-ai/template/spa/MoquiAiVue.qvt2.ftl"/>
@@ -119,10 +108,7 @@
                         <render-mode><text type="html"><![CDATA[<q-btn dense flat round icon="menu" aria-label="Menu" @click="leftOpen = !leftOpen"></q-btn>]]></text></render-mode>
                         <label text="Staff Meeting" style="q-toolbar-title"/>
                         <container type="q-space"/>
-                        <menu-item name="Home"/>
-                        <menu-item name="PeopleOrgs"/>
-                        <menu-item name="MedicalRecords"/>
-                        <menu-dropdown name="Meetings" transition="getAgendaContainers" label-field="name" key-field="agendaContainerId" url-parameter="agendaContainerId"/>
+                        <subscreens-menu pathIndex="0" style="toolbar"/>
                     </screen-toolbar>
                 </screen-header>
 
@@ -131,11 +117,9 @@
                 </screen-drawer>
 
                 <screen-content class="q-pa-md">
-                    <render-mode><text type="html"><![CDATA[
-                        <router-view></router-view>
-                    ]]></text></render-mode>
+                    <subscreens-active/>
                 </screen-content>
             </screen-layout>
         </container>
     </widgets>
-</screen>
+```

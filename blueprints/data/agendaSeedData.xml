@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-facade-xml>
+    <!--
+    <sh.AgendaTopic agendaTopicId="SHAT_0001" agendaTopicTypeEnumId="shTopicSource"
+                    permissionJson='{"shrl_ownerTemplate":{"shop_create":"Y","shop_edit":"Y","shop_cancel":"Y","shop_view":"Y","shop_append":"Y","shop_share":"Y"},"shrl_subTemplate":{"shop_create":"N","shop_edit":"N","shop_cancel":"N","shop_view":"Y","shop_append":"Y","shop_share":"Y"}}'
+    />
+    <sh.AgendaContent contentId="SHC_0001" title="Main Abstract Source Topic" locale="en-US" />
+    <sh.AgendaTopicContent agendaTopicId="SHAT_0001" contentId="SHC_0001"
+     />
+                     permissionJson='{"shrl_ownerTemplate":{"shop_create":"Y","shop_edit":"Y","shop_cancel":"Y","shop_view":"Y","shop_append":"Y","shop_share":"Y"},"shrl_subTemplate":{"shop_create":"N","shop_edit":"N","shop_cancel":"N","shop_view":"Y","shop_append":"Y","shop_share":"Y"}}'
+    <mantle.party.PartySetting partyId="100051" partySettingTypeId="pst_studdle_type" settingValue="fgt_todostanduphuddle" />
+    -->
+    <mantle.party.PartySettingType partySettingTypeId="pst_rootmtgtmpl" description="ROOT MeetingTemplateId" defaultValue="ROOT_MTG_TMPL" />
+
+    <sh.MeetingTemplate meetingTemplateId="ROOT_MTG_TMPL" shortName="Root" name="Root Meeting Template" meetingTypeEnumId="ShMtgAbstract" />
+    <sh.FacetValueLookup facetValueLookupId="MTFC_SHMT_0001" facetTypeId="FT_DOMAIN" facetValue='["ShACTIVITIES","ShADMIN","ShDIETARY","ShHOUSEKEEPING","ShHR","ShMAINTENANCE","ShMDS","ShNURSE","ShOFFICE","ShOTHER","ShRECORDS","ShREHABILITATION","ShSOCSRV"]' />
+    <sh.MeetingTemplateFacetValue  meetingTemplateId="ROOT_MTG_TMPL" facetValueLookupId="MTFC_SHMT_0001" />
+    <sh.FacetValueLookup facetValueLookupId="MTFC_SUPER" facetTypeId="FT_PERM_SUPERGRP" facetValue='["shop_append","shop_cancel","shop_create","shop_delete","shop_edit","shop_share","shop_view"]' />
+    <sh.MeetingTemplateFacetValue  meetingTemplateId="ROOT_MTG_TMPL" facetValueLookupId="MTFC_SUPER" />
+    <sh.FacetValueLookup facetValueLookupId="MTFC_OWNERGRP" facetTypeId="FT_PERM_OWNERGRP" facetValue='["shop_append","shop_cancel","shop_create","shop_delete","shop_edit","shop_share","shop_view"]' />
+    <sh.MeetingTemplateFacetValue  meetingTemplateId="ROOT_MTG_TMPL" facetValueLookupId="MTFC_OWNERGRP" />
+    <sh.FacetValueLookup facetValueLookupId="MTFC_SUBGRP" facetTypeId="FT_PERM_SUBGRP" facetValue='["shop_append","shop_share","shop_view"]' />
+    <sh.MeetingTemplateFacetValue  meetingTemplateId="ROOT_MTG_TMPL" facetValueLookupId="MTFC_SUBGRP" />
+    <sh.FacetValueLookup facetValueLookupId="MTFC_OWNER" facetTypeId="FT_PERM_OWNER" facetValue='["shop_append","shop_cancel","shop_create","shop_delete","shop_edit","shop_share","shop_view"]' />
+    <sh.MeetingTemplateFacetValue  meetingTemplateId="ROOT_MTG_TMPL" facetValueLookupId="MTFC_OWNER" />
+
+    <sh.MeetingTemplate meetingTemplateId="SHMT_0001" shortName="SH" name="Daily Staff Huddle" />
+
+    <sh.FacetValueLookup facetValueLookupId="FVL_DOMAIN_ROOT" facetTypeId="FT_DOMAIN" facetValue='["ShACTIVITIES","ShADMIN","ShDIETARY","ShHOUSEKEEPING","ShHR","ShMAINTENANCE","ShMDS","ShNURSE","ShOFFICE","ShOTHER","ShRECORDS","ShREHABILITATION","ShSOCSRV"]' />
+    <sh.MeetingTemplateFacetValue  meetingTemplateId="ROOT_MTG_TMPL" facetValueLookupId="FVL_DOMAIN_ROOT" />
+
+    <sh.FacetValueLookup facetValueLookupId="FT_DOMAIN" facetTypeId="FT_DOMAIN" facetValue='["ShACTIVITIES","ShADMIN","ShDIETARY","ShHOUSEKEEPING","ShHR","ShMAINTENANCE","ShMDS","ShNURSE","ShOFFICE","ShOTHER","ShRECORDS","ShREHABILITATION","ShSOCSRV"]' />
+    <sh.FacetValueLookup facetValueLookupId="FT_PERM_SUPERGRP" facetTypeId="FT_PERM" facetValue='["shop_append","shop_cancel","shop_create","shop_delete","shop_edit","shop_share","shop_view"]' />
+    <sh.FacetValueLookup facetValueLookupId="FT_PERM_OWNERGRP" facetTypeId="FT_PERM" facetValue='["shop_append","shop_cancel","shop_create","shop_delete","shop_edit","shop_share","shop_view"]' />
+    <sh.FacetValueLookup facetValueLookupId="FT_PERM_SUBGRP" facetTypeId="FT_PERM" facetValue='["shop_create","shop_view"]' />
+    <sh.FacetValueLookup facetValueLookupId="FT_PERM_OWNER" facetTypeId="FT_PERM" facetValue='["shop_append","shop_cancel","shop_create","shop_delete","shop_edit","shop_share","shop_view"]' />
+    <sh.FacetType facetTypeId="FT_DOMAIN" description="Domain" enumTypeId="shSortType" />
+    <sh.FacetType facetTypeId="FT_AGDOMAIN" description="Agenda Topic Domain" enumTypeId="shSortType" />
+    <sh.FacetType facetTypeId="FT_PTYDOMAIN" description="Party Domain" enumTypeId="shSortType" />
+    <sh.FacetType facetTypeId="FT_DELETE" description="Deleted Status" enumTypeId="shSortType" />
+    <sh.FacetType facetTypeId="FT_SORT" description="Sort Options" enumTypeId="shSortType" />
+    <sh.FacetType facetTypeId="FT_PERM" description="Permission Options" enumTypeId="shSortType" />
+    <sh.FacetType facetTypeId="FT_SCHED" description="Schedule Options" enumTypeId="shSortType" />
+
+    <sh.FacetValueLookup facetValueLookupId="MTFV_SHMT_0001_DOMAIN" lookupId="SHMT_0001" facetTypeId="FT_SORT" facetValue='{"name":"domain","nodeKey":"enumId", "labelKey":"description", "title":"Domain", "lookupEntityName":"moqui.basic.Enumeration", "labelKey2":"", "defaultSortTypeValue":"ShADMIN", "lookupName":"domainRoleLookupName", "facetTypeId":"FT_DOMAIN"}' />
+    <sh.FacetValueLookup facetValueLookupId="MTFV_SHMT_0001_AGDOMAIN" lookupId="SHMT_0001" facetTypeId="FT_SORT" facetValue='{"name":"agdomain","nodeKey":"enumId", "labelKey":"description", "title":"Domain", "lookupEntityName":"moqui.basic.Enumeration", "labelKey2":"", "defaultSortTypeValue":"ShADMIN", "lookupName":"domainRoleLookupName", "facetTypeId":"FT_AGDOMAIN"}' />
+    <sh.FacetValueLookup facetValueLookupId="MTFV_SHMT_0001_PTYDOMAIN" lookupId="SHMT_0001" facetTypeId="FT_SORT" facetValue='{"name":"ptydomain","nodeKey":"enumId", "labelKey":"description", "title":"Domain", "lookupEntityName":"moqui.basic.Enumeration", "labelKey2":"", "defaultSortTypeValue":"ShADMIN", "lookupName":"domainRoleLookupName", "facetTypeId":"FT_PTYDOMAIN"}' />
+    <sh.FacetValueLookup facetValueLookupId="MTFV_SHMT_0001_ORG" lookupId="SHMT_0001" facetTypeId="FT_SORT" facetValue='{"name":"org","nodeKey":"partyId", "labelKey":"organizationName", "title":"Org", "lookupEntityName":"moqui.party.Organization", "labelKey2":"", "defaultSortTypeValue":"" }' />
+    <sh.FacetValueLookup facetValueLookupId="MTFV_SHMT_0001_PERSON" lookupId="SHMT_0001" facetTypeId="FT_SORT" facetValue='{"name":"person","nodeKey":"partyId", "labelKey":"lastName", "title":"Person", "lookupEntityName":"moqui.party.Person", "labelKey2":"firstName", "defaultSortTypeValue":"" }' />
+    <sh.FacetValueLookup facetValueLookupId="MTFV_SHMT_0001_PERM" lookupId="SHMT_0001" facetTypeId="FT_PERM" facetValue='{"shrl_ownerTemplate":{"shop_create":"Y","shop_edit":"Y","shop_cancel":"Y","shop_view":"Y","shop_append":"Y","shop_share":"Y"},"shrl_subTemplate":{"shop_create":"N","shop_edit":"N","shop_cancel":"N","shop_view":"Y","shop_append":"Y","shop_share":"Y"}}' />
+
+    <sh.FacetValueLookup facetValueLookupId="MTFV_domain_admin" lookupId="ROOT_MTG_TMPL" facetTypeId="FT_DOMAIN" facetValue="ShADMIN" />
+    <sh.FacetValueLookup facetValueLookupId="MTFV_domain_records" lookupId="ROOT_MTG_TMPL" facetTypeId="FT_DOMAIN" facetValue="ShRECORDS" />
+    <sh.FacetValueLookup facetValueLookupId="MTFV_domain_mds" lookupId="ROOT_MTG_TMPL" facetTypeId="FT_DOMAIN" facetValue="ShMDS" />
+    <sh.FacetValueLookup facetValueLookupId="MTFV_domain_socsrv" lookupId="ROOT_MTG_TMPL" facetTypeId="FT_DOMAIN" facetValue="ShSOCSRV" />
+    <sh.FacetValueLookup facetValueLookupId="MTFV_domain_activity" lookupId="ROOT_MTG_TMPL" facetTypeId="FT_DOMAIN" facetValue="ShACTIVITIES" />
+    <sh.FacetValueLookup facetValueLookupId="MTFV_domain_diet" lookupId="ROOT_MTG_TMPL" facetTypeId="FT_DOMAIN" facetValue="ShDIETARY" />
+    <sh.FacetValueLookup facetValueLookupId="MTFV_domain_maint" lookupId="ROOT_MTG_TMPL" facetTypeId="FT_DOMAIN" facetValue="ShMAINTENANCE" />
+    <sh.FacetValueLookup facetValueLookupId="MTFV_domain_hr" lookupId="ROOT_MTG_TMPL" facetTypeId="FT_DOMAIN" facetValue="ShHR" />
+    <sh.FacetValueLookup facetValueLookupId="MTFV_domain_office" lookupId="ROOT_MTG_TMPL" facetTypeId="FT_DOMAIN" facetValue="ShOFFICE" />
+    <sh.FacetValueLookup facetValueLookupId="MTFV_domain_rehab" lookupId="ROOT_MTG_TMPL" facetTypeId="FT_DOMAIN" facetValue="ShREHABILITATION" />
+    <sh.FacetValueLookup facetValueLookupId="MTFV_domain_house" lookupId="ROOT_MTG_TMPL" facetTypeId="FT_DOMAIN" facetValue="ShHOUSEKEEPING" />
+    <sh.FacetValueLookup facetValueLookupId="MTFV_domain_other" lookupId="ROOT_MTG_TMPL" facetTypeId="FT_DOMAIN" facetValue="ShOTHER" />
+    <sh.FacetValueLookup facetValueLookupId="MTFV_domain_nurse" lookupId="ROOT_MTG_TMPL" facetTypeId="FT_DOMAIN" facetValue="ShNURSE" />
+
+
+
+    <sh.MeetingTemplate meetingTemplateId="SHMT_TODO" meetingTypeEnumId="ShMtgAbstract" name="TODO Main" shortName="TODO" orgId="SH1_CORP" partyId="100051" />
+    <sh.FacetValueLookup facetValueLookupId="MTFV_domain_admin_0001_TODO" facetTypeId="FT_DOMAIN" facetValue='["ShADMIN"]' />
+    <sh.MeetingTemplateFacetValue  meetingTemplateId="SHMT_TODO" facetValueLookupId="MTFV_domain_admin_0001_TODO" />
+
+    <sh.MeetingTemplate meetingTemplateId="SHMT_STNDUP" meetingTypeEnumId="ShMtgAbstract" name="Stand Up" shortName="STUP" orgId="SH1_CORP" partyId="100051"
+                        permissionJson='{"shrl_subTemplate":{"shop_view":"N","shop_append":"N","shop_share":"Y"}}'
+    />
+    <sh.MeetingTemplate meetingTemplateId="SHMT_HUDL" meetingTypeEnumId="ShMtgAbstract" name="Huddle" shortName="HUDL" orgId="SH1_CORP" partyId="100051" />
+
+    <sh.MeetingTemplate meetingTemplateId="SHMT_TODO_REPO" meetingTypeEnumId="ShMtgTopicRepo" name="TODO Repository" shortName="TODO Repo" orgId="SH1_CORP" partyId="100051" />
+    <sh.MeetingTemplate meetingTemplateId="SHMT_STNDUP_REPO" meetingTypeEnumId="ShMtgTopicRepo" name="STNDUP Repository" shortName="STNDUP" orgId="SH1_CORP" partyId="100051" />
+    <sh.MeetingTemplate meetingTemplateId="SHMT_HUDL_REPO" meetingTypeEnumId="ShMtgTopicRepo" name="HUDL Repository" shortName="HUDL Repo" orgId="SH1_CORP" partyId="100051" />
+    <sh.MeetingTemplate meetingTemplateId="SHMT_COMMON" meetingTypeEnumId="ShMtgTopicRepo" name="COMMON" shortName="COM" />
+    <sh.MeetingTemplate meetingTemplateId="SHMT_0001SUB" meetingTypeEnumId="ShMtgTopicRepo" name="Daily Staff Huddle SUB" shortName="SHsub" scheduleTypeId="ShSchedEveryDay"
+                        permissionJson='{"shrl_ownerTemplate":{"shop_create":"Y","shop_edit":"Y","shop_cancel":"Y","shop_view":"Y","shop_append":"Y","shop_share":"Y"},"shrl_subTemplate":{"shop_create":"N","shop_edit":"N","shop_cancel":"N","shop_view":"Y","shop_append":"Y","shop_share":"Y"}}'
+    />
+    <sh.MeetingTemplate meetingTemplateId="SHMT_TODOSUB" meetingTypeEnumId="mrtMtgRollup" name="TODO SUB" shortName="TODOSUB" orgId="SH1_CORP" partyId="100051" />
+    <sh.MeetingTemplate meetingTemplateId="SHMT_STNDUPSUB" meetingTypeEnumId="mrtMtgRollup" name="STNDUP SUB" shortName="STNDUPSUB" orgId="SH1_CORP" partyId="100051" />
+    <sh.MeetingTemplate meetingTemplateId="SHMT_HUDLSUB" meetingTypeEnumId="mrtMtgRollup" name="HUDL SUB" shortName="HUDLSUB" orgId="SH1_CORP" partyId="100051" />
+
+    <sh.FacetValueLookup facetValueLookupId="MMTFV_domain_activity_CO" facetTypeId="FT_DOMAIN" facetValue='["ShADMIN"]' />
+    <sh.MeetingTemplateFacetValue  meetingTemplateId="SHMT_COMMON" facetValueLookupId="MMTFV_domain_activity_CO" />
+
+    <sh.FacetValueLookup facetValueLookupId="MTFV_domain_nurse_COM" facetTypeId="FT_DOMAIN" facetValue='["ShNURSE"]' />
+    <sh.MeetingTemplateFacetValue  meetingTemplateId="SHMT_COMMON" facetValueLookupId="MTFV_domain_nurse_COM" />
+
+    <sh.MeetingRelationship meetingRelationshipId="ROOT_SHMT_0001" meetingRelationshipTypeEnumId="mrtMtgAbstractRollup" fromMeetingRepositoryId="SHMT_0001" toMeetingTemplateId="ROOT_MTG_TMPL" sequenceNum="10" />
+    <sh.MeetingRelationship meetingRelationshipId="SHMR_0001_COMMON" meetingRelationshipTypeEnumId="mrtMtgRepoRelation" toMeetingTemplateId="SHMT_0001" fromMeetingRepositoryId="SHMT_COMMON" sequenceNum="10" />
+
+    <sh.MeetingRelationship meetingRelationshipId="SHMR_0001_TODO" meetingRelationshipTypeEnumId="mrtMtgAbstractRollup" fromMeetingRepositoryId="SHMT_TODO" toMeetingTemplateId="SHMT_0001" sequenceNum="10" />
+    <sh.MeetingRelationship meetingRelationshipId="SHMR_0001_STNDUP" meetingRelationshipTypeEnumId="mrtMtgAbstractRollup" fromMeetingRepositoryId="SHMT_STNDUP" toMeetingTemplateId="SHMT_0001" sequenceNum="20" />
+    <sh.MeetingRelationship meetingRelationshipId="SHMR_0001_HUDL" meetingRelationshipTypeEnumId="mrtMtgAbstractRollup" fromMeetingRepositoryId="SHMT_HUDL" toMeetingTemplateId="SHMT_STNDUP" sequenceNum="30" />
+
+    <sh.MeetingRelationship meetingRelationshipId="SHMR_TODO_REPO" meetingRelationshipTypeEnumId="mrtMtgRepoRelation" toMeetingTemplateId="SHMT_TODO" fromMeetingRepositoryId="SHMT_TODO_REPO" sequenceNum="10" />
+    <sh.MeetingRelationship meetingRelationshipId="SHMR_STNDUP_REPO" meetingRelationshipTypeEnumId="mrtMtgRepoRelation" toMeetingTemplateId="SHMT_STNDUP" fromMeetingRepositoryId="SHMT_STNDUP_REPO" sequenceNum="10" />
+    <sh.MeetingRelationship meetingRelationshipId="SHMR_HUDL_REPO" meetingRelationshipTypeEnumId="mrtMtgRepoRelation" toMeetingTemplateId="SHMT_HUDL" fromMeetingRepositoryId="SHMT_HUDL_REPO" sequenceNum="10" />
+    <sh.MeetingRelationship meetingRelationshipId="SHMR_TODO_COMMON" meetingRelationshipTypeEnumId="mrtMtgRepoRelation" toMeetingTemplateId="SHMT_TODO" fromMeetingRepositoryId="SHMT_COMMON" sequenceNum="10" />
+    <sh.MeetingRelationship meetingRelationshipId="SHMR_STNDUP_COMMON" meetingRelationshipTypeEnumId="mrtMtgRepoRelation" toMeetingTemplateId="SHMT_STNDUP" fromMeetingRepositoryId="SHMT_COMMON" sequenceNum="20" />
+    <sh.MeetingRelationship meetingRelationshipId="SHMR_HUDL_COMMON" meetingRelationshipTypeEnumId="mrtMtgRepoRelation" toMeetingTemplateId="SHMT_HUDL" fromMeetingRepositoryId="SHMT_COMMON" sequenceNum="30" />
+
+    <sh.MeetingRelationship meetingRelationshipId="SHMR_0001_TODO_SUB" meetingRelationshipTypeEnumId="mrtMtgAbstractRollup" toMeetingTemplateId="SHMT_TODO" fromMeetingRepositoryId="SHMT_TODOSUB" sequenceNum="10" />
+    <sh.MeetingRelationship meetingRelationshipId="SHMR_0001_STNDUP_SUB" meetingRelationshipTypeEnumId="mrtMtgAbstractRollup" toMeetingTemplateId="SHMT_STNDUP" fromMeetingRepositoryId="SHMT_STNDUPSUB" sequenceNum="10" />
+    <sh.MeetingRelationship meetingRelationshipId="SHMR_0001_HUDL_SUB" meetingRelationshipTypeEnumId="mrtMtgAbstractRollup" toMeetingTemplateId="SHMT_HUDL" fromMeetingRepositoryId="SHMT_HUDLSUB" sequenceNum="10" />
+
+    <sh.MeetingRelationship meetingRelationshipId="SHMR_0001SUB" meetingRelationshipTypeEnumId="mrtMtgAbstractRollup" toMeetingTemplateId="SHMT_0001" fromMeetingRepositoryId="SHMT_0001SUB" sequenceNum="10" />
+
+    <sh.AgendaTopic agendaTopicId="SHAT_ROOT" />
+    <sh.AgendaTopic agendaTopicId="SHAT_0101" meetingTemplateId="SHMT_COMMON"  orgId="SH1_CORP" partyId="100051" />
+    <sh.AgendaContent contentId="SHC_0001" title="Main Abstract Source Topic" locale="en-US" />
+    <sh.AgendaTopicContent agendaTopicId="SHAT_0101" contentId="SHC_0001"  />
+    <sh.TargetedRelationship targetedRelationship="SHAT_0101_SH1_CORP"  agendaTopicId="SHAT_0101" targetedPartyId="SH1_CORP" enumTypeId="ShTargRelativeLevel" />
+
+    <sh.AgendaTopic agendaTopicId="SHAT_0101a" meetingTemplateId="SHMT_COMMON"  orgId="SH1_CORP" partyId="100051" />
+    <sh.AgendaContent contentId="SHC_0012" title="Direct to meeting 0012" description="Description for 'SHC_0012': Direct to meeting 0012" locale="en-US" />
+    <sh.AgendaTopicContent agendaTopicId="SHAT_0101a" contentId="SHC_0012"  />
+
+    <sh.AgendaTopic agendaTopicId="SHAT_0101a_sub1" meetingTemplateId="SHMT_COMMON"  parentAgendaTopicId="SHAT_0101a" orgId="SH1_CORP" partyId="100051" />
+    <sh.AgendaContent contentId="SHC_0012_1" title="Direct to SHAT_0101A sub1" description="Description for 'SHAT_0101A_SUB1': Direct to SHAT_0101A_SUB1 " locale="en-US" />
+    <sh.AgendaTopicContent agendaTopicId="SHAT_0101a_sub1" contentId="SHC_0012_1"  />
+
+    <sh.AgendaTopic agendaTopicId="SHAT_0101b" orgId="SH1_CORP" partyId="100051" meetingTemplateId="SHMT_COMMON"  />
+    <sh.AgendaContent contentId="SHC_0013" title="Direct to meeting 0013" description="Description for 'SHC_0013': Direct to meeting 0013" locale="en-US" />
+    <sh.AgendaTopicContent agendaTopicId="SHAT_0101b" contentId="SHC_0013"  />
+
+    <sh.AgendaTopic agendaTopicId="SHAT_0101b_sub1" parentAgendaTopicId="SHAT_0101b" orgId="SH1_CORP" partyId="100051" meetingTemplateId="SHMT_COMMON"  />
+    <sh.AgendaContent contentId="SHC_0013_1" title="Direct to SHAT_0101B sub1" description="Description for 'SHAT_0101B_SUB1': Direct to SHAT_0101B_SUB1 " locale="en-US" />
+    <sh.AgendaTopicContent agendaTopicId="SHAT_0101b_sub1" contentId="SHC_0013_1"  />
+
+    <sh.AgendaTopic agendaTopicId="SHAT_0101c" orgId="SH1_CORP" partyId="100051" meetingTemplateId="SHMT_COMMON"  />
+    <sh.AgendaContent contentId="SHC_0014" title="Direct to meeting 0014" description="Description for 'SHC_0014': Direct to meeting 0014" locale="en-US" />
+    <sh.AgendaTopicContent agendaTopicId="SHAT_0101c" contentId="SHC_0014"  />
+
+    <sh.AgendaTopic agendaTopicId="SHAT_0101c_sub1" parentAgendaTopicId="SHAT_0101c" orgId="SH1_CORP" partyId="100051" meetingTemplateId="SHMT_COMMON"  />
+    <sh.AgendaContent contentId="SHC_0013_2" title="Direct to SHAT_0101C sub1" description="Description for 'SHAT_0101C_SUB1': Direct to SHAT_0101C_SUB1 " locale="en-US" />
+    <sh.AgendaTopicContent agendaTopicId="SHAT_0101c_sub1" contentId="SHC_0013_1"  />
+
+    <sh.MeetingTemplateAgendaTopicRelation meetingTemplateId="SHMT_COMMON" agendaTopicId="SHAT_0101" />
+    <sh.MeetingTemplateAgendaTopicRelation meetingTemplateId="SHMT_COMMON" agendaTopicId="SHAT_0101a" />
+    <sh.MeetingTemplateAgendaTopicRelation meetingTemplateId="SHMT_COMMON" agendaTopicId="SHAT_0101b" />
+    <sh.MeetingTemplateAgendaTopicRelation meetingTemplateId="SHMT_COMMON" agendaTopicId="SHAT_0101c" />
+    <!--
+    <sh.MeetingTemplateAgendaTopicRelation meetingTemplateId="SHMT_COMMON" agendaTopicId="SHAT_0101b_sub1" />
+    <sh.MeetingTemplateAgendaTopicRelation meetingTemplateId="SHMT_COMMON" agendaTopicId="SHAT_0101c_sub1" />
+    -->
+    <sh.MeetingTemplateAgendaTopicRelation meetingTemplateId="SHMT_TODO_REPO"   agendaTopicId="SHAT_0101c" />
+    <sh.MeetingTemplateAgendaTopicRelation meetingTemplateId="SHMT_STNDUP_REPO"   agendaTopicId="SHAT_0101a" />
+    <sh.MeetingTemplateAgendaTopicRelation meetingTemplateId="SHMT_HUDL_REPO"   agendaTopicId="SHAT_0101b" />
+    <sh.MeetingTemplateAgendaTopicRelation meetingTemplateId="SHMT_COMMON"   agendaTopicId="SHAT_0101" />
+    <!--
+    <sh.MeetingTemplateAgendaTopicRelation meetingTemplateId="SHMT_COMMON" agendaTopicId="SHAT_0101a_sub1" />
+    -->
+
+    <sh.AgendaTopic agendaTopicId="SHAT_CORP" agendaTopicTypeEnumId="shTopicAbstract" orgId="SH1_CORP" parentAgendaTopicId="SHAT_0101"  partyId="100051" meetingTemplateId="SHMT_COMMON"  />
+    <sh.AgendaContent contentId="SHC_0002" title="Corp Abstract Source Topic" locale="en-US" />
+    <sh.AgendaTopicContent agendaTopicId="SHAT_CORP" contentId="SHC_0002"  />
+
+    <sh.AgendaTopic agendaTopicId="SHAT_WESTDIV" agendaTopicTypeEnumId="shTopicAbstract" orgId="SH1_WESTDIV" parentAgendaTopicId="SHAT_0101"  partyId="100051" meetingTemplateId="SHMT_COMMON"  />
+    <sh.AgendaContent contentId="SHC_0003" title="Western Division Abstract Source Topic" locale="en-US" />
+    <sh.AgendaTopicContent agendaTopicId="SHAT_WESTDIV" contentId="SHC_0003"  />
+
+    <sh.AgendaTopic agendaTopicId="SHAT_HNDRSN" agendaTopicTypeEnumId="shTopicAbstract" orgId="SH1_HNDRSN" parentAgendaTopicId="SHAT_0101"  partyId="100051" meetingTemplateId="SHMT_COMMON"  />
+    <sh.AgendaContent contentId="SHC_0004" title="Hendersen Abstract Source Topic" locale="en-US" />
+    <sh.AgendaTopicContent agendaTopicId="SHAT_HNDRSN" contentId="SHC_0004"  />
+
+    <sh.PartyMeetingTemplate partyId="100051" meetingTemplateId="SHMT_0001"  sequenceNum="1" />
+
+
+    <!--
+    <sh.TargetedRelationship agendaTopicId="SHAT_0101a_sub1" partyId="SH1_CORP" enumTypeId="ShTargRelativeLevel" />
+    <sh.TargetedRelationship agendaTopicId="SHAT_0101b" partyId="SH1_CORP" enumTypeId="ShTargRelativeLevel" />
+    <sh.TargetedRelationship agendaTopicId="SHAT_0101b_sub1" partyId="100051" enumTypeId="ShTargDirectPerson" />
+    <sh.TargetedRelationship agendaTopicId="SHAT_0101c" partyId="SH1_WESTDIV" enumTypeId="ShTargRelativeLevel" />
+    <sh.TargetedRelationship agendaTopicId="SHAT_0101c_sub1" partyId="SH1_WESTDIV" enumTypeId="ShTargRelativeLevel" />
+    <sh.TargetedRelationship agendaTopicId="SHAT_0101c_sub1" partyId="100051" enumTypeId="ShTargDirectPerson" />
+    <sh.TargetedRelationship agendaTopicId="SHAT_0101a" partyId="SH1_CORP" enumTypeId="ShTargRelativeLevel" />
+    <sh.TargetedRelationship agendaTopicId="SHAT_0101" partyId="100051" enumTypeId="ShTargDirectPerson" />
+    <sh.TargetedRelationship agendaTopicId="SHAT_0101a" partyId="100051" enumTypeId="ShTargDirectPerson" />
+    <sh.TargetedRelationship agendaTopicId="SHAT_0101a_sub1" partyId="100051" enumTypeId="ShTargDirectPerson" />
+    <sh.TargetedRelationship agendaTopicId="SHAT_0101b" partyId="100051" enumTypeId="ShTargDirectPerson" />
+    <sh.TargetedRelationship agendaTopicId="SHAT_0101b_sub1" partyId="SH1_CORP" enumTypeId="ShTargRelativeLevel" />
+    -->
+
+
+
+</entity-facade-xml>

@@ -1,0 +1,855 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-definition-2.1.xsd">
+
+    <extend-entity entity-name="Organization" package="mantle.party">
+        <field name="shortOrgName" type="text-medium"/>
+    </extend-entity>
+    <entity entity-name="AgendaContent" package="sh" >
+        <description>
+        </description>
+        <field name="contentId" type="id" is-pk="true"/>
+        <field name="parentContentId" type="id" />
+        <field name="contentTypeEnumId" type="id" />
+        <field name="contentLocation" type="text-medium"/>
+        <field name="title" type="text-medium"/>
+        <field name="description" type="text-medium"/>
+        <field name="locale" type="text-medium"/>
+
+        <relationship type="one" title="ParentAgendaContent" related="sh.AgendaContent">
+            <key-map field-name="parentContentId"/></relationship>
+        <relationship type="one" title="ContentType" related="moqui.basic.Enumeration">
+            <key-map field-name="contentTypeEnumId"/></relationship>
+        <seed-data>
+            <moqui.basic.EnumerationType description="Content Type" enumTypeId="ContentType"/>
+            <moqui.basic.Enumeration description="Template" enumId="mctTemplate" enumTypeId="ContentType"/>
+            <moqui.basic.Enumeration description="Catalog" enumId="mctCatalog" enumTypeId="ContentType"/>
+            <moqui.basic.Enumeration description="Image" enumId="mctImage" enumTypeId="ContentType"/>
+            <moqui.basic.Enumeration description="PDF Image" enumId="mctPDFImage" enumTypeId="ContentType"/>
+            <moqui.basic.Enumeration description="PDF Thumbnail Image" enumId="mctPDFThumbImage" enumTypeId="ContentType"/>
+            <moqui.basic.Enumeration description="HTML Text" enumId="mctHtml" enumTypeId="ContentType"/>
+        </seed-data>
+    </entity>
+
+
+    <entity entity-name="AgendaTopic" package="sh" >
+        <description>
+        </description>
+        <field name="agendaTopicId" type="id" is-pk="true"/>
+        <field name="parentAgendaTopicId" type="id" />
+        <field name="orgId" type="id" />
+        <field name="partyId" type="id" />
+        <field name="statusId" type="id" />
+        <field name="permissionJson" type="text-long"/>
+        <field name="scheduleTypeId" type="id" />
+        <field name="scheduleJson" type="text-long"/>
+        <field name="includedStatusId" type="text-medium"/>
+        <field name="meetingTemplateId" type="id" is-pk="false" />
+        <field name="meetingInstanceId" type="id" is-pk="false" />
+        <field name="instanceCount" type="number-integer" default="0" />
+        <field name="repositoryMeetingTemplateId" type="id" is-pk="false" />
+        <field name="fromDate" type="date-time"/>
+        <field name="thruDate" type="date-time"/>
+
+        <relationship type="one" title="CampaignIncludedStatus" related="moqui.basic.StatusItem">
+            <key-map field-name="includedStatusId" /></relationship>
+        <relationship type="one" title="ParentAgendaTopic" related="sh.AgendaTopic">
+            <key-map field-name="parentAgendaTopicId"/></relationship>
+        <relationship type="one" title="Org" related="mantle.party.Organization">
+            <key-map field-name="orgId"/></relationship>
+        <relationship type="one" title="Person" related="mantle.party.Person">
+            <key-map field-name="partyId"/></relationship>
+        <relationship type="one" title="AgendaTopicStatus" related="moqui.basic.StatusItem">
+            <key-map field-name="statusId" /></relationship>
+        <relationship type="one" title="TopicMeetingTemplate" related="sh.MeetingTemplate">
+            <key-map field-name="meetingTemplateId"/></relationship>
+        <relationship type="one" title="RepositoryTopicMeetingTemplate" related="sh.MeetingRepository">
+            <key-map field-name="repositoryMeetingTemplateId"/></relationship>
+        <relationship type="one" title="TopicMeetingInstance" related="sh.MeetingInstance">
+            <key-map field-name="meetingInstanceId"/></relationship>
+        <!--
+        <relationship type="one" title="MeetingInstance" related="sh.MeetingInstance">
+            <key-map field-name="meetingInstanceId"/></relationship>
+        <relationship type="one" title="AgendaTopicType" related="moqui.basic.Enumeration">
+            <key-map field-name="agendaTopicTypeEnumId"/></relationship>
+        <relationship type="one" title="TopicMeetingTemplate" related="sh.MeetingTemplate">
+            <key-map field-name="meetingTemplateId"/></relationship>
+        <relationship type="one" title="TopicMeetingInstance" related="sh.MeetingInstance">
+            <key-map field-name="meetingInstanceId"/></relationship>
+        <relationship type="one" title="MeetingInstance" related="sh.MeetingInstance">
+            <key-map field-name="meetingInstanceId"/></relationship>
+        <relationship type="one" title="AgendaTopicType" related="moqui.basic.Enumeration">
+            <key-map field-name="agendaTopicTypeEnumId"/></relationship>
+        -->
+
+        <seed-data>
+            <!--
+            <moqui.basic.StatusType description="Campaign Included Status" statusTypeId="CampaignIncludedStatus"/>
+            <moqui.basic.StatusItem description="Not Used" sequenceNum="8" statusId="ShInclNotUsed" statusTypeId="CampaignIncludedStatus"/>
+            <moqui.basic.StatusItem description="Unselected" sequenceNum="1" statusId="ShInclUnselected" statusTypeId="CampaignIncludedStatus"/>
+            <moqui.basic.StatusItem description="Active" sequenceNum="2" statusId="ShInclActive" statusTypeId="CampaignIncludedStatus"/>
+            <moqui.basic.StatusItem description="Selected" sequenceNum="3" statusId="ShInclSelected" statusTypeId="CampaignIncludedStatus"/>
+            <moqui.basic.StatusItem description="Complete" sequenceNum="4" statusId="ShInclComplete" statusTypeId="CampaignIncludedStatus"/>
+            <moqui.basic.StatusItem description="Cancelled" sequenceNum="9" statusId="ShInclCancelled" statusTypeId="CampaignIncludedStatus"/>
+            <moqui.basic.EnumerationType description="Agenda Topic Type" enumTypeId="AgendaTopicType"/>
+            <moqui.basic.Enumeration description="Topic Source" enumId="shTopicSource" enumTypeId="AgendaTopicType"/>
+            <moqui.basic.Enumeration description="Abstract Topic Template" enumId="shTopicAbstract" enumTypeId="AgendaTopicType"/>
+            <moqui.basic.Enumeration description="Template Abstract Topic Template" enumId="shTopicTemplateAbstract" enumTypeId="AgendaTopicType"/>
+            <moqui.basic.Enumeration description="Concrete Topic Template" enumId="shTopicConcrete" enumTypeId="AgendaTopicType"/>
+            <moqui.basic.Enumeration description="Template Concrete Topic Template" enumId="shTopicTemplateConcrete" enumTypeId="AgendaTopicType"/>
+            <moqui.basic.Enumeration description="Abstract Topic" enumId="shTopicAbstract" enumTypeId="AgendaTopicType"/>
+            <moqui.basic.Enumeration description="Instance Topic" enumId="shTopicInstance" enumTypeId="AgendaTopicType"/>
+            <moqui.basic.Enumeration description="Topic Starter" enumId="shTopicStarter" enumTypeId="AgendaTopicType"/>
+            <moqui.basic.Enumeration description="Abstract Topic Header" enumId="shTopicAbstractHdr" enumTypeId="AgendaTopicType"/>
+            <moqui.basic.Enumeration description="Instance Topic Header" enumId="shTopicInstanceHdr" enumTypeId="AgendaTopicType"/>
+
+            <moqui.basic.EnumerationType description="Schedule Mode" enumTypeId="ScheduleMode"/>
+            <moqui.basic.Enumeration description="Matches" enumId="shSchedMatches" enumTypeId="ScheduleMode" sequenceNum="0"/>
+            <moqui.basic.Enumeration description="Weekly" enumId="shSchedWeekly" enumTypeId="ScheduleMode" sequenceNum="10"/>
+            <moqui.basic.Enumeration description="Next Week" enumId="shSchedNextWeek" enumTypeId="ScheduleMode" sequenceNum="20"/>
+            <moqui.basic.Enumeration description="Monthly" enumId="shSchedMonthly" enumTypeId="ScheduleMode" sequenceNum="40"/>
+            <moqui.basic.Enumeration description="Yearly" enumId="shSchedCustom" enumTypeId="ScheduleMode" sequenceNum="60"/>
+            <moqui.basic.Enumeration description="Everyday" enumId="shSchedEveryday" enumTypeId="ScheduleMode" sequenceNum="70"/>
+            <moqui.basic.Enumeration description="Unscheduled" enumId="shSchedUnsched" enumTypeId="ScheduleMode" sequenceNum="80"/>
+            -->
+        </seed-data>
+    </entity>
+
+    <entity entity-name="AgendaTopicContent" package="sh" >
+        <description>
+        </description>
+
+        <field name="agendaTopicId" type="id" is-pk="true"/>
+        <field name="contentId" type="id" is-pk="true"/>
+
+        <relationship type="one" title="AgendaTopic" related="sh.AgendaTopic">
+            <key-map field-name="agendaTopicId"/></relationship>
+        <relationship type="one" title="AgendaContent" related="sh.AgendaContent">
+            <key-map field-name="contentId"/></relationship>
+    </entity>
+
+    <view-entity entity-name="AgendaTopicContentView" package="sh">
+        <member-entity entity-alias="AT" entity-name="sh.AgendaTopic"/>
+        <member-entity entity-alias="ATC" entity-name="sh.AgendaTopicContent" join-from-alias="AT" join-optional="true" ><key-map field-name="agendaTopicId"/></member-entity>
+        <member-entity entity-alias="SHC" entity-name="sh.AgendaContent" join-from-alias="ATC">
+            <key-map field-name="contentId"/></member-entity>
+        <alias-all entity-alias="AT" ><exclude field="lastUpdatedStamp"/></alias-all>
+        <alias entity-alias="AT" name="topicLastUpdatedStamp" field="lastUpdatedStamp" />
+        <alias-all entity-alias="ATC" />
+        <alias-all entity-alias="SHC" ><exclude field="lastUpdatedStamp"/></alias-all>
+        <alias entity-alias="SHC" name="contentLastUpdatedStamp" field="lastUpdatedStamp" />
+    </view-entity>
+
+    <view-entity entity-name="ContentView" package="sh">
+        <member-entity entity-alias="ATC" entity-name="sh.AgendaTopicContent" ><key-map field-name="agendaTopicId"/></member-entity>
+        <member-entity entity-alias="SHC" entity-name="sh.AgendaContent" join-from-alias="ATC">
+            <key-map field-name="contentId"/></member-entity>
+        <alias-all entity-alias="ATC" />
+        <alias-all entity-alias="SHC" ></alias-all>
+    </view-entity>
+
+    <!--
+    <entity entity-name="TopicRelationship" package="sh" >
+        <field name="toAgendaTopicId" type="id" is-pk="true" />
+        <field name="fromAgendaTopicId" type="id" is-pk="true" />
+        <field name="topicRelationshipTypeEnumId" type="id" />
+
+        <relationship type="one" title="ToAgendaTopicId" related="sh.AgendaTopic">
+            <key-map field-name="toAgendaTopicId" related="agendaTopicId" /></relationship>
+        <relationship type="one" title="FromAgendaTopicId" related="sh.AgendaTopic">
+            <key-map field-name="fromAgendaTopicId" related="agendaTopicId" /></relationship>
+        <relationship type="one" title="TopicRelationshipType" related="moqui.basic.Enumeration">
+            <key-map field-name="topicRelationshipTypeEnumId"/></relationship>
+
+        <seed-data>
+            <moqui.basic.EnumerationType description="TopicRelationshipType" enumTypeId="TopicRelationshipType"/>
+            <moqui.basic.Enumeration description=" Topic Rollup" enumId="mrtTopicRollup" enumTypeId="TopicRelationshipType"/>
+            <moqui.basic.Enumeration description="Repository Topic Relation" enumId="mrtTopicRepoRelation" enumTypeId="TopicRelationshipType"/>
+            <moqui.basic.Enumeration description="Topic Share" enumId="mrtTopicShare" enumTypeId="TopicRelationshipType"/>
+        </seed-data>
+    </entity>
+
+    <view-entity entity-name="TopicRelationshipView" package="sh">
+        <member-entity entity-alias="TR_TR" entity-name="sh.TopicRelationship"/>
+        <member-entity entity-alias="TR_CHILDTR" entity-name="sh.AgendaTopic" join-from-alias="TR_TR">
+            <key-map field-name="fromAgendaTopicId" related="agendaTopicId" /></member-entity>
+        <member-entity entity-alias="TR_ATC" entity-name="sh.AgendaTopicContent" join-from-alias="TR_CHILDTR">
+            <key-map field-name="agendaTopicId" /></member-entity>
+        <member-entity entity-alias="TR_SHC" entity-name="sh.AgendaContent" join-from-alias="TR_ATC">
+            <key-map field-name="contentId"/></member-entity>
+        <alias-all entity-alias="TR_TR" />
+        <alias-all entity-alias="TR_CHILDTR" />
+        <alias-all entity-alias="TR_ATC" />
+        <alias-all entity-alias="TR_SHC" ></alias-all>
+    </view-entity>
+
+    <entity entity-name="TargetedOrgRelationship" package="sh" >
+        <field name="agendaTopicId" type="id" is-pk="true"/>
+        <field name="orgId" type="id" is-pk="true"/>
+        <field name="enumTypeId" type="id" />
+
+        <relationship type="one" title="AgendaTopicId" related="sh.AgendaTopic">
+            <key-map field-name="agendaTopicId"/></relationship>
+        <relationship type="one" title="TargetedOrg" related="mantle.party.Organization">
+            <key-map field-name="orgId"/>
+        </relationship>
+        <relationship type="one" title="TargetedType" related="moqui.basic.Enumeration">
+            <key-map field-name="enumTypeId"/></relationship>
+
+        <seed-data>
+            <moqui.basic.EnumerationType description="Targeted Type" enumTypeId="TargetedType"/>
+            <moqui.basic.Enumeration description="Org Level Type" enumId="ShOrgLevel" enumTypeId="TargetedType"/>
+            <moqui.basic.Enumeration description="Relative Level Type" enumId="ShRelativeLevel" enumTypeId="TargetedType"/>
+            <moqui.basic.Enumeration description="DirectPerson Type" enumId="ShDirectPerson" enumTypeId="TargetedType"/>
+        </seed-data>
+    </entity>
+
+    <view-entity entity-name="TargetedOrgRelationshipView" package="sh">
+        <member-entity entity-alias="TORV_TOR" entity-name="sh.TargetedOrgRelationship"/>
+        <member-entity entity-alias="TORV_O" entity-name="mantle.party.Organization" join-from-alias="TORV_TOR">
+            <key-map field-name="orgId"/></member-entity>
+        <alias-all entity-alias="TORV_TOR" ></alias-all>
+        <alias-all entity-alias="TORV_O" ></alias-all>
+    </view-entity>
+
+    <entity entity-name="TargetedPersonRelationship" package="sh" >
+        <field name="agendaTopicId" type="id" is-pk="true"/>
+        <field name="partyId" type="id" is-pk="true"/>
+        <field name="enumTypeId" type="id" />
+        <field name="permissionJson" type="text-long"/>
+        <field name="permissionName" type="text-medium"/>
+        <field name="scheduleJson" type="text-long"/>
+        <field name="scheduleName" type="text-medium"/>
+
+        <relationship type="one" title="AgendaTopicId" related="sh.AgendaTopic">
+            <key-map field-name="agendaTopicId"/></relationship>
+        <relationship type="one" title="TargetedPerson" related="mantle.party.Person">
+            <key-map field-name="partyId"/>
+        </relationship>
+        <relationship type="one" title="TargetedType" related="moqui.basic.Enumeration">
+            <key-map field-name="enumTypeId"/></relationship>
+    </entity>
+
+    <view-entity entity-name="TargetedPersonRelationshipView" package="sh">
+        <member-entity entity-alias="TORV_TOR" entity-name="sh.TargetedPersonRelationship"/>
+        <member-entity entity-alias="TORV_O" entity-name="mantle.party.Person" join-from-alias="TORV_TOR">
+            <key-map field-name="partyId"/></member-entity>
+        <alias-all entity-alias="TORV_TOR" ></alias-all>
+        <alias-all entity-alias="TORV_O" ></alias-all>
+    </view-entity>
+
+    -->
+    <entity entity-name="FacetValue" package="sh" >
+        <description>
+        </description>
+        <field name="facetValueId" type="id" is-pk="true"/>
+        <field name="textValue" type="text-medium" />
+        <field name="numberValue" type="number-decimal"/>
+    </entity>
+
+    <entity entity-name="FacetType" package="sh" >
+        <description>
+        </description>
+        <field name="facetTypeId" type="id" is-pk="true"/>
+        <field name="parentFacetTypeId" type="id" is-pk="false"/>
+        <field name="description" type="text-long"/>
+
+        <field name="validRegexp" type="text-medium"><description>For non-enum settings, regexp to validate</description></field>
+        <field name="defaultValue" type="text-medium"/>
+        <field name="dataType" type="text-short"/>
+        <field name="permMode" type="text-short"/>
+        <field name="orderBy" type="text-short"/>
+
+        <relationship type="one" title="ParentFacetType" related="sh.FacetType">
+            <key-map field-name="parentFacetTypeId"/></relationship>
+        <relationship type="one" title="PermMode" related="moqui.basic.Enumeration" short-alias="permMode">
+            <key-map field-name="permMode"/></relationship>
+
+        <!--
+    <seed-data>
+        <moqui.basic.EnumerationType description="Facet Type" enumTypeId="FacetType" />
+
+        <moqui.basic.Enumeration description="Permission Type" enumTypeId="FacetType" enumId="FT_PERM" />
+        <moqui.basic.Enumeration description="Super Group Permission" enumTypeId="FacetType" parentEnumId="FT_PERM" enumId="FT_PERM_SUPERGRP" />
+        <moqui.basic.Enumeration description="Sub Group Permission" enumTypeId="FacetType" parentEnumId="FT_PERM" enumId="FT_PERM_SUBGRP" />
+        <moqui.basic.Enumeration description="Owner Group Permission" enumTypeId="FacetType" parentEnumId="FT_PERM" enumId="FT_PERM_OWNERGRP" />
+        <moqui.basic.Enumeration description="Owner Permission" enumTypeId="FacetType" parentEnumId="FT_PERM" enumId="FT_PERM_OWNER" />
+
+        <moqui.basic.Enumeration description="Domain type" enumId="FT_DOMAIN" enumTypeId="FacetType"/>
+        <moqui.basic.Enumeration description="Permission type" enumId="FT_PERM" enumTypeId="FacetType"/>
+        <moqui.basic.Enumeration description="Schedule type" enumId="FT_SCHED" enumTypeId="FacetType"/>
+        <moqui.basic.Enumeration description="Organization target type" enumId="FT_ORG" enumTypeId="FacetType"/>
+        <moqui.basic.Enumeration description="Party target type" enumId="FT_PARTY" enumTypeId="FacetType"/>
+        <moqui.basic.Enumeration description="Target role type" enumId="FT_TARGETROLE" enumTypeId="FacetType"/>
+        <moqui.basic.Enumeration description="Sort type" enumId="FT_SORTTYPE" enumTypeId="FacetType"/>
+
+        <moqui.basic.Enumeration enumId="ShNursDomainRole" description="Nursing Home Domain Roles" enumTypeId="DomainRole"  />
+        <moqui.basic.Enumeration enumId="ShADMIN" description="Administration" enumTypeId="FT_DOMAIN" parentEnumId="ShNursDomainRole"  />
+        <moqui.basic.Enumeration enumId="ShNURSE" description="Nursing Care" enumTypeId="FT_DOMAIN" parentEnumId="ShNursDomainRole"  />
+        <moqui.basic.Enumeration enumId="ShMDS" description="Minimal Data Set" enumTypeId="FT_DOMAIN" parentEnumId="ShNursDomainRole"  />
+        <moqui.basic.Enumeration enumId="ShSOCSRV" description="Social Services" enumTypeId="FT_DOMAIN" parentEnumId="ShNursDomainRole"  />
+        <moqui.basic.Enumeration enumId="ShACTIVITIES" description="Activities" enumTypeId="FT_DOMAIN" parentEnumId="ShNursDomainRole"  />
+        <moqui.basic.Enumeration enumId="ShDIETARY" description="Dietary" enumTypeId="FT_DOMAIN" parentEnumId="ShNursDomainRole"  />
+        <moqui.basic.Enumeration enumId="ShMAINTENANCE" description="Maintenance" enumTypeId="FT_DOMAIN" parentEnumId="ShNursDomainRole"  />
+        <moqui.basic.Enumeration enumId="ShHR" description="Human Resources" enumTypeId="FT_DOMAIN" parentEnumId="ShNursDomainRole"  />
+        <moqui.basic.Enumeration enumId="ShOFFICE" description="Office" enumTypeId="FT_DOMAIN" parentEnumId="ShNursDomainRole"  />
+        <moqui.basic.Enumeration enumId="ShREHABILITATION" description="Rehabilitation" enumTypeId="FT_DOMAIN" parentEnumId="ShNursDomainRole"  />
+        <moqui.basic.Enumeration enumId="ShHOUSEKEEPING" description="Housekeeping" enumTypeId="FT_DOMAIN" parentEnumId="ShNursDomainRole"  />
+        <moqui.basic.Enumeration enumId="ShRECORDS" description="Records" enumTypeId="FT_DOMAIN" parentEnumId="ShNursDomainRole"  />
+        <moqui.basic.Enumeration enumId="ShOTHER" description="Other" enumTypeId="FT_DOMAIN" parentEnumId="ShNursDomainRole"  />
+
+        <moqui.basic.EnumerationType description="Topic Source" enumTypeId="TopicSource" />
+        <moqui.basic.Enumeration enumId="ShStandardTopicSource" description="Standard Topic Source" enumTypeId="TopicSource" />
+        <moqui.basic.Enumeration enumId="ShAlternateTopicSource" description="Alternate Topic Source" enumTypeId="TopicSource" />
+
+        </seed-data>
+        -->
+    </entity>
+
+    <entity entity-name="FacetValueLookup" package="sh" >
+        <description>
+        </description>
+
+        <field name="facetValueLookupId" type="id" is-pk="true"/>
+        <field name="facetTypeId" type="id" />
+        <field name="facetValue" type="text-long"/>
+
+        <relationship type="one" title="FacetType" related="sh.FacetType">
+            <key-map field-name="facetTypeId"/></relationship>
+
+        <seed-data>
+            <!--
+            <moqui.basic.EnumerationType description="Permission Access" enumTypeId="PermAccess" />
+            <moqui.basic.Enumeration description="Allow Access" enumTypeId="PermAccess" enumId="PermAllow" enumCode="ALLOW" />
+            <moqui.basic.Enumeration description="Deny Access" enumTypeId="PermAccess" enumId="PermDeny" enumCode="DENY" />
+            <moqui.basic.Enumeration description="Neutral Access" enumTypeId="PermAccess" enumId="PermNeutral" enumCode="NEUTRAL" />
+
+            <moqui.basic.EnumerationType description="Facet Type" enumTypeId="FacetType" />
+
+            <moqui.basic.Enumeration description="Permission Type" enumTypeId="FacetType" enumId="FT_PERM" relatedEnumId="PermDeny" />
+            <moqui.basic.Enumeration description="Super Group Permission" enumTypeId="FacetType" parentEnumId="FT_PERM" enumId="FT_PERM_SUPERGRP" relatedEnumId="PermDeny" />
+            <moqui.basic.Enumeration description="Sub Group Permission" enumTypeId="FacetType" parentEnumId="FT_PERM" enumId="FT_PERM_SUBGRP" relatedEnumId="PermDeny" />
+            <moqui.basic.Enumeration description="Owner Group Permission" enumTypeId="FacetType" parentEnumId="FT_PERM" enumId="FT_PERM_OWNERGRP" relatedEnumId="PermDeny" />
+            <moqui.basic.Enumeration description="Owner Permission" enumTypeId="FacetType" parentEnumId="FT_PERM" enumId="FT_PERM_OWNER" relatedEnumId="PermDeny" />
+
+            <moqui.basic.Enumeration description="Domain type" enumId="FT_DOMAIN" enumTypeId="FacetType" relatedEnumId="PermDeny" />
+            <moqui.basic.Enumeration description="Global type" enumId="FT_GLOBAL" enumTypeId="FacetType" />
+
+
+            <moqui.basic.Enumeration description="Permission Type" enumTypeId="FacetType" enumId="FT_PERM" />
+            <moqui.basic.Enumeration description="Ancestor Group" enumTypeId="FacetType" parentEnumId="FT_PERM" enumId="FT_PERM_SUPERGRP" />
+            <moqui.basic.Enumeration description="Child Group" enumTypeId="FacetType" parentEnumId="FT_PERM" enumId="FT_PERM_SUBGRP" />
+            <moqui.basic.Enumeration description="Owner Group" enumTypeId="FacetType" parentEnumId="FT_PERM" enumId="FT_PERM_OWNERGRP" />
+            <moqui.basic.Enumeration description="Owner" enumTypeId="FacetType" parentEnumId="FT_PERM" enumId="FT_PERM_OWNER" />
+
+            <moqui.basic.Enumeration description="Domain facet type" enumId="DomainRole" enumTypeId="FacetType"/>
+            <moqui.basic.Enumeration description="Schedule type" enumId="FT_SCHED" enumTypeId="FacetType" relatedEnumId="PermAllow" />
+            <moqui.basic.Enumeration description="Schedule type" enumId="FT_SCHEDDAY" enumTypeId="FacetType" relatedEnumId="PermAllow" />
+            <moqui.basic.Enumeration description="Room number" enumId="FT_ROOM" enumTypeId="FacetType" relatedEnumId="PermAllow" />
+            -->
+            <!--
+            <moqui.basic.Enumeration description="Org type" enumId="FT_ORG" enumTypeId="FacetType" relatedEnumId="PermAllow" />
+            <moqui.basic.Enumeration description="Pinned type" enumId="FT_PINNED" enumTypeId="FacetType" relatedEnumId="PermAllow" />
+            <moqui.basic.Enumeration description="Permission type" enumId="FT_PERM" enumTypeId="FacetType"/>
+            <moqui.basic.Enumeration description="Organization target type" enumId="FT_ORG" enumTypeId="FacetType"/>
+            <moqui.basic.Enumeration description="Party target type" enumId="FT_PARTY" enumTypeId="FacetType"/>
+            <moqui.basic.Enumeration description="Target role type" enumId="FT_TARGETROLE" enumTypeId="FacetType"/>
+            <moqui.basic.Enumeration description="Sort type" enumId="FT_SORTTYPE" enumTypeId="FacetType"/>
+            -->
+
+           <!--
+    <moqui.basic.Enumeration enumId="ShNursDomainRole" description="Nursing Home Domain Roles" enumTypeId="DomainRole"  />
+    <moqui.basic.Enumeration enumId="ShADMIN" description="Administration" enumTypeId="DomainRole" parentEnumId="ShNursDomainRole"  />
+    <moqui.basic.Enumeration enumId="ShNURSE" description="Nursing Care" enumTypeId="DomainRole" parentEnumId="ShNursDomainRole"  />
+    <moqui.basic.Enumeration enumId="ShMDS" description="Minimal Data Set" enumTypeId="DomainRole" parentEnumId="ShNursDomainRole"  />
+    <moqui.basic.Enumeration enumId="ShSOCSRV" description="Social Services" enumTypeId="DomainRole" parentEnumId="ShNursDomainRole"  />
+    <moqui.basic.Enumeration enumId="ShACTIVITIES" description="Activities" enumTypeId="DomainRole" parentEnumId="ShNursDomainRole"  />
+    <moqui.basic.Enumeration enumId="ShDIETARY" description="Dietary" enumTypeId="DomainRole" parentEnumId="ShNursDomainRole"  />
+    <moqui.basic.Enumeration enumId="ShMAINTENANCE" description="Maintenance" enumTypeId="DomainRole" parentEnumId="ShNursDomainRole"  />
+    <moqui.basic.Enumeration enumId="ShHR" description="Human Resources" enumTypeId="DomainRole" parentEnumId="ShNursDomainRole"  />
+    <moqui.basic.Enumeration enumId="ShOFFICE" description="Office" enumTypeId="DomainRole" parentEnumId="ShNursDomainRole"  />
+    <moqui.basic.Enumeration enumId="ShREHABILITATION" description="Rehabilitation" enumTypeId="DomainRole" parentEnumId="ShNursDomainRole"  />
+    <moqui.basic.Enumeration enumId="ShHOUSEKEEPING" description="Housekeeping" enumTypeId="DomainRole" parentEnumId="ShNursDomainRole"  />
+    <moqui.basic.Enumeration enumId="ShRECORDS" description="Records" enumTypeId="DomainRole" parentEnumId="ShNursDomainRole"  />
+    <moqui.basic.Enumeration enumId="ShOTHER" description="Other" enumTypeId="DomainRole" parentEnumId="ShNursDomainRole"  />
+            -->
+
+    <moqui.basic.EnumerationType description="Permission Operation Type" enumTypeId="PermOpType" />
+    <moqui.basic.Enumeration enumId="shop_create" description="Create" enumTypeId="PermOpType" />
+    <moqui.basic.Enumeration enumId="shop_edit" description="Edit" enumTypeId="PermOpType" />
+    <moqui.basic.Enumeration enumId="shop_cancel" description="Cancel" enumTypeId="PermOpType" />
+    <moqui.basic.Enumeration enumId="shop_append" description="Append" enumTypeId="PermOpType" />
+    <moqui.basic.Enumeration enumId="shop_view" description="View" enumTypeId="PermOpType" />
+    <moqui.basic.Enumeration enumId="shop_share" description="Share" enumTypeId="PermOpType" />
+</seed-data>
+</entity>
+
+<!--
+<view-entity entity-name="FacetValueLookupView" package="sh">
+<member-entity entity-alias="FVL" entity-name="sh.FacetValueLookup"/>
+<member-entity entity-alias="FVL_E" entity-name="moqui.basic.Enumeration" join-from-alias="FVL">
+    <key-map field-name="facetValueLookupId"/></member-entity>
+<alias-all entity-alias="FVL" />
+<alias-all entity-alias="FVL_E" />
+</view-entity>
+
+    <entity entity-name="FacetLookupValue" package="sh" >
+        <description>
+        </description>
+        <field name="facetValueLookupId" type="id" is-pk="true"/>
+        <field name="facetValueId" type="id" is-pk="true"/>
+        <field name="sequenceNum" type="number-integer" />
+
+        <relationship type="one" title="FacetLookupValueLookup" short-alias="FLV_LKUP" related="sh.FacetValueLookup" >
+            <key-map field-name="facetValueLookupId" /></relationship>
+        <relationship type="one" title="FacetLookupValueValue" short-alias="FLV_VAL" related="sh.FacetValue" >
+            <key-map field-name="facetValueId" /></relationship>
+    </entity>
+
+    <view-entity entity-name="FacetValueLookupView" package="sh">
+        <member-entity entity-alias="FLV_LKUP" entity-name="sh.FacetValueLookup"/>
+        <member-entity entity-alias="FLV_FLV" entity-name="sh.FacetLookupValue" join-from-alias="FLV_LKUP">
+            <key-map field-name="facetValueLookupId"/></member-entity>
+        <member-entity entity-alias="FLV_VAL" entity-name="sh.FacetValue" join-from-alias="FLV_FLV">
+            <key-map field-name="facetValueId"/></member-entity>
+        <alias-all entity-alias="FLV_LKUP" />
+        <alias-all entity-alias="FLV_FLV" />
+        <alias-all entity-alias="FLV_VAL" />
+    </view-entity>
+-->
+
+    <entity entity-name="Pinned" package="sh" >
+        <description>
+        </description>
+
+        <field name="agendaTopicId" type="id" is-pk="true" />
+        <field name="partyId" type="id" is-pk="true" />
+        <field name="partyTypeEnumId" type="id" is-pk="true" />
+
+        <relationship type="one" title="PinnedParty" related="mantle.party.Party">
+            <key-map field-name="partyId"/></relationship>
+        <relationship type="one" title="PinnedAgendaTopic" related="sh.AgendaTopic">
+            <key-map field-name="agendaTopicId"/></relationship>
+        <relationship type="one" title="PinnedPartyType" related="moqui.basic.Enumeration" short-alias="type">
+            <key-map field-name="partyTypeEnumId"/></relationship>
+    </entity>
+
+    <entity entity-name="MeetingTemplateFacetValueLookup" package="sh" >
+        <description>
+        </description>
+
+        <field name="meetingTemplateId" type="id" is-pk="true" />
+        <field name="facetValueLookupId" type="id" is-pk="true" />
+
+        <relationship type="one" title="MeetingTemplateFacetValueMeetingTemplate" related="sh.MeetingTemplate">
+            <key-map field-name="meetingTemplateId"/></relationship>
+        <relationship type="one" title="MeetingTemplateFacetValueLookup" related="sh.FacetValueLookup">
+            <key-map field-name="facetValueLookupId"/></relationship>
+    </entity>
+    <view-entity entity-name="MeetingTemplateFacetValueLookupView" package="sh">
+        <member-entity entity-alias="MTCV_MTC" entity-name="sh.MeetingTemplateFacetValueLookup"/>
+        <member-entity entity-alias="MTCV_FCL" entity-name="sh.FacetValueLookup" join-from-alias="MTCV_MTC">
+                       <key-map field-name="facetValueLookupId"/></member-entity>
+        <alias-all entity-alias="MTCV_MTC" ><exclude field="facetValueLookupId" ></exclude> </alias-all>
+        <alias-all entity-alias="MTCV_FCL" />
+    </view-entity>
+
+    <entity entity-name="AgendaTopicFacetValueLookup" package="sh" >
+        <description>
+        </description>
+
+        <field name="agendaTopicId" type="id" is-pk="true" />
+        <field name="facetValueLookupId" type="id" is-pk="true" />
+        <field name="orgId" type="id" is-pk="true" />
+
+        <relationship type="one" title="AgendaTopicFacetValueAgendaTopic" related="sh.AgendaTopic">
+            <key-map field-name="agendaTopicId"/></relationship>
+        <relationship type="one" title="AgendaTopicFacetValue" related="sh.FacetValueLookup">
+            <key-map field-name="facetValueLookupId"/></relationship>
+        <relationship type="one" title="AgendaTopicOrgIdFacetValue" related="mantle.party.Organization">
+            <key-map field-name="orgId"/></relationship>
+    </entity>
+
+    <view-entity entity-name="AgendaTopicFacetValueLookupView" package="sh">
+        <member-entity entity-alias="ATCV_ATC" entity-name="sh.AgendaTopicFacetValueLookup"/>
+        <member-entity entity-alias="ATCV_FCL" entity-name="sh.FacetValueLookup" join-from-alias="ATCV_ATC">
+            <key-map field-name="facetValueLookupId"/></member-entity>
+        <alias-all entity-alias="ATCV_ATC" ><exclude field="facetValueLookupId" ></exclude> </alias-all>
+        <alias-all entity-alias="ATCV_FCL" />
+    </view-entity>
+
+    <entity entity-name="MeetingTemplate" package="sh" >
+        <description>
+        MeetingTemplates define a type of topic container. 
+        Topic containers are things like meeting instances (ie the actual occurence of a meeting, usually with a specific time )
+        </description>
+
+        <field name="meetingTemplateId" type="id" is-pk="true"/>
+        <field name="parentMeetingTemplateId" type="id" />
+        <field name="name" type="text-medium"/>
+        <field name="statusId" type="id" />
+        <field name="meetingTypeEnumId" type="id" />
+        <field name="shortName" type="text-medium"/>
+
+        <relationship type="one" title="ParentMeetingTemplate" related="sh.MeetingTemplate">
+            <key-map field-name="parentMeetingTemplateId"/></relationship>
+        <relationship type="one" title="MeetingTemplateStatus" related="moqui.basic.StatusItem">
+            <key-map field-name="statusId" /></relationship>
+        <relationship type="one" title="MeetingType" related="moqui.basic.Enumeration">
+            <key-map field-name="meetingTypeEnumId" /></relationship>
+
+        <seed-data>
+            <moqui.basic.EnumerationType description="Meeting Type" enumTypeId="MeetingType"/>
+            <moqui.basic.Enumeration enumId="ShMtgRealTime" description="Realtime meeting" enumTypeId="MeetingType" />
+            <moqui.basic.Enumeration enumId="ShMtgTodo" description="Todo meeting" enumTypeId="MeetingType" />
+            <moqui.basic.Enumeration enumId="ShMtgSlowMo" description="Slow motion meeting" enumTypeId="MeetingType" />
+            <moqui.basic.Enumeration enumId="ShMtgAbstract" description="Abstract meeting" enumTypeId="MeetingType" />
+            <moqui.basic.Enumeration enumId="ShMtgTopicRepo" description="Topic Repository" enumTypeId="MeetingType" />
+
+            <moqui.basic.EnumerationType description="Template Abbreviation" enumTypeId="TemplateAbbrv"/>
+            <moqui.basic.Enumeration enumId="ShTmplAbbrvTodo" description="TODO template" enumTypeId="TemplateAbbrv" />
+            <moqui.basic.Enumeration enumId="ShTmplAbbrvStandup" description="Standup template" enumTypeId="TemplateAbbrv" />
+            <moqui.basic.Enumeration enumId="ShTmplAbbrvHudl" description="Huddle template" enumTypeId="TemplateAbbrv" />
+        </seed-data>
+    </entity>
+
+    <entity entity-name="MeetingRepository" package="sh" >
+        <description>
+        </description>
+
+        <field name="meetingRepositoryId" type="id" is-pk="true"/>
+        <field name="name" type="text-medium"/>
+        <field name="statusId" type="id" />
+        <field name="meetingTypeEnumId" type="id" />
+        <field name="shortName" type="text-medium"/>
+
+        <relationship type="one" title="MeetingTemplateStatus" related="moqui.basic.StatusItem">
+            <key-map field-name="statusId" /></relationship>
+        <relationship type="one" title="MeetingType" related="moqui.basic.Enumeration">
+            <key-map field-name="meetingTypeEnumId" /></relationship>
+
+        <seed-data>
+        </seed-data>
+    </entity>
+
+    <entity entity-name="MeetingRelationship" package="sh" >
+        <field name="meetingRelationshipId" type="id" is-pk="true"/>
+        <field name="toMeetingTemplateId" type="id" />
+        <field name="fromMeetingRepositoryId" type="id" />
+        <field name="meetingRelationshipTypeEnumId" type="id" />
+        <field name="sequenceNum" type="number-integer" />
+
+        <relationship type="one" title="ToMeetingTemplateId" related="sh.MeetingTemplate">
+            <key-map field-name="toMeetingTemplateId"/></relationship>
+        <relationship type="one" title="FromMeetingRepositoryId" related="sh.MeetingRepository">
+            <key-map field-name="fromMeetingRepositoryId"/></relationship>
+        <relationship type="one" title="MeetingRelationshipType" related="moqui.basic.Enumeration">
+            <key-map field-name="meetingRelationshipTypeEnumId"/></relationship>
+
+        <seed-data>
+            <moqui.basic.EnumerationType description="MeetingRelationshipType" enumTypeId="MeetingRelationshipType"/>
+            <moqui.basic.Enumeration description="Abstract Meeting Rollup" enumId="mrtMtgAbstractRollup" enumTypeId="MeetingRelationshipType"/>
+            <moqui.basic.Enumeration description="Repository Meeting Relation" enumId="mrtMtgRepoRelation" enumTypeId="MeetingRelationshipType"/>
+            <moqui.basic.Enumeration description="Meeting Share" enumId="mrtMtgShare" enumTypeId="MeetingRelationshipType"/>
+        </seed-data>
+    </entity>
+
+    <view-entity entity-name="MeetingRelationshipFromView" package="sh">
+        <member-entity entity-alias="MRV_MR" entity-name="sh.MeetingRelationship"/>
+        <member-entity entity-alias="MRV_MT" entity-name="sh.MeetingRepository" join-from-alias="MRV_MR">
+            <key-map field-name="fromMeetingRepositoryId"/></member-entity>
+        <alias-all entity-alias="MRV_MR" ></alias-all>
+        <alias-all entity-alias="MRV_MT">
+        </alias-all>
+    </view-entity>
+
+    <view-entity entity-name="MeetingRelationshipToView" package="sh">
+        <member-entity entity-alias="MRV_MR" entity-name="sh.MeetingRelationship"/>
+        <member-entity entity-alias="MRV_MT2" entity-name="sh.MeetingTemplate" join-from-alias="MRV_MR">
+            <key-map field-name="toMeetingTemplateId"/></member-entity>
+        <alias-all entity-alias="MRV_MR" ></alias-all>
+        <alias-all entity-alias="MRV_MT2">
+        </alias-all>
+    </view-entity>
+
+    <entity entity-name="MeetingInstance" package="sh" >
+        <description>
+        </description>
+
+        <field name="meetingInstanceId" type="id" is-pk="true"/>
+        <field name="parentMeetingInstanceId" type="id" />
+        <field name="meetingTemplateId" type="id" />
+        <field name="meetingISO" type="text-medium"/>
+        <field name="orgId" type="id" />
+        <field name="partyId" type="id" />
+        <field name="statusId" type="id" />
+        <field name="childCount" type="number-integer" default="0" />
+
+        <index name="MTI_ISO"><index-field name="meetingISO"/></index>
+
+        <relationship type="one" title="MeetingInstance" related="sh.MeetingInstance">
+            <key-map field-name="parentMeetingInstanceId"/></relationship>
+        <relationship type="one" title="MeetingTemplate" related="sh.MeetingTemplate">
+            <key-map field-name="meetingTemplateId"/></relationship>
+        <relationship type="one" title="Org" related="mantle.party.Organization">
+            <key-map field-name="orgId"/></relationship>
+        <relationship type="one" title="Person" related="mantle.party.Person">
+            <key-map field-name="partyId"/></relationship>
+        <relationship type="one" title="MeetingInstanceStatus" related="moqui.basic.StatusItem">
+            <key-map field-name="statusId" /></relationship>
+    </entity>
+
+    <entity entity-name="MeetingInstanceTopic" package="sh" >
+        <description>
+        </description>
+
+        <field name="meetingInstanceId" type="id" is-pk="true" />
+        <field name="agendaTopicId" type="id" is-pk="true" />
+        <field name="orgId" type="id" />
+        <field name="partyId" type="id" />
+
+        <!--
+        <field name="scheduleTypeId" type="id" />
+        <field name="scheduleJson" type="text-long"/>
+        <field name="targetOrgJson" type="text-long"/>
+        <field name="targetPersonJson" type="text-long"/>
+        <field name="permissionJson" type="text-long"/>
+
+        <field name="includedStatusId" type="text-medium"/>
+        <relationship type="one" title="CampaignIncludedStatus" related="moqui.basic.StatusItem">
+            <key-map field-name="includedStatusId" /></relationship>
+            -->
+
+        <relationship type="one" title="MeetingInstance" related="sh.MeetingInstance">
+            <key-map field-name="meetingInstanceId"/></relationship>
+        <relationship type="one" title="AgendaTopic" related="sh.AgendaTopic">
+            <key-map field-name="agendaTopicId"/></relationship>
+        <relationship type="one" title="Org" related="mantle.party.Organization">
+            <key-map field-name="orgId"/></relationship>
+        <relationship type="one" title="Person" related="mantle.party.Person">
+            <key-map field-name="partyId"/></relationship>
+
+        <seed-data>
+            <moqui.basic.StatusType description="Campaign Included Status" statusTypeId="CampaignIncludedStatus"/>
+            <moqui.basic.StatusItem description="Not Used" sequenceNum="8" statusId="ShInclNotUsed" statusTypeId="CampaignIncludedStatus"/>
+            <moqui.basic.StatusItem description="Unselected" sequenceNum="1" statusId="ShInclUnselected" statusTypeId="CampaignIncludedStatus"/>
+            <moqui.basic.StatusItem description="Active" sequenceNum="2" statusId="ShInclActive" statusTypeId="CampaignIncludedStatus"/>
+            <moqui.basic.StatusItem description="Selected" sequenceNum="3" statusId="ShInclSelected" statusTypeId="CampaignIncludedStatus"/>
+            <moqui.basic.StatusItem description="Complete" sequenceNum="4" statusId="ShInclComplete" statusTypeId="CampaignIncludedStatus"/>
+            <moqui.basic.StatusItem description="Cancelled" sequenceNum="9" statusId="ShInclCancelled" statusTypeId="CampaignIncludedStatus"/>
+        </seed-data>
+    </entity>
+
+    <entity entity-name="PartyMeetingTemplate" package="sh" >
+        <field name="partyId" type="id" is-pk="true"/>
+        <field name="meetingTemplateId" type="id" is-pk="true"/>
+        <field name="partyTypeEnumId" type="id"/>
+        <field name="agendaTopicTypeEnumId" type="id" />
+        <field name="sequenceNum" type="number-integer" />
+
+        <relationship type="one" title="PartyType" related="moqui.basic.Enumeration" short-alias="type">
+            <key-map field-name="partyTypeEnumId"/></relationship>
+        <relationship type="one" title="UserParty" related="mantle.party.Party">
+            <key-map field-name="partyId"/></relationship>
+        <relationship type="one" title="MeetingTemplate" related="sh.MeetingTemplate">
+            <key-map field-name="meetingTemplateId"/></relationship>
+        <relationship type="one" title="AgendaTopicType" related="moqui.basic.Enumeration">
+            <key-map field-name="agendaTopicTypeEnumId"/></relationship>
+    </entity>
+
+    <view-entity entity-name="PartyMeetingTemplateView" package="sh">
+        <member-entity entity-alias="PMG" entity-name="sh.PartyMeetingTemplate"/>
+        <member-entity entity-alias="MG" entity-name="sh.MeetingTemplate" join-from-alias="PMG">
+            <key-map field-name="meetingTemplateId"/></member-entity>
+        <alias entity-alias="PMG" name="partyId"/>
+        <alias entity-alias="PMG" name="agendaTopicTypeEnumId"/>
+        <alias entity-alias="PMG" name="partyTypeEnumId"/>
+        <alias-all entity-alias="MG" />
+    </view-entity>
+
+    <entity entity-name="MapLookup" package="sh" >
+        <field name="mapLookupId" type="id" is-pk="true"/>
+        <field name="mapLookupTypeEnumId" type="text-medium" />
+        <field name="mapLookupValue" type="text-long" />
+
+        <relationship type="one" title="MapLookupType" related="moqui.basic.Enumeration">
+            <key-map field-name="mapLookupTypeEnumId"/></relationship>
+
+        <seed-data>
+            <moqui.basic.EnumerationType description="Map Lookup Type" enumTypeId="MapLookupType"/>
+            <moqui.basic.Enumeration description="Permission Lookup" enumId="PermissionLookup" enumTypeId="MapLookupType"/>
+            <moqui.basic.Enumeration description="Schedule Lookup" enumId="ScheduleLookup" enumTypeId="MapLookupType"/>
+        </seed-data>
+    </entity>
+
+    <!--
+    <entity entity-name="AgendaTopicConstraint" package="sh" >
+        <field name="agendaTopicConstraintId" type="id" is-pk="true"/>
+        <field name="agendaTopicId" type="id" />
+        <field name="orgId" type="id" />
+        <field name="partyId" type="id" />
+        <field name="targetedPartyId" type="id" />
+        <field name="targetedOrgId" type="id" />
+        <field name="isPinned" type="text-short" />
+        <field name="enumTypeId" type="text-medium" />
+        <field name="permissionLookupId" type="text-long"/>
+        <field name="scheduleTypeId" type="id" />
+        <field name="scheduleLookupId" type="text-long"/>
+        <field name="domainLookupId" type="text-long"/>
+        <field name="permissionJson" type="text-long"/>
+        <field name="scheduleJson" type="text-long"/>
+        <field name="domainJson" type="text-long"/>
+
+        <relationship type="one" title="AgendaTopicConstraintAgendaTopic" related="sh.AgendaTopic">
+            <key-map field-name="agendaTopicId"/></relationship>
+        <relationship type="one" title="AgendaTopicConstraintOrg" related="mantle.party.Party">
+            <key-map field-name="orgId"/></relationship>
+        <relationship type="one" title="AgendaTopicConstraintParty" related="mantle.party.Party">
+            <key-map field-name="partyId"/></relationship>
+        <relationship type="one" title="AgendaTopicConstraintn/rgetedOrg" related="mantle.party.Party">
+            <key-map field-name="targetedOrgId" related="partyId"/></relationship>
+        <relationship type="one" title="AgendaTopicConstraintTargetedParty" related="mantle.party.Party">
+            <key-map field-name="targetedPartyId" related="partyId"/></relationship>
+        <relationship type="one" title="AgendaTopicConstraintTargetedType" related="moqui.basic.Enumeration">
+            <key-map field-name="enumTypeId"/></relationship>
+        <relationship type="one" title="AgendaTopicConstraintPerm" related="sh.FacetValueLookup">
+            <key-map field-name="permissionLookupId" related="facetValueLookupId"/></relationship>
+        <relationship type="one" title="AgendaTopicConstraintDomain" related="sh.FacetValueLookup">
+            <key-map field-name="domainLookupId" related="facetValueLookupId"/></relationship>
+        <relationship type="one" title="AgendaTopicConstraintSchedule" related="sh.FacetValueLookup">
+            <key-map field-name="scheduleLookupId" related="facetValueLookupId"/></relationship>
+
+        <seed-data>
+            <moqui.basic.EnumerationType description="Targeted Type" enumTypeId="TargetedType"/>
+            <moqui.basic.Enumeration description=" Level Type" enumId="ShTargNamedLevel" enumTypeId="TargetedType"/>
+            <moqui.basic.Enumeration description="Relative Level Type" enumId="ShTargRelativeLevel" enumTypeId="TargetedType"/>
+            <moqui.basic.Enumeration description="DirectPerson Type" enumId="ShTargDirectPerson" enumTypeId="TargetedType"/>
+        </seed-data>
+    </entity>
+    -->
+
+    <entity entity-name="TargetedRelationship" package="sh" >
+        <field name="targetedRelationshipId" type="id" is-pk="true"/>
+        <field name="agendaTopicId" type="id" />
+        <field name="targetedPartyId" type="id" />
+        <field name="enumTypeId" type="id" />
+        <field name="isPinned" type="text-short" />
+        <field name="includedStatusId" type="text-short" />
+        <field name="partyTypeEnumId" type="id" />
+
+        <relationship type="one" title="AgendaTopicId" related="sh.AgendaTopic">
+            <key-map field-name="agendaTopicId"/></relationship>
+        <relationship type="one" title="TargetedRel" related="mantle.party.Party">
+            <key-map field-name="targetedPartyId" related="partyId"/>
+        </relationship>
+        <relationship type="one" title="TargetedType" related="moqui.basic.Enumeration">
+            <key-map field-name="enumTypeId"/></relationship>
+        <relationship type="one" title="PartyType" related="moqui.basic.Enumeration" short-alias="type">
+            <key-map field-name="partyTypeEnumId"/></relationship>
+
+        <seed-data>
+            <moqui.basic.EnumerationType description="Targeted Type" enumTypeId="TargetedType"/>
+            <moqui.basic.Enumeration description=" Level Type" enumId="ShTargNamedLevel" enumTypeId="TargetedType"/>
+            <moqui.basic.Enumeration description="Relative Level Type" enumId="ShTargRelativeLevel" enumTypeId="TargetedType"/>
+            <moqui.basic.Enumeration description="DirectPerson Type" enumId="ShTargDirectPerson" enumTypeId="TargetedType"/>
+        </seed-data>
+    </entity>
+
+    <view-entity entity-name="TargetedRelationshipView" package="sh">
+        <member-entity entity-alias="TRV_TR" entity-name="sh.TargetedRelationship"/>
+        <member-entity entity-alias="TRV_AT" entity-name="sh.AgendaTopic" join-from-alias="TRV_TR" >
+            <key-map field-name="agendaTopicId"/></member-entity>
+        <member-entity entity-alias="TRV_P" entity-name="mantle.party.Party" join-from-alias="TRV_TR">
+            <key-map field-name="targetedPartyId" related="partyId"/></member-entity>
+        <member-entity entity-alias="TRV_ORG" entity-name="mantle.party.Organization" join-from-alias="TRV_TR" join-optional="false">
+            <key-map field-name="targetedPartyId" related="partyId"/></member-entity>
+        <alias-all entity-alias="TRV_TR" />
+        <alias-all entity-alias="TRV_AT" >
+            <exclude field="agendaTopicId" />
+            <exclude field="partyId" />
+        </alias-all>
+        <alias-all entity-alias="TRV_P" />
+        <alias entity-alias="TRV_ORG" name="organizationName"/>
+    </view-entity>
+
+    <!--
+    <entity entity-name="MeetingTemplateAgendaTopicRelation" package="sh" >
+        <field name="meetingTemplateId" type="id" is-pk="true"/>
+        <field name="agendaTopicId" type="id" is-pk="true"/>
+        <field name="isPinned" type="text-short" />
+        <field name="subCount" type="number-integer" />
+
+        <relationship type="one" title="MeetingTemplate" related="sh.MeetingTemplate">
+            <key-map field-name="meetingTemplateId"/></relationship>
+        <relationship type="one" title="MtgTmplTopic" related="sh.AgendaTopic">
+            <key-map field-name="agendaTopicId"/></relationship>
+    </entity>
+
+    <view-entity entity-name="MeetingTemplateAgendaTopicView" package="sh">
+        <member-entity entity-alias="MTGGRP_REL" entity-name="sh.MeetingTemplateAgendaTopicRelation" />
+        <member-entity entity-alias="MTGGRP_AT" entity-name="sh.AgendaTopic" join-from-alias="MTGGRP_REL" >
+            <key-map field-name="agendaTopicId" related="agendaTopicId" /></member-entity>
+        <member-entity entity-alias="ATC" entity-name="sh.AgendaTopicContent" join-from-alias="MTGGRP_REL" >
+            <key-map field-name="agendaTopicId" related="agendaTopicId" /></member-entity>
+        <member-entity entity-alias="SHC" entity-name="sh.AgendaContent" join-from-alias="ATC">
+            <key-map field-name="contentId"/></member-entity>
+        <alias-all entity-alias="MTGGRP_REL" ></alias-all>
+        <alias-all entity-alias="MTGGRP_AT" ></alias-all>
+        <alias-all entity-alias="ATC" />
+        <alias-all entity-alias="SHC" ></alias-all>
+    </view-entity>
+
+    <entity entity-name="MeetingInstanceAgendaTopicRelation" package="sh" >
+        <field name="meetingInstanceId" type="id" is-pk="true"/>
+        <field name="agendaTopicId" type="id" is-pk="true"/>
+        <field name="subCount" type="number-integer" />
+
+        <relationship type="one" title="MeetingInstance" related="sh.MeetingInstance">
+            <key-map field-name="meetingInstanceId"/></relationship>
+        <relationship type="one" title="FromMtgTopic" related="sh.AgendaTopic">
+            <key-map field-name="agendaTopicId"/></relationship>
+    </entity>
+
+    <view-entity entity-name="MeetingInstanceAgendaTopicView" package="sh">
+        <member-entity entity-alias="MIGINST_REL" entity-name="sh.MeetingInstanceAgendaTopicRelation"/>
+        <member-entity entity-alias="MIGINST_AT" entity-name="sh.AgendaTopic" join-from-alias="MIGINST_REL" >
+            <key-map field-name="agendaTopicId" related="agendaTopicId" /></member-entity>
+        <member-entity entity-alias="MIAT_ATC" entity-name="sh.AgendaTopicContent" join-from-alias="MIGINST_REL" join-optional="true" >
+            <key-map field-name="agendaTopicId" related="agendaTopicId" /></member-entity>
+        <member-entity entity-alias="MIAT_SHC" entity-name="sh.AgendaContent" join-from-alias="MIAT_ATC">
+            <key-map field-name="contentId"/></member-entity>
+        <alias-all entity-alias="MIGINST_REL" />
+        <alias-all entity-alias="MIGINST_AT" ></alias-all>
+        <alias-all entity-alias="MIAT_ATC" />
+        <alias-all entity-alias="MIAT_SHC" ></alias-all>
+    </view-entity>
+    -->
+    <entity entity-name="PartyAgendaTopic" package="sh" >
+        <field name="partyId" type="id" is-pk="true"/>
+        <field name="AgendaTopicId" type="id" is-pk="true"/>
+        <field name="partyTypeEnumId" type="id" is-pk="true" />
+        <field name="partyTopicTypeEnumId" type="id" is-pk="true" />
+        <field name="sequenceNum" type="number-integer" />
+        <field name="fromDate" type="date-time"/>
+        <field name="thruDate" type="date-time"/>
+
+        <relationship type="one" title="EventOrg" related="mantle.party.Organization">
+            <key-map field-name="partyId"/></relationship>
+        <relationship type="one" title="AgendaTopic" related="sh.AgendaTopic">
+            <key-map field-name="agendaTopicId"/></relationship>
+        <relationship type="one" title="PartyType" related="moqui.basic.Enumeration" short-alias="type">
+            <key-map field-name="partyTypeEnumId"/></relationship>
+        <relationship type="one" title="PartyTopicType" related="moqui.basic.Enumeration" short-alias="type">
+            <key-map field-name="partyTopicTypeEnumId"/></relationship>
+    </entity>
+
+    <view-entity entity-name="PartyAgendaTopicView" package="sh">
+        <member-entity entity-alias="PAT" entity-name="sh.PartyAgendaTopic"/>
+        <member-entity entity-alias="AT" entity-name="sh.AgendaTopic" join-from-alias="PAT">
+            <key-map field-name="agendaTopicId"/></member-entity>
+        <alias entity-alias="PAT" name="partyId"/>
+        <alias-all entity-alias="AT" />
+    </view-entity>
+
+
+</entities>

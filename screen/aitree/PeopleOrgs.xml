@@ -1,12 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-3.xsd"
-        standalone="false"
-        default-menu-title="People &amp; Orgs" default-menu-index="2">
-
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsd"
+        require-authentication="false">
     <widgets>
-        <container style="q-pa-md">
-            <label text="Personnel &amp; Organization Management" type="h4" style="q-mb-md text-primary"/>
-            <label text="(Placeholder for standard Moqui Party/Person/Organization subscreens)" type="p" style="text-italic"/>
+        <container class="q-pa-lg">
+            <label text="People &amp; Organizations" class="text-h4 q-mb-md"/>
+            <label text="Manage clinical teams and partner organizations." class="text-subtitle1 text-grey-7"/>
+            <q-input dense="true" outlined="true" v-model="search" label="Search stakeholders..." class="q-mb-lg">
+                <template v-slot:append=""><q-icon name="search" /></template>
+            </q-input>
+            
+            <container class="row q-col-gutter-md">
+                <container class="col-12 col-sm-6 col-md-4">
+                    <q-card flat="true" bordered="true" class="bg-blue-grey-1">
+                        <q-item>
+                            <q-item-section avatar="true">
+                                <q-avatar color="primary" text-white="true" icon="person" />
+                            </q-item-section>
+                            <q-item-section>
+                                <q-item-label><label text="Dr. Jane Doe"/></q-item-label>
+                                <q-item-label caption="true"><label text="Lead Cardiologist"/></q-item-label>
+                            </q-item-section>
+                        </q-item>
+                    </q-card>
+                </container>
+                <container class="col-12 col-sm-6 col-md-4">
+                    <q-card flat="true" bordered="true" class="bg-blue-grey-1">
+                        <q-item>
+                            <q-item-section avatar="true">
+                                <q-avatar color="secondary" text-white="true" icon="domain" />
+                            </q-item-section>
+                            <q-item-section>
+                                <q-item-label><label text="City General Hospital"/></q-item-label>
+                                <q-item-label caption="true"><label text="Partner Facility"/></q-item-label>
+                            </q-item-section>
+                        </q-item>
+                    </q-card>
+                </container>
+            </container>
         </container>
     </widgets>
 </screen>

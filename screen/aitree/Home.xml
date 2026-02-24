@@ -1,13 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-3.xsd"
-        standalone="false"
-        default-menu-title="Home" default-menu-index="1">
-
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsd"
+        require-authentication="false">
     <widgets>
-        <container style="row justify-center full-height q-pa-md">
-            <container style="col-12 col-md-8">
-                <label text="Staff Meeting Home" type="h3" style="text-center q-mb-md text-primary"/>
-                <label text="Welcome to the main dashboard. Navigation is available above." type="p" style="text-body1 text-center"/>
+        <container class="q-pa-lg">
+            <label text="Welcome to Staff Meeting" class="text-h4 q-mb-md"/>
+            <label text="Your AI-powered orchestrator for efficient clinical coordination." class="text-subtitle1 text-grey-7"/>
+            
+            <container class="row q-col-gutter-md q-mt-xl">
+                <container class="col-12 col-md-4">
+                    <q-card flat="true" bordered="true" class="my-card">
+                        <q-card-section class="bg-primary text-white">
+                            <label text="Upcoming Meetings" class="text-h6"/>
+                        </q-card-section>
+                        <q-card-section>
+                            <label text="No meetings scheduled for this morning."/>
+                        </q-card-section>
+                        <q-card-actions align="right">
+                            <q-btn flat="true" color="primary" label="View All" to="/aitree/Meetings"/>
+                        </q-card-actions>
+                    </q-card>
+                </container>
+                
+                <container class="col-12 col-md-4">
+                    <q-card flat="true" bordered="true" class="my-card">
+                        <q-card-section class="bg-secondary text-white">
+                            <label text="Team Directory" class="text-h6"/>
+                        </q-card-section>
+                        <q-card-section>
+                            <label text="Explore patient care teams and administrative staff."/>
+                        </q-card-section>
+                        <q-card-actions align="right">
+                            <q-btn flat="true" color="secondary" label="Explore" to="/aitree/PeopleOrgs"/>
+                        </q-card-actions>
+                    </q-card>
+                </container>
+
+                <container class="col-12 col-md-4">
+                    <q-card flat="true" bordered="true" class="my-card">
+                        <q-card-section class="bg-accent text-white">
+                            <label text="Medical Records" class="text-h6"/>
+                        </q-card-section>
+                        <q-card-section>
+                            <label text="Secure access to patient history and clinical notes."/>
+                        </q-card-section>
+                        <q-card-actions align="right">
+                            <q-btn flat="true" color="accent" label="Search" to="/aitree/MedicalRecords"/>
+                        </q-card-actions>
+                    </q-card>
+                </container>
             </container>
         </container>
     </widgets>

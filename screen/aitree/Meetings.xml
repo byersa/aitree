@@ -1,13 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-        xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsl"
-        standalone="false"
-        default-menu-title="Meetings" default-menu-index="4">
-
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsd"
+        require-authentication="false">
     <widgets>
-        <container style="q-pa-md">
-            <label text="Active Meetings" type="h4" style="q-mb-md text-primary"/>
-            <label text="(Placeholder: Will contain subscreens for abstract meeting templates and active instances mapping to discussion-tree macro)" type="p" style="text-italic"/>
+        <container class="q-pa-lg">
+            <label text="Staff Meetings" class="text-h4 q-mb-md"/>
+            <label text="Coordination and planning for clinical teams." class="text-subtitle1 text-grey-7"/>
+            <q-banner class="bg-blue-1 text-blue-9 q-mb-lg rounded-borders">
+                <template v-slot:avatar=""><q-icon name="info" color="blue-9" /></template>
+                <label text="Daily morning huddle starts in 15 minutes. Ensure all patient charts are synchronized."/>
+            </q-banner>
+            <q-list bordered="true" separator="true" class="rounded-borders">
+                <q-item clickable="true" v-ripple="true">
+                    <q-item-section avatar="true">
+                        <q-avatar color="primary" text-white="true" icon="groups" />
+                    </q-item-section>
+                    <q-item-section>
+                        <q-item-label><label text="Morning Huddle - Clinical A"/></q-item-label>
+                        <q-item-label caption="true"><label text="Today, 8:30 AM | Conference Room 2"/></q-item-label>
+                    </q-item-section>
+                </q-item>
+                <q-item clickable="true" v-ripple="true">
+                    <q-item-section avatar="true">
+                        <q-avatar color="secondary" text-white="true" icon="medical_services" />
+                    </q-item-section>
+                    <q-item-section>
+                        <q-item-label><label text="Case Review: Oncology"/></q-item-label>
+                        <q-item-label caption="true"><label text="Today, 11:00 AM | Virtual Meeting"/></q-item-label>
+                    </q-item-section>
+                </q-item>
+            </q-list>
         </container>
     </widgets>
 </screen>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<moqui-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/moqui-conf-2.1.xsd">
+    <screen-facade>
+        <!-- Mount aitree into the standard apps (Vue 2 / legacy) context -->
+        <screen location="component://webroot/screen/webroot/apps.xml">
+            <subscreens-item name="aitree" menu-title="Staff Meeting" menu-index="97"
+                             menu-include="true"
+                             location="component://aitree/screen/aitree.xml"/>
+        </screen>
+
+        <!-- Mount aitree into the qapps2 (Vue 3 / Quasar 2) context -->
+        <screen location="component://webroot/screen/webroot/qapps2.xml">
+            <subscreens-item name="aitree" menu-title="Staff Meeting" menu-index="97"
+                             menu-include="true"
+                             location="component://aitree/screen/aitree.xml"/>
+        </screen>
+
+        <!-- Mount aitree root wrapper directly on webroot -->
+        <screen location="component://webroot/screen/webroot.xml">
+            <subscreens-item name="aitree" menu-title="Staff Meeting" menu-index="97"
+                             location="component://aitree/screen/aitree.xml"/>
+        </screen>
+    </screen-facade>
+    
+    <webapp-list>
+        <!-- Define a dedicated webapp path for standalone access without /vapps/ or /qapps2/ -->
+        <webapp name="aitree" path="/aitree" https-enabled="false"
+                root-screen-location="component://aitree/screen/aitree.xml"/>
+    </webapp-list>
+</moqui-conf>
