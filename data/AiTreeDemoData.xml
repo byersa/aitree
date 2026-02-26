@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-facade-xml type="demo">
+    <!-- 
+        Active and historical real-time meeting instances for the Aitree Staff Meeting Application 
+        Spanning Feb 19 - Feb 24, 2026
+    -->
+
+    <!-- ========================================================= -->
+    <!-- Morning Huddle (HdlMorningAbstract) Instances             -->
+    <!-- ========================================================= -->
+    <aitree.meeting.AgendaContainer agendaContainerId="HdlMorningInst1" parentContainerId="HdlMorningAbstract" 
+        name="Morning Huddle - Feb 19" shortName="Huddle Feb 19" containerTypeEnumId="AitContainerRealTime" 
+        fromDate="2026-02-19T08:00:00" thruDate="2026-02-19T08:30:00" statusId="AgdStatusCompleted"/>
+        
+    <aitree.meeting.AgendaContainer agendaContainerId="HdlMorningInst2" parentContainerId="HdlMorningAbstract" 
+        name="Morning Huddle - Feb 20" shortName="Huddle Feb 20" containerTypeEnumId="AitContainerRealTime" 
+        fromDate="2026-02-20T08:00:00" thruDate="2026-02-20T08:30:00" statusId="AgdStatusCompleted"/>
+        
+    <aitree.meeting.AgendaContainer agendaContainerId="HdlMorningInst3" parentContainerId="HdlMorningAbstract" 
+        name="Morning Huddle - Feb 21" shortName="Huddle Feb 21" containerTypeEnumId="AitContainerRealTime" 
+        fromDate="2026-02-21T08:00:00" thruDate="2026-02-21T08:30:00" statusId="AgdStatusCompleted"/>
+        
+    <aitree.meeting.AgendaContainer agendaContainerId="HdlMorningInst4" parentContainerId="HdlMorningAbstract" 
+        name="Morning Huddle - Feb 22" shortName="Huddle Feb 22" containerTypeEnumId="AitContainerRealTime" 
+        fromDate="2026-02-22T08:00:00" thruDate="2026-02-22T08:30:00" statusId="AgdStatusCompleted"/>
+        
+    <aitree.meeting.AgendaContainer agendaContainerId="HdlMorningInst5" parentContainerId="HdlMorningAbstract" 
+        name="Morning Huddle - Feb 23" shortName="Huddle Feb 23" containerTypeEnumId="AitContainerRealTime" 
+        fromDate="2026-02-23T08:00:00" thruDate="2026-02-23T08:30:00" statusId="AgdStatusCompleted"/>
+        
+    <aitree.meeting.AgendaContainer agendaContainerId="HdlMorningInst6" parentContainerId="HdlMorningAbstract" 
+        name="Morning Huddle - Feb 24" shortName="Huddle Feb 24" containerTypeEnumId="AitContainerRealTime" 
+        fromDate="2026-02-24T08:00:00" thruDate="2026-02-24T08:30:00" statusId="AgdStatusActive"/>
+
+    <!-- ========================================================= -->
+    <!-- Leadership Sync (HdlLeadershipAbstract) Instances         -->
+    <!-- ========================================================= -->
+    <aitree.meeting.AgendaContainer agendaContainerId="HdlLeaderInst1" parentContainerId="HdlLeadershipAbstract" 
+        name="Leadership Sync - Feb 19" shortName="Sync Feb 19" containerTypeEnumId="AitContainerRealTime" 
+        fromDate="2026-02-19T10:00:00" thruDate="2026-02-19T11:00:00" statusId="AgdStatusCompleted"/>
+        
+    <aitree.meeting.AgendaContainer agendaContainerId="HdlLeaderInst2" parentContainerId="HdlLeadershipAbstract" 
+        name="Leadership Sync - Feb 20" shortName="Sync Feb 20" containerTypeEnumId="AitContainerRealTime" 
+        fromDate="2026-02-20T10:00:00" thruDate="2026-02-20T11:00:00" statusId="AgdStatusCompleted"/>
+        
+    <aitree.meeting.AgendaContainer agendaContainerId="HdlLeaderInst3" parentContainerId="HdlLeadershipAbstract" 
+        name="Leadership Sync - Feb 21" shortName="Sync Feb 21" containerTypeEnumId="AitContainerRealTime" 
+        fromDate="2026-02-21T10:00:00" thruDate="2026-02-21T11:00:00" statusId="AgdStatusCompleted"/>
+        
+    <aitree.meeting.AgendaContainer agendaContainerId="HdlLeaderInst4" parentContainerId="HdlLeadershipAbstract" 
+        name="Leadership Sync - Feb 22" shortName="Sync Feb 22" containerTypeEnumId="AitContainerRealTime" 
+        fromDate="2026-02-22T10:00:00" thruDate="2026-02-22T11:00:00" statusId="AgdStatusCompleted"/>
+        
+    <aitree.meeting.AgendaContainer agendaContainerId="HdlLeaderInst5" parentContainerId="HdlLeadershipAbstract" 
+        name="Leadership Sync - Feb 23" shortName="Sync Feb 23" containerTypeEnumId="AitContainerRealTime" 
+        fromDate="2026-02-23T10:00:00" thruDate="2026-02-23T11:00:00" statusId="AgdStatusCompleted"/>
+        
+    <aitree.meeting.AgendaContainer agendaContainerId="HdlLeaderInst6" parentContainerId="HdlLeadershipAbstract" 
+        name="Leadership Sync - Feb 24" shortName="Sync Feb 24" containerTypeEnumId="AitContainerRealTime" 
+        fromDate="2026-02-24T10:00:00" thruDate="2026-02-24T11:00:00" statusId="AgdStatusActive"/>
+
+    <!-- ========================================================= -->
+    <!-- Clinical Review (HdlClinicalAbstract) Instances           -->
+    <!-- ========================================================= -->
+    <aitree.meeting.AgendaContainer agendaContainerId="HdlClinicInst1" parentContainerId="HdlClinicalAbstract" 
+        name="Clinical Review - Feb 19" shortName="Review Feb 19" containerTypeEnumId="AitContainerRealTime" 
+        fromDate="2026-02-19T13:00:00" thruDate="2026-02-19T14:30:00" statusId="AgdStatusCompleted"/>
+        
+    <aitree.meeting.AgendaContainer agendaContainerId="HdlClinicInst2" parentContainerId="HdlClinicalAbstract" 
+        name="Clinical Review - Feb 20" shortName="Review Feb 20" containerTypeEnumId="AitContainerRealTime" 
+        fromDate="2026-02-20T13:00:00" thruDate="2026-02-20T14:30:00" statusId="AgdStatusCompleted"/>
+        
+    <aitree.meeting.AgendaContainer agendaContainerId="HdlClinicInst3" parentContainerId="HdlClinicalAbstract" 
+        name="Clinical Review - Feb 21" shortName="Review Feb 21" containerTypeEnumId="AitContainerRealTime" 
+        fromDate="2026-02-21T13:00:00" thruDate="2026-02-21T14:30:00" statusId="AgdStatusCompleted"/>
+        
+    <aitree.meeting.AgendaContainer agendaContainerId="HdlClinicInst4" parentContainerId="HdlClinicalAbstract" 
+        name="Clinical Review - Feb 22" shortName="Review Feb 22" containerTypeEnumId="AitContainerRealTime" 
+        fromDate="2026-02-22T13:00:00" thruDate="2026-02-22T14:30:00" statusId="AgdStatusCompleted"/>
+        
+    <aitree.meeting.AgendaContainer agendaContainerId="HdlClinicInst5" parentContainerId="HdlClinicalAbstract" 
+        name="Clinical Review - Feb 23" shortName="Review Feb 23" containerTypeEnumId="AitContainerRealTime" 
+        fromDate="2026-02-23T13:00:00" thruDate="2026-02-23T14:30:00" statusId="AgdStatusCompleted"/>
+        
+    <aitree.meeting.AgendaContainer agendaContainerId="HdlClinicInst6" parentContainerId="HdlClinicalAbstract" 
+        name="Clinical Review - Feb 24" shortName="Review Feb 24" containerTypeEnumId="AitContainerRealTime" 
+        fromDate="2026-02-24T13:00:00" thruDate="2026-02-24T14:30:00" statusId="AgdStatusActive"/>
+
+</entity-facade-xml>

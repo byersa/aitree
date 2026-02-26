@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsd"
+        require-authentication="false">
+    
+    <parameter name="agendaContainerId"/>
+
+    <widgets>
+        <bp-parameter name="agendaContainerId" value="${agendaContainerId ?: ''}" pinia-store="useMeetingsStore" pinia-field="historyAgendaContainerId"/>
+
+        <container class="q-pa-lg">
+            <container-row class="q-mb-md">
+                <row-col md="12">
+                    <label text="Meeting History" class="text-h4"/>
+                    <label text="Review past clinical huddles and coordination meetings." class="text-subtitle1 text-grey-7"/>
+                </row-col>
+            </container-row>
+            <q-separator class="q-my-md"/>
+            <container class="q-mt-md q-pa-md bg-white rounded-borders shadow-1">
+                <banner class="bg-grey-2 text-grey-8 rounded-borders">
+                    <template v-slot:avatar=""><q-icon name="history" color="grey-8" /></template>
+                    <label text="History events for category: ${agendaContainerId ?: ''}" class="text-body2"/>
+                </banner>
+                
+                <!-- TODO: History listing logic -->
+            </container>
+        </container>
+    </widgets>
+</screen>

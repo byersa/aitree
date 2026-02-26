@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsd"
+        require-authentication="false" default-menu-title="Meetings" default-menu-index="2">
+    
+    <parameter name="activeAgendaContainerId"/>
+    
+    <transition name="ActivateMeetingDialog">
+        <default-response url="ActivateMeetingDialog"/>
+    </transition>
+
+    <transition name="startMeetingInstance" read-only="false" require-session-token="false">
+        <parameter name="abstractAgendaContainerId" required="true"/>
+        <actions>
+            <entity-find-one entity-name="aitree.meeting.AgendaContainer" value-field="abstractContainer">
+                <field-map field-name="agendaContainerId" from="abstractAgendaContainerId"/>
+            </entity-find-one>
+            
+            <service-call name="create#aitree.meeting.AgendaContainer" out-map="createOut">
+                <field-map field-name="parentContainerId" from="abstractAgendaContainerId"/>
+                <field-map field-name="name" from="abstractContainer.name + ' - ' + ec.l10n.formatValue(ec.user.nowTimestamp, 'HH:mm')"/>
+                <field-map field-name="containerTypeEnumId" value="AitContainerRealTime"/>
+                <field-map field-name="statusId" value="AgdStatusActive"/>
+                <field-map field-name="fromDate" from="ec.user.nowTimestamp"/>
+            </service-call>
+            
+            <script>ec.web.sendJsonResponse([agendaContainerId: createOut.agendaContainerId, name: abstractContainer.name, timestamp: ec.l10n.formatValue(ec.user.nowTimestamp, 'HH:mm')])</script>
+        </actions>
+        <default-response type="none"/>
+    </transition>
+
+    <subscreens default-item="MeetingDiscussion">
+        <subscreens-item name="MeetingDiscussion" location="component://aitree/screen/aitree/ActiveMeetings/MeetingDiscussion.xml" menu-include="false"/>
+        <subscreens-item name="ActivateMeetingDialog" location="component://aitree/screen/aitree/ActiveMeetings/ActivateMeetingDialog.xml" menu-include="false"/>
+    </subscreens>
+    
+    <widgets>
+        <bp-parameter name="activeAgendaContainerId" value="${activeAgendaContainerId ?: ''}" pinia-store="useMeetingsStore" pinia-field="activeAgendaContainerId"/>
+
+        <container class="q-pa-lg">
+            <container-row class="q-mb-md items-center">
+                <row-col lg="8">
+                    <label text="Active Staff Meetings" class="text-h4"/>
+                    <label text="Coordination and planning for clinical teams." class="text-subtitle1 text-grey-7"/>
+                </row-col>
+                <row-col lg="4" class="text-right">
+                    <dynamic-dialog id="ActivateMeetingDialog" button-text="Start New Meeting" transition="ActivateMeetingDialog" icon="add" width="800" title="Start Meeting"/>
+                </row-col>
+            </container-row>
+            
+            <!-- Tab Bar using Blueprint List Pattern -->
+            <bp-tabbar list="window.useMeetingsStore().activeList" class="bg-white text-grey-7 shadow-1 rounded-borders q-mb-md">
+                <bp-tab text="name" url="'/aitree/ActiveMeetings/MeetingDiscussion?activeAgendaContainerId=' + item.agendaContainerId" />
+            </bp-tabbar>
+
+            <!-- Fallback banner logic is now handled internally by bp-tabbar wrapper if we want, 
+                 but we can keep a manual one here for specific messaging when empty -->
+            <banner v-if="window.useMeetingsStore &amp;&amp; window.useMeetingsStore().activeList.length == 0" 
+                    class="bg-blue-1 text-blue-9 rounded-borders q-mb-md">
+                <template v-slot:avatar=""><q-icon name="info" color="blue-9" /></template>
+                <label text="No active meetings. Click 'Start New Meeting' to activate a session."/>
+            </banner>
+
+            <container class="q-mt-md q-pa-md bg-white rounded-borders shadow-1">
+                <subscreens-active/>
+            </container>
+        </container>
+    </widgets>
+</screen>

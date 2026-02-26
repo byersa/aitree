@@ -26,6 +26,10 @@
         <field name="orgId" type="id">
             <description>Base ownership hierarchy for PartyRelationship permission tree</description>
         </field>
+        <field name="fromDate" type="date-time"/>
+        <field name="thruDate" type="date-time"/>
+
+        <index name="AGD_CONT_FROM_DT"><index-field name="fromDate"/></index>
 
         <relationship type="one" title="ParentAgendaContainer" related="aitree.meeting.AgendaContainer">
             <key-map field-name="parentContainerId" related="agendaContainerId"/>
@@ -46,6 +50,11 @@
             <moqui.basic.Enumeration enumId="AitContainerTodo" description="Todo instance" enumTypeId="AgendaContainerType"/>
             <moqui.basic.Enumeration enumId="AitContainerAbstract" description="Abstract Template" enumTypeId="AgendaContainerType"/>
             <moqui.basic.Enumeration enumId="AitContainerRepo" description="Topic Repository" enumTypeId="AgendaContainerType"/>
+
+            <!-- Status Items -->
+            <moqui.basic.StatusType description="Agenda Container Status" statusTypeId="AgendaContainerStatus"/>
+            <moqui.basic.StatusItem description="Active" statusId="AgdStatusActive" statusTypeId="AgendaContainerStatus"/>
+            <moqui.basic.StatusItem description="Completed" statusId="AgdStatusCompleted" statusTypeId="AgendaContainerStatus"/>
 
             <!-- Dropdown Options (Abstract Templates) -->
             <aitree.meeting.AgendaContainer agendaContainerId="HdlMorningAbstract" name="Morning Huddle" shortName="Huddle" containerTypeEnumId="AitContainerAbstract"/>

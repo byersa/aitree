@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-facade-xml type="seed">
+    <!-- Agenda Container Statuses -->
+    <moqui.basic.StatusType description="Agenda Container Status" statusTypeId="AgendaContainerStatus"/>
+    <moqui.basic.StatusItem description="Active" statusId="AgdStatusActive" statusTypeId="AgendaContainerStatus"/>
+    <moqui.basic.StatusItem description="Completed" statusId="AgdStatusCompleted" statusTypeId="AgendaContainerStatus"/>
+</entity-facade-xml>

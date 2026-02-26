@@ -39,7 +39,7 @@ footer_scripts.add('/aitree/routes.js')
 
 // Load Main App
 if (ec.resource.getLocationReference("component://moqui-ai/screen/moquiai/js/MoquiAiVue.qvt2.js").exists) {
-    footer_scripts.add(scriptPath)
+    footer_scripts.add(scriptPath + "?v=" + System.currentTimeMillis())
 } else {
     ec.logger.warn("AitreeVue script not found: " + scriptPath)
 }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsd"
+        require-authentication="false">
+    
+    <parameter name="activeAgendaContainerId"/>
+
+    <actions>
+        <entity-find-one entity-name="aitree.meeting.AgendaContainer" value-field="container" cache="false">
+            <field-map field-name="agendaContainerId" from="activeAgendaContainerId"/>
+        </entity-find-one>
+        <set field="isInstance" from="container?.containerTypeEnumId == 'AitContainerRealTime'"/>
+    </actions>
+
+    <widgets>
+        <container class="q-pa-md">
+            <!-- DEBUG: Helpful for architectural verification -->
+            <label text="DEBUG Context - ID: [${activeAgendaContainerId ?: ''}] | Type: [${container?.containerTypeEnumId ?: 'NONE'}] | IsInstance: [${isInstance}]" 
+                   class="text-caption text-blue q-mb-sm" />
+
+            <section name="DiscussionContent">
+                <condition><expression>activeAgendaContainerId &amp;&amp; isInstance</expression></condition>
+                <widgets>
+                    <label text="Meeting Discussion for Container: ${activeAgendaContainerId ?: 'Unknown'}" class="text-h5 q-mb-md"/>
+                    
+                    <!-- Future: Discussion tree and coordination components -->
+                    <banner class="bg-blue-1 text-blue-9 rounded-borders">
+                        <template v-slot:avatar=""><q-icon name="forum" color="blue-9" /></template>
+                        <label text="Real-time coordination and discussion for this session will appear here."/>
+                    </banner>
+                </widgets>
+                <fail-widgets>
+                    <container class="q-pa-md text-center">
+                        <label text="arrow_upward" style="q-icon" class="text-grey-4" style-attr="font-size: 4rem;"/>
+                        <container>
+                            <label text="Please select a meeting session from the tabs above." class="text-h6 text-grey-6 q-mt-md"/>
+                        </container>
+                    </container>
+                </fail-widgets>
+            </section>
+        </container>
+    </widgets>
+</screen>

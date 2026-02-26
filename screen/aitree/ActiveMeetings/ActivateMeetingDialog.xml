@@ -39,7 +39,7 @@
                     <default-field title="Action">
                         <!-- Execute inline JS to push the item to the Pinia active store -->
                         <link text="Activate" icon="play_arrow" url-type="plain"
-                              url="javascript:window.useMeetingsStore().addMeeting({agendaContainerId: '${agendaContainerId}', name: '${name?js_string}'}); document.body.click();" 
+                              url="javascript:fetch('startMeetingInstance?abstractAgendaContainerId=${agendaContainerId}', {method: 'POST', headers: {'Accept': 'application/json'}}).then(r => r.json()).then(data => { window.useMeetingsStore().addMeeting({agendaContainerId: data.agendaContainerId, name: data.name + ' (' + data.timestamp + ')'}); document.body.click(); })" 
                               class="text-weight-bold text-primary"/>
                     </default-field>
                 </field>

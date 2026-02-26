@@ -18,10 +18,27 @@
     <transition name="getAgendaContainers" read-only="true" require-session-token="false">
         <actions>
             <script>
-                def containers = ec.entity.find("aitree.meeting.AgendaContainer")
+                def abstracts = ec.entity.find("aitree.meeting.AgendaContainer")
                     .condition("containerTypeEnumId", "AitContainerAbstract")
                     .disableAuthz().list()
-                ec.web.sendJsonResponse(containers)
+                
+                def result = [
+                    [
+                        label: "Active Sessions",
+                        type: "group",
+                        children: abstracts.collect { 
+                            [label: it.name, value: it.agendaContainerId, target: "ActiveMeetings", param: "activeAgendaContainerId"] 
+                        }
+                    ],
+                    [
+                        label: "Meeting History",
+                        type: "group",
+                        children: abstracts.collect { 
+                            [label: it.name, value: it.agendaContainerId, target: "MeetingHistory", param: "agendaContainerId"] 
+                        }
+                    ]
+                ]
+                ec.web.sendJsonResponse(result)
             </script>
         </actions>
         <default-response type="none"/>
@@ -105,7 +122,8 @@
         <subscreens-item name="Home" location="component://aitree/screen/aitree/Home.xml"/>
         <subscreens-item name="PeopleOrgs" location="component://aitree/screen/aitree/PeopleOrgs.xml"/>
         <subscreens-item name="MedicalRecords" location="component://aitree/screen/aitree/MedicalRecords.xml"/>
-        <subscreens-item name="Meetings" location="component://aitree/screen/aitree/Meetings.xml"/>
+        <subscreens-item name="ActiveMeetings" location="component://aitree/screen/aitree/ActiveMeetings.xml" menu-include="false"/>
+        <subscreens-item name="MeetingHistory" location="component://aitree/screen/aitree/MeetingHistory.xml" menu-include="false"/>
     </subscreens>
 
     <widgets>
@@ -123,7 +141,7 @@
                         <menu-item name="Home"/>
                         <menu-item name="PeopleOrgs"/>
                         <menu-item name="MedicalRecords"/>
-                        <menu-dropdown name="Meetings" transition="getAgendaContainers" label-field="name" key-field="agendaContainerId" url-parameter="agendaContainerId"/>
+                        <menu-dropdown text="Meetings" icon="groups" transition="getAgendaContainers" label-field="label" key-field="value" target-url="ActiveMeetings" url-parameter="activeAgendaContainerId"/>
                     </screen-toolbar>
                 </screen-header>
 
