@@ -25,6 +25,20 @@
     <webapp-list>
         <!-- Define a dedicated webapp path for standalone access without /vapps/ or /qapps2/ -->
         <webapp name="aitree" path="/aitree" https-enabled="false"
-                root-screen-location="component://aitree/screen/aitree.xml"/>
+                root-screen-location="component://aitree/screen/aitree.xml">
+            <before-request>
+                <actions>
+                    <script><![CDATA[
+                        // Content Negotiation: If client asks for JSON (Blueprint), force qjson renderMode
+                        def accept = ec.web.request.getHeader("Accept")
+                        if (accept?.contains("application/json")) {
+                            // If we didn't force this, it would often stick with qvt2 (the shell mode) and return HTML
+                            ec.web.requestParameters.renderMode = "qjson"
+                            // ec.logger.warn("Content Negotiation: Forced qjson for request to ${ec.web.request.requestURI}")
+                        }
+                    ]]></script>
+                </actions>
+            </before-request>
+        </webapp>
     </webapp-list>
 </moqui-conf>

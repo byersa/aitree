@@ -16,10 +16,10 @@
                 </row-col>
             </container-row>
             
-            <q-tabs align="left" no-caps="true" class="text-grey-8 bg-grey-2 rounded-borders">
-                <q-tab name="ActiveSessions" text="Active Sessions" icon="bolt" url="/aitree/Meetings/ActiveSessions"/>
-                <q-tab name="History" text="Meeting History" icon="history" url="/aitree/Meetings/History"/>
-            </q-tabs>
+            <tabbar-page align="left" no-caps="true" class="text-grey-8 bg-grey-2 rounded-borders">
+                <tab-page name="ActiveSessions" text="Active Sessions" icon="bolt" url="ActiveSessions"/>
+                <tab-page name="History" text="Meeting History" icon="history" url="History"/>
+            </tabbar-page>
             
             <container class="q-mt-md q-pa-md bg-white rounded-borders shadow-1">
                 <subscreens-active/>

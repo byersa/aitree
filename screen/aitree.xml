@@ -10,7 +10,7 @@
 
     <always-actions>
         <set field="appRoot" value="aitree"/>
-        <set field="appRootPath" value=""/>
+        <set field="appRootPath" value="/aitree"/>
         <set field="linkBasePath" value="/aitree"/>
         <set field="basePath" value="/aitree"/>
     </always-actions>
@@ -28,9 +28,11 @@
     </transition>
 
     <transition name="moquiaiJs" read-only="true" require-session-token="false">
-        <path-parameter name="filename"/>
         <actions>
-            <script>ec.web.sendResourceResponse("component://moqui-ai/screen/moquiai/js/" + filename)</script>
+            <script><![CDATA[
+                def path = sri.screenUrlInfo.extraPathNameList.join("/")
+                ec.web.sendResourceResponse("component://moqui-ai/screen/moquiai/js/" + path)
+            ]]></script>
         </actions>
         <default-response type="none"/>
     </transition>
@@ -62,8 +64,7 @@
 
     <transition name="routes.js" read-only="true">
         <actions>
-            <set field="webappName" from="ec.web.request.servletContext.getInitParameter('moqui-name')"/>
-            <set field="rootScreenLocation" from="ec.screen.rootScreenFromHost(ec.web.request.getServerName(), webappName)"/>
+            <set field="rootScreenLocation" value="component://aitree/screen/aitree.xml"/>
             <set field="rootScreenDef" from="ec.screen.getScreenDefinition(rootScreenLocation)"/>
             <set field="realPathList" from="sri.screenUrlInfo.fullPathNameList"/>
             <set field="realPath" value="/${realPathList.join('/')}"/>
@@ -109,14 +110,14 @@
 
     <widgets>
         <render-mode>
-            <text type="html" location="component://moqui-ai/template/spa/MoquiAiVue.qvt2.ftl"/>
+            <text type="html,qvt2" location="component://moqui-ai/template/spa/MoquiAiVue.qvt2.ftl"/>
         </render-mode>
 
         <container id="apps-root">
             <screen-layout view="hHh lpR fFf" class="bg-grey-1">
                 <screen-header elevated="true" class="bg-primary text-white">
                     <screen-toolbar>
-                        <render-mode><text type="html"><![CDATA[<q-btn dense flat round icon="menu" aria-label="Menu" @click="leftOpen = !leftOpen"></q-btn>]]></text></render-mode>
+                        <render-mode><text type="html,qvt2"><![CDATA[<q-btn :dense="true" :flat="true" :round="true" icon="menu" aria-label="Menu" @click="leftOpen = !leftOpen"></q-btn>]]></text></render-mode>
                         <label text="Staff Meeting" style="q-toolbar-title"/>
                         <container type="q-space"/>
                         <menu-item name="Home"/>
@@ -126,14 +127,8 @@
                     </screen-toolbar>
                 </screen-header>
 
-                <screen-drawer side="left" v-model="leftOpen">
-                    <subscreens-menu pathIndex="0" type="drawer"/>
-                </screen-drawer>
-
                 <screen-content class="q-pa-md">
-                    <render-mode><text type="html"><![CDATA[
-                        <router-view></router-view>
-                    ]]></text></render-mode>
+                    <subscreens-active></subscreens-active>
                 </screen-content>
             </screen-layout>
         </container>

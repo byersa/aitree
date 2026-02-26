@@ -11,10 +11,10 @@
                 </row-col>
             </container-row>
             <q-separator class="q-my-md"/>
-            <q-banner class="bg-grey-2 text-grey-8 rounded-borders">
+            <banner class="bg-grey-2 text-grey-8 rounded-borders">
                 <template v-slot:avatar=""><q-icon name="history" color="grey-8" /></template>
                 <label text="History populated from past clinical events."/>
-            </q-banner>
+            </banner>
         </container>
     </widgets>
 </screen>

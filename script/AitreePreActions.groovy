@@ -32,10 +32,10 @@ footer_scripts.add('https://unpkg.com/pinia@2.1.7/dist/pinia.iife.js')
 // Load Pinia Stores
 footer_scripts.add('/aitree/moquiaiJs/stores/meetingsStore.js')
 
-// Load Routing
-String pathInfo = ec.web.request.pathInfo ?: ""
-if (pathInfo == "/aitree" || pathInfo == "aitree") pathInfo = ""
-footer_scripts.add('/routes.js' + pathInfo)
+// Load Routing - always use the clean base path for the script
+footer_scripts.add('/aitree/routes.js')
+// Note: pathInfo was previously added but caused duplicate path segments on refresh. 
+// moqui.routes will handle the client-side routing based on window.location.
 
 // Load Main App
 if (ec.resource.getLocationReference("component://moqui-ai/screen/moquiai/js/MoquiAiVue.qvt2.js").exists) {

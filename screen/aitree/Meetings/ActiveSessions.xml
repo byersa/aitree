@@ -28,10 +28,10 @@
             <q-separator class="q-my-md"/>
             
             <container class="q-mt-md">
-                <q-banner class="bg-blue-1 text-blue-9 rounded-borders">
+                <banner class="bg-blue-1 text-blue-9 rounded-borders">
                     <template v-slot:avatar=""><q-icon name="info" color="blue-9" /></template>
                     <label text="No active meetings. Click 'Start New Meeting' to activate a scheduled session."/>
-                </q-banner>
+                </banner>
                 
                 <!-- TODO: FTL/Vue logic to iterate over meetingsStore.activeList -->
             </container>
