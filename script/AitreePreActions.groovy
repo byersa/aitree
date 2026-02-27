@@ -44,6 +44,11 @@ if (ec.resource.getLocationReference("component://moqui-ai/screen/moquiai/js/Moq
     ec.logger.warn("AitreeVue script not found: " + scriptPath)
 }
 
+String blueprintClientUrl = '/aitree/moquiaiJs/BlueprintClient.js'
+if (ec.resource.getLocationReference("component://moqui-ai/screen/moquiai/js/BlueprintClient.js").exists) {
+    footer_scripts.add(blueprintClientUrl + "?v=" + System.currentTimeMillis())
+}
+
 // Auto-register JS scripts for all subscreens
 org.moqui.util.ContextStack cs = ec.context
 org.moqui.impl.screen.ScreenDefinition sd = sri.getActiveScreenDef()

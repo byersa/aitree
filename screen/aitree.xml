@@ -44,6 +44,17 @@
         <default-response type="none"/>
     </transition>
 
+    <transition name="menuDataQvt2" read-only="true" begin-transaction="false" require-session-token="false">
+        <actions><script><![CDATA[
+            List<String> fullPath = new ArrayList<>(sri.getActiveScreenPath())
+            fullPath.addAll(sri.screenUrlInfo.extraPathNameList)
+            // ec.logger.warn("menuDataQvt2 transition hit! root: " + sri.getRootScreenDef().getLocation() + " | fullPath: " + fullPath)
+            List menuDataList = sri.getMenuData(fullPath, "", "", false)
+            if (menuDataList != null) ec.web.sendJsonResponse(menuDataList)
+        ]]></script></actions>
+        <default-response type="none" save-parameters="true"/>
+    </transition>
+
     <transition name="moquiaiJs" read-only="true" require-session-token="false">
         <actions>
             <script><![CDATA[
@@ -52,31 +63,6 @@
             ]]></script>
         </actions>
         <default-response type="none"/>
-    </transition>
-
-    <transition name="menuDataQvt2" read-only="true" begin-transaction="false" require-session-token="false">
-        <actions><script><![CDATA[
-            def sd = ec.screen.getScreenDefinition("component://aitree/screen/aitree.xml")
-            def subscreens = []
-            for (ssi in sd.getSubscreensItemsSorted()) {
-                if (!ssi.menuInclude) continue
-                subscreens.add([
-                    name: ssi.name,
-                    title: ssi.menuTitle ?: ssi.name,
-                    path: "/aitree/" + ssi.name,
-                    pathWithParams: "/aitree/" + ssi.name,
-                    active: sri.screenUrlInfo.extraPathNameList.contains(ssi.name)
-                ])
-            }
-            ec.web.sendJsonResponse([[
-                name: "aitree",
-                title: "Staff Meeting",
-                path: "/aitree",
-                pathWithParams: "/aitree",
-                subscreens: subscreens
-            ]])
-        ]]></script></actions>
-        <default-response type="none" save-parameters="true"/>
     </transition>
 
     <transition name="routes.js" read-only="true">
