@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
         xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsd"
-        require-authentication="false" screen-theme-type-enum-id="STT_INTERNAL_QUASAR2" allow-extra-path="true"
+        require-authentication="anonymous-all" screen-theme-type-enum-id="STT_INTERNAL_QUASAR2" allow-extra-path="true"
         default-menu-title="Staff Meeting" default-menu-index="1">
 
     <pre-actions>

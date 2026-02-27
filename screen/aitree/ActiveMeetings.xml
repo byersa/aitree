@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsd"
-        require-authentication="false" default-menu-title="Meetings" default-menu-index="2">
+        require-authentication="anonymous-all" default-menu-title="Meetings" default-menu-index="2">
     
     <parameter name="activeAgendaContainerId"/>
     

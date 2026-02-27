@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsd"
-        require-authentication="false">
+        require-authentication="anonymous-all">
     
     <parameter name="activeAgendaContainerId"/>
 
     <actions>
-        <entity-find-one entity-name="aitree.meeting.AgendaContainer" value-field="container" cache="false">
-            <field-map field-name="agendaContainerId" from="activeAgendaContainerId"/>
-        </entity-find-one>
+        <script>
+            if (activeAgendaContainerId) {
+                container = ec.entity.find("aitree.meeting.AgendaContainer").condition("agendaContainerId", activeAgendaContainerId).disableAuthz().one()
+            }
+        </script>
         <set field="isInstance" from="container?.containerTypeEnumId == 'AitContainerRealTime'"/>
     </actions>
 
