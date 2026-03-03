@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsd"
+        require-authentication="anonymous-all">
+
+    <parameter name="agendaContainerId"/>
+
+    <widgets>
+        <container class="q-pa-md bg-dark text-white full-height shadow-2 rounded-borders">
+            <container-row class="items-center q-mb-sm">
+                <label text="Meeting Session" type="h6" class="col"/>
+                <label :text="'ID: ' + agendaContainerId" class="text-caption text-grey-5"/>
+            </container-row>
+            
+            <q-separator dark="true" class="q-mb-md"/>
+            
+            <!-- Real-time Meeting Content -->
+            <div class="column q-gutter-md">
+                <q-card dark="true" bordered="true" flat="true" class="bg-grey-9">
+                    <q-card-section>
+                        <div class="text-subtitle2">Current Agenda Item</div>
+                        <div class="text-h5 text-primary">Overview &amp; Objectives</div>
+                    </q-card-section>
+                </q-card>
+                
+                <q-card dark="true" bordered="true" flat="true" class="bg-grey-9">
+                    <q-card-section>
+                        <div class="row items-center no-wrap">
+                            <q-icon name="forum" size="sm" class="q-mr-sm" />
+                            <div class="text-subtitle2">Discussion Thread</div>
+                        </div>
+                        <div class="q-mt-md text-grey-4">
+                            Active discussion log for container: {{ agendaContainerId }}
+                        </div>
+                    </q-card-section>
+                </q-card>
+            </div>
+        </container>
+    </widgets>
+    
+    <render-mode>
+        <text type="qvt2" location="component://aitree/screen/aitree/ActiveMeetings/MainInstancePanel.qvt.js" />
+    </render-mode>
+</screen>

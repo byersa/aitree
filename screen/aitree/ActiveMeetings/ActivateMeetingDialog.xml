@@ -37,10 +37,12 @@
                 
                 <field name="activateAction">
                     <default-field title="Action">
-                        <!-- Execute inline JS to push the item to the Pinia active store -->
                         <link text="Activate" icon="play_arrow" url-type="plain"
-                              url="javascript:fetch('startMeetingInstance?abstractAgendaContainerId=${agendaContainerId}', {method: 'POST', headers: {'Accept': 'application/json'}}).then(r => r.json()).then(data => { window.useMeetingsStore().addMeeting({agendaContainerId: data.agendaContainerId, name: data.name + ' (' + data.timestamp + ')'}); document.body.click(); })" 
+                              condition="!window.useMeetingsStore().isActive(agendaContainerId)"
+                              url="javascript:fetch('startMeetingInstance?abstractAgendaContainerId=${agendaContainerId}', {method: 'POST', headers: {'Accept': 'application/json'}}).then(r => r.json()).then(data => { window.useMeetingsStore().addMeeting({agendaContainerId: data.agendaContainerId, name: data.name + ' (' + data.timestamp + ')'}); window.useMeetingsStore().openSession(data.agendaContainerId); })" 
                               class="text-weight-bold text-primary"/>
+                        <label text="Active" condition="window.useMeetingsStore().isActive(agendaContainerId)" 
+                               class="text-weight-bold text-positive"/>
                     </default-field>
                 </field>
             </form-list>

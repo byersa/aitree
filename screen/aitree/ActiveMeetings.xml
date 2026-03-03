@@ -32,38 +32,30 @@
     <subscreens default-item="MeetingDiscussion">
         <subscreens-item name="MeetingDiscussion" location="component://aitree/screen/aitree/ActiveMeetings/MeetingDiscussion.xml" menu-include="false"/>
         <subscreens-item name="ActivateMeetingDialog" location="component://aitree/screen/aitree/ActiveMeetings/ActivateMeetingDialog.xml" menu-include="false"/>
+        <subscreens-item name="MainInstancePanel" location="component://aitree/screen/aitree/ActiveMeetings/MainInstancePanel.xml" menu-include="false"/>
     </subscreens>
     
     <widgets>
-        <bp-parameter name="activeAgendaContainerId" value="${activeAgendaContainerId ?: ''}" pinia-store="useMeetingsStore" pinia-field="activeAgendaContainerId"/>
+        <screen-layout id="active-meetings-layout">
+            <screen-header id="active-meetings-header">
+                <container class="row items-center q-px-lg bg-dark text-secondary" style="height: 64px;">
+                    <label text="Active Staff Meetings" type="h5" class="text-weight-bold" />
+                    <q-space />
+                    <!-- Management Hub via standard dynamic-dialog -->
+                    <dynamic-dialog id="ManageMeetingsHub" button-text="Manage Meetings Hub" icon="settings" transition="ManageMeetingsDialog" width="1200" title="Meetings Management" />
+                </container>
+            </screen-header>
 
-        <container class="q-pa-lg">
-            <container-row class="q-mb-md items-center">
-                <row-col lg="8">
-                    <label text="Active Staff Meetings" class="text-h4"/>
-                    <label text="Coordination and planning for clinical teams." class="text-subtitle1 text-grey-7"/>
-                </row-col>
-                <row-col lg="4" class="text-right">
-                    <dynamic-dialog id="ActivateMeetingDialog" button-text="Start New Meeting" transition="ActivateMeetingDialog" icon="add" width="800" title="Start Meeting"/>
-                </row-col>
-            </container-row>
-            
-            <!-- Tab Bar using Blueprint List Pattern -->
-            <bp-tabbar list="window.useMeetingsStore().activeList" class="bg-white text-grey-7 shadow-1 rounded-borders q-mb-md">
-                <bp-tab text="name" url="'/aitree/ActiveMeetings/MeetingDiscussion?activeAgendaContainerId=' + item.agendaContainerId" />
-            </bp-tabbar>
-
-            <!-- Fallback banner logic is now handled internally by bp-tabbar wrapper if we want, 
-                 but we can keep a manual one here for specific messaging when empty -->
-            <banner v-if="window.useMeetingsStore &amp;&amp; window.useMeetingsStore().activeList.length == 0" 
-                    class="bg-blue-1 text-blue-9 rounded-borders q-mb-md">
-                <template v-slot:avatar=""><q-icon name="info" color="blue-9" /></template>
-                <label text="No active meetings. Click 'Start New Meeting' to activate a session."/>
-            </banner>
-
-            <container class="q-mt-md q-pa-md bg-white rounded-borders shadow-1">
-                <subscreens-active/>
-            </container>
-        </container>
+            <screen-content id="active-meetings-content">
+                <!-- Data-driven screen-split: Iterates over the sessions in the store -->
+                <screen-split list="window.useMeetingsStore ? window.useMeetingsStore().openSessionIds : []" 
+                              component="MainInstancePanel" 
+                              fail-message="No active meeting sessions open. Use the Hub to start or join a session." />
+            </screen-content>
+        </screen-layout>
     </widgets>
+    
+    <render-mode>
+        <text type="qvt2" location="component://aitree/screen/aitree/ActiveMeetings.qvt.js" />
+    </render-mode>
 </screen>

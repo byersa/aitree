@@ -21,7 +21,10 @@
         <field name="shortName" type="text-medium"/>
         <field name="statusId" type="id"/>
         <field name="containerTypeEnumId" type="id">
-            <description>Replaces legacy meetingTypeEnumId (Abstract, Instance, Repository)</description>
+            <description>Detailed type: RealTime, Virtual, Quality, Todo, Repository, etc.</description>
+        </field>
+        <field name="containerCategoryEnumId" type="id">
+            <description>High-level category: AitCategoryAbstract or AitCategoryInstance.</description>
         </field>
         <field name="orgId" type="id">
             <description>Base ownership hierarchy for PartyRelationship permission tree</description>
@@ -40,16 +43,25 @@
         <relationship type="one" title="ContainerType" related="moqui.basic.Enumeration">
             <key-map field-name="containerTypeEnumId"/>
         </relationship>
+        <relationship type="one" title="ContainerCategory" related="moqui.basic.Enumeration">
+            <key-map field-name="containerCategoryEnumId"/>
+        </relationship>
         <relationship type="one" title="OwningOrg" related="mantle.party.Organization">
             <key-map field-name="orgId" related="partyId"/>
         </relationship>
 
         <seed-data>
+            <!-- Categories -->
+            <moqui.basic.EnumerationType description="Agenda Container Category" enumTypeId="AgendaContainerCategory"/>
+            <moqui.basic.Enumeration enumId="AitCategoryAbstract" description="Abstract Blueprint" enumTypeId="AgendaContainerCategory"/>
+            <moqui.basic.Enumeration enumId="AitCategoryInstance" description="Concrete Instance" enumTypeId="AgendaContainerCategory"/>
+
+            <!-- Detailed Types -->
             <moqui.basic.EnumerationType description="Agenda Container Type" enumTypeId="AgendaContainerType"/>
-            <moqui.basic.Enumeration enumId="AitContainerRealTime" description="Realtime instance" enumTypeId="AgendaContainerType"/>
-            <moqui.basic.Enumeration enumId="AitContainerTodo" description="Todo instance" enumTypeId="AgendaContainerType"/>
-            <moqui.basic.Enumeration enumId="AitContainerAbstract" description="Abstract Template" enumTypeId="AgendaContainerType"/>
-            <moqui.basic.Enumeration enumId="AitContainerRepo" description="Topic Repository" enumTypeId="AgendaContainerType"/>
+            <moqui.basic.Enumeration enumId="AitContainerRealTime" parentEnumId="AitCategoryInstance" description="Realtime instance" enumTypeId="AgendaContainerType"/>
+            <moqui.basic.Enumeration enumId="AitContainerTodo" parentEnumId="AitCategoryInstance" description="Todo instance" enumTypeId="AgendaContainerType"/>
+            <moqui.basic.Enumeration enumId="AitContainerAbstract" parentEnumId="AitCategoryAbstract" description="Abstract Template" enumTypeId="AgendaContainerType"/>
+            <moqui.basic.Enumeration enumId="AitContainerRepo" parentEnumId="AitCategoryAbstract" description="Topic Repository" enumTypeId="AgendaContainerType"/>
 
             <!-- Status Items -->
             <moqui.basic.StatusType description="Agenda Container Status" statusTypeId="AgendaContainerStatus"/>
@@ -57,9 +69,9 @@
             <moqui.basic.StatusItem description="Completed" statusId="AgdStatusCompleted" statusTypeId="AgendaContainerStatus"/>
 
             <!-- Dropdown Options (Abstract Templates) -->
-            <aitree.meeting.AgendaContainer agendaContainerId="HdlMorningAbstract" name="Morning Huddle" shortName="Huddle" containerTypeEnumId="AitContainerAbstract"/>
-            <aitree.meeting.AgendaContainer agendaContainerId="HdlLeadershipAbstract" name="Leadership Sync" shortName="Leadership" containerTypeEnumId="AitContainerAbstract"/>
-            <aitree.meeting.AgendaContainer agendaContainerId="HdlClinicalAbstract" name="Clinical Review" shortName="Clinical" containerTypeEnumId="AitContainerAbstract"/>
+            <aitree.meeting.AgendaContainer agendaContainerId="HdlMorningAbstract" name="Morning Huddle" shortName="Huddle" containerCategoryEnumId="AitCategoryAbstract" containerTypeEnumId="AitContainerAbstract"/>
+            <aitree.meeting.AgendaContainer agendaContainerId="HdlLeadershipAbstract" name="Leadership Sync" shortName="Leadership" containerCategoryEnumId="AitCategoryAbstract" containerTypeEnumId="AitContainerAbstract"/>
+            <aitree.meeting.AgendaContainer agendaContainerId="HdlClinicalAbstract" name="Clinical Review" shortName="Clinical" containerCategoryEnumId="AitCategoryAbstract" containerTypeEnumId="AitContainerAbstract"/>
         </seed-data>
     </entity>
 

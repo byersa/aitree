@@ -1,6 +1,11 @@
 // if user not logged in save current path and params then redirect to Login
 // if (!ec.user.userId) { ec.web.saveScreenLastInfo(null, null); sri.sendRedirectAndStopRender('/Login') }
 
+// AMB 2026-03-02: Set base paths for the aitree standalone webapp
+ec.context.put("appRootPath", "/aitree")
+ec.context.put("basePath", "/aitree")
+ec.context.put("linkBasePath", "/aitree")
+
 // Defensively remove standard WebrootVue to prevent double-initialization
 footer_scripts.remove('/js/WebrootVue.qvt2.js')
 

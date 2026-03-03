@@ -18,25 +18,9 @@
     <transition name="getAgendaContainers" read-only="true" require-session-token="false">
         <actions>
             <script>
-                def abstracts = ec.entity.find("aitree.meeting.AgendaContainer")
-                    .condition("containerTypeEnumId", "AitContainerAbstract")
-                    .disableAuthz().list()
-                
                 def result = [
-                    [
-                        label: "Active Sessions",
-                        type: "group",
-                        children: abstracts.collect { 
-                            [label: it.name, value: it.agendaContainerId, target: "ActiveMeetings", param: "activeAgendaContainerId"] 
-                        }
-                    ],
-                    [
-                        label: "Meeting History",
-                        type: "group",
-                        children: abstracts.collect { 
-                            [label: it.name, value: it.agendaContainerId, target: "MeetingHistory", param: "agendaContainerId"] 
-                        }
-                    ]
+                    [label: "Active Meetings", value: "ActiveMeetings", target: "ActiveMeetings"],
+                    [label: "Meeting History", value: "MeetingHistory", target: "MeetingHistory"]
                 ]
                 ec.web.sendJsonResponse(result)
             </script>
@@ -118,23 +102,30 @@
         </render-mode>
 
         <container id="apps-root">
-            <screen-layout view="hHh lpR fFf" class="bg-grey-1">
-                <screen-header elevated="true" class="bg-primary text-white">
-                    <screen-toolbar>
-                        <render-mode><text type="html,qvt2"><![CDATA[<q-btn :dense="true" :flat="true" :round="true" icon="menu" aria-label="Menu" @click="leftOpen = !leftOpen"></q-btn>]]></text></render-mode>
-                        <label text="Staff Meeting" style="q-toolbar-title"/>
-                        <container type="q-space"/>
-                        <menu-item name="Home"/>
-                        <menu-item name="PeopleOrgs"/>
-                        <menu-item name="MedicalRecords"/>
-                        <menu-dropdown text="Meetings" icon="groups" transition="getAgendaContainers" label-field="label" key-field="value" target-url="ActiveMeetings" url-parameter="activeAgendaContainerId"/>
-                    </screen-toolbar>
-                </screen-header>
-
-                <screen-content class="q-pa-md">
-                    <subscreens-active></subscreens-active>
-                </screen-content>
-            </screen-layout>
+            <section name="ShellLayout">
+                <condition><expression>ec.web.parameters.last != 'true'</expression></condition>
+                <widgets>
+                    <screen-layout view="hHh lpR fFf" class="bg-grey-1">
+                        <screen-header elevated="true" class="bg-primary text-white">
+                            <screen-toolbar>
+                                <render-mode><text type="html,qvt2"><![CDATA[<q-btn :dense="true" :flat="true" :round="true" icon="menu" aria-label="Menu" @click="leftOpen = !leftOpen"></q-btn>]]></text></render-mode>
+                                <label text="Staff Meeting" style="q-toolbar-title"/>
+                                <container type="q-space"/>
+                                <menu-item name="Home"/>
+                                <menu-item name="PeopleOrgs"/>
+                                <menu-item name="MedicalRecords"/>
+                                <menu-dropdown text="Meetings" icon="groups" transition="getAgendaContainers" label-field="label" key-field="value" url-parameter="activeAgendaContainerId"/>
+                            </screen-toolbar>
+                        </screen-header>
+                        <screen-content class="q-pa-md">
+                            <subscreens-active></subscreens-active>
+                        </screen-content>
+                    </screen-layout>
+                </widgets>
+                <fail-widgets>
+                    <subscreens-active/>
+                </fail-widgets>
+            </section>
         </container>
     </widgets>
 </screen>
