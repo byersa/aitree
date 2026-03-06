@@ -1,0 +1,15 @@
+<entity-facade-xml>
+    <!-- AgendaContainer records -->
+    <aitree.meeting.AgendaContainer agendaContainerId="SHMT_0001" name="Meeting 1" orgId="SH1_CORP" containerCategoryEnumId="AitCategoryAbstract" containerTypeEnumId="AitContainerAbstract" status="AgdStatusActive"/>
+    <aitree.meeting.AgendaContainer agendaContainerId="SHMT_0002" name="Meeting 2" orgId="SH1_CORP" containerCategoryEnumId="AitCategoryAbstract" containerTypeEnumId="AitContainerRepo" status="AgdStatusActive"/>
+    <aitree.meeting.AgendaContainer agendaContainerId="SHMT_0003" name="Meeting 3" orgId="SH1_CORP" containerCategoryEnumId="AitCategoryAbstract" containerTypeEnumId="AitContainerAbstract" status="AgdStatusActive"/>
+    <aitree.meeting.AgendaContainer agendaContainerId="SHMT_0004" name="Meeting 4" orgId="SH1_CORP" containerCategoryEnumId="AitCategoryAbstract" containerTypeEnumId="AitContainerRepo" status="AgdStatusActive"/>
+    <aitree.meeting.AgendaContainer agendaContainerId="SHMT_0005" name="Meeting 5" orgId="SH1_CORP" containerCategoryEnumId="AitCategoryAbstract" containerTypeEnumId="AitContainerAbstract" status="AgdStatusActive"/>
+
+    <!-- AgendaMessage records -->
+    <aitree.meeting.AgendaMessage agendaMessageId="SHMT_0001" orgId="SH1_CORP" partyId="10000"/>
+    <aitree.meeting.AgendaMessage agendaMessageId="SHMT_0002" orgId="SH1_CORP" partyId="10001"/>
+    <aitree.meeting.AgendaMessage agendaMessageId="SHMT_0003" orgId="SH1_CORP" partyId="10002"/>
+    <aitree.meeting.AgendaMessage agendaMessageId="SHMT_0004" orgId="SH1_CORP" partyId="10003"/>
+    <aitree.meeting.AgendaMessage agendaMessageId="SHMT_0005" orgId="SH1_CORP" partyId="10004"/>
+</entity-facade-xml>
