@@ -1,0 +1,33 @@
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsd">
+    <widgets>
+        <screen-layout id="manage-agenda-containers-layout">
+            <screen-header id="h-agenda-containers">
+                <label text="Manage Agenda Containers" type="h5"/>
+                <bp-tabbar id="m-tabs">
+                    <bp-tab name="ManageAgendaContainers" text="Manage Agenda Containers" icon="create_new_folder"/>
+                </bp-tabbar>
+            </screen-header>
+            <screen-content id="c-agenda-containers">
+                <form-list name="AgendaContainerList" list="containerList">
+                    <entity-find entity-name="aitree.meeting.AgendaContainer" list="containerList"/>
+                    
+                    <field name="agendaContainerId"><default-field title="ID"><display/></default-field></field>
+                    <field name="name"><default-field title="Name"><display/></default-field></field>
+                    <field name="shortName"><default-field title="Short Name"><display/></default-field></field>
+                    <field name="containerTypeEnumId"><default-field title="Container Type"><display-entity entity-name="moqui.basic.Enumeration"/></default-field></field>
+                    <field name="statusId"><default-field title="Status"><display-entity entity-name="moqui.basic.StatusItem"/></default-field></field>
+                    
+                    <field name="editAction">
+                        <header-field title="Edit"/>
+                        <default-field>
+                            <dynamic-dialog id="edit-dialog" button-text="Edit" icon="edit" transition="EditAgendaContainerDialog">
+                                <parameter name="agendaContainerId" from="agendaContainerId"/>
+                            </dynamic-dialog>
+                        </default-field>
+                    </field>
+                </form-list>
+            </screen-content>
+        </screen-layout>
+    </widgets>
+</screen>

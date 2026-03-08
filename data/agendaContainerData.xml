@@ -1,15 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <entity-facade-xml>
-    <!-- AgendaContainer records -->
-    <aitree.meeting.AgendaContainer agendaContainerId="SHMT_0001" name="Meeting 1" orgId="SH1_CORP" containerCategoryEnumId="AitCategoryAbstract" containerTypeEnumId="AitContainerAbstract" status="AgdStatusActive"/>
-    <aitree.meeting.AgendaContainer agendaContainerId="SHMT_0002" name="Meeting 2" orgId="SH1_CORP" containerCategoryEnumId="AitCategoryAbstract" containerTypeEnumId="AitContainerRepo" status="AgdStatusActive"/>
-    <aitree.meeting.AgendaContainer agendaContainerId="SHMT_0003" name="Meeting 3" orgId="SH1_CORP" containerCategoryEnumId="AitCategoryAbstract" containerTypeEnumId="AitContainerAbstract" status="AgdStatusActive"/>
-    <aitree.meeting.AgendaContainer agendaContainerId="SHMT_0004" name="Meeting 4" orgId="SH1_CORP" containerCategoryEnumId="AitCategoryAbstract" containerTypeEnumId="AitContainerRepo" status="AgdStatusActive"/>
-    <aitree.meeting.AgendaContainer agendaContainerId="SHMT_0005" name="Meeting 5" orgId="SH1_CORP" containerCategoryEnumId="AitCategoryAbstract" containerTypeEnumId="AitContainerAbstract" status="AgdStatusActive"/>
-
-    <!-- AgendaMessage records -->
-    <aitree.meeting.AgendaMessage agendaMessageId="SHMT_0001" orgId="SH1_CORP" partyId="10000"/>
-    <aitree.meeting.AgendaMessage agendaMessageId="SHMT_0002" orgId="SH1_CORP" partyId="10001"/>
-    <aitree.meeting.AgendaMessage agendaMessageId="SHMT_0003" orgId="SH1_CORP" partyId="10002"/>
-    <aitree.meeting.AgendaMessage agendaMessageId="SHMT_0004" orgId="SH1_CORP" partyId="10003"/>
-    <aitree.meeting.AgendaMessage agendaMessageId="SHMT_0005" orgId="SH1_CORP" partyId="10004"/>
+  <aitree.meeting.AgendaContainer agendaContainerId="BASE_REPO" name="Base Repository Container" shortName="Base Repo" containerCategoryEnumId="AitCategoryAbstract" containerTypeEnumId="AitContainerRepo" statusId="AgdStatusActive"/>
+  <aitree.meeting.AgendaContainerRelationship parentAgendaContainerId="HdlMorningAbstract" childAgendaContainerId="BASE_REPO" statusId="AgdStatusActive"/>
+  <aitree.meeting.AgendaContainerRelationship parentAgendaContainerId="HdlLeadershipAbstract" childAgendaContainerId="BASE_REPO" statusId="AgdStatusActive"/>
+<aitree.meeting.AgendaMessage agendaMessageId="SHB0172" orgId="SH1_CORP" partyId="100051" agendaContainerId="BASE_REPO" parentMessageId=""/>
+<aitree.meeting.AgendaMessageContent agendaMessageId="SHB0172" contentId="SHB0172" title="Staff PPD" description="This is the description for CampaignInstruct:SHB0172 Staff PPD "/>
+<aitree.meeting.AgendaMessage agendaMessageId="SHB0177" orgId="SH1_CORP" partyId="100051" agendaContainerId="BASE_REPO" parentMessageId=""/>
+<aitree.meeting.AgendaMessageContent agendaMessageId="SHB0177" contentId="SHB0177" title="Staff Overtime" description="This is the description for CampaignInstruct:SHB0177 Staff Overtime "/>
+<aitree.meeting.AgendaMessage agendaMessageId="SHB0182" orgId="SH1_CORP" partyId="100051" agendaContainerId="BASE_REPO" parentMessageId=""/>
+<aitree.meeting.AgendaMessageContent agendaMessageId="SHB0182" contentId="SHB0182" title="CMS 672 Review" description="This is the description for CampaignInstruct:SHB0182 CMS 672 Review "/>
+<aitree.meeting.AgendaMessage agendaMessageId="SHB0187" orgId="SH1_CORP" partyId="100051" agendaContainerId="BASE_REPO" parentMessageId=""/>
+<aitree.meeting.AgendaMessageContent agendaMessageId="SHB0187" contentId="SHB0187" title="New Skin Issues" description="This is the description for CampaignInstruct:SHB0187 New Skin Issues "/>
+<aitree.meeting.AgendaMessage agendaMessageId="SHB0192" orgId="SH1_CORP" partyId="100051" agendaContainerId="BASE_REPO" parentMessageId=""/>
+<aitree.meeting.AgendaMessageContent agendaMessageId="SHB0192" contentId="SHB0192" title="Total Skin Issues" description="This is the description for CampaignInstruct:SHB0192 Total Skin Issues "/>
+<aitree.meeting.AgendaMessage agendaMessageId="SHB0197" orgId="SH1_CORP" partyId="100051" agendaContainerId="BASE_REPO" parentMessageId=""/>
+<aitree.meeting.AgendaMessageContent agendaMessageId="SHB0197" contentId="SHB0197" title="Weigth Loss" description="This is the description for CampaignInstruct:SHB0197 Weigth Loss "/>
 </entity-facade-xml>

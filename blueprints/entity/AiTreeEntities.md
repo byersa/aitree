@@ -13,7 +13,7 @@ The digital representation of any concept to which agenda messages (topics or re
 In the component://studdle/entity.agendaHuddle.xml file, the equivalent of AgendaContainer would be MeetingTemplate. 
 
 ### Container Templates
-Abstract containers serving as a "class" to instantiate actual containers (e.g. standard meeting formats). Connected to parent container templates through the "parent" of the owning person/organization (not via parent template ID).
+Abstract containers serving as a "class" to instantiate actual containers (e.g. standard meeting formats). Connected to Repository containers through the `AgendaContainerRelationship` entity.
 
 ### Instance Container
 Instances of container templates actually held (e.g., a specific scheduled meeting). 
@@ -21,10 +21,12 @@ Instances of container templates actually held (e.g., a specific scheduled meeti
 - Virtual container instances can be created before instantiation to modify upcoming agendas.
 
 ### Repository Container
-A library modeled as a container. Uses some template features. Used exclusively to store headless messages (standard agenda topics) to share as libraries across templates, eliminating duplication.
+A library modeled as a container. Uses some template features. Used exclusively to store headless messages (standard agenda topics) to share as libraries across templates, eliminating duplication. 
+Repository containers are linked to Abstract templates via `AgendaContainerRelationship` (e.g., `BASE_REPO` linked to `HdlMorningAbstract`).
 
 ### AgendaContainer notes
-The MeetingTemplate definition uses a field, "meetingTypeEnumId" to identiy the "type" (ie. abstract, instance and repository). That field and all the fields defined in MeetingTemplate should be used in AgendaContainer. 
+The MeetingTemplate definition uses a field, "meetingTypeEnumId" to identiy the "type" (ie. abstract, instance and repository). That field and all the fields defined in MeetingTemplate should be used in AgendaContainer.
+The `parentContainerId` field has been deprecated in favor of the `AgendaContainerRelationship` entity for many-to-many flexibility.
 
 ## Discussion & Message Entities
 ### Agenda Message

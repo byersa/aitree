@@ -14,9 +14,6 @@
         </description>
 
         <field name="agendaContainerId" type="id" is-pk="true"/>
-        <field name="parentContainerId" type="id">
-            <description>Connected to parent container templates (e.g. for repositories)</description>
-        </field>
         <field name="name" type="text-medium"/>
         <field name="shortName" type="text-medium"/>
         <field name="statusId" type="id"/>
@@ -34,9 +31,6 @@
 
         <index name="AGD_CONT_FROM_DT"><index-field name="fromDate"/></index>
 
-        <relationship type="one" title="ParentAgendaContainer" related="aitree.meeting.AgendaContainer">
-            <key-map field-name="parentContainerId" related="agendaContainerId"/>
-        </relationship>
         <relationship type="one" title="ContainerStatus" related="moqui.basic.StatusItem">
             <key-map field-name="statusId"/>
         </relationship>
@@ -69,10 +63,40 @@
             <moqui.basic.StatusItem description="Completed" statusId="AgdStatusCompleted" statusTypeId="AgendaContainerStatus"/>
 
             <!-- Dropdown Options (Abstract Templates) -->
-            <aitree.meeting.AgendaContainer agendaContainerId="HdlMorningAbstract" name="Morning Huddle" shortName="Huddle" containerCategoryEnumId="AitCategoryAbstract" containerTypeEnumId="AitContainerAbstract"/>
-            <aitree.meeting.AgendaContainer agendaContainerId="HdlLeadershipAbstract" name="Leadership Sync" shortName="Leadership" containerCategoryEnumId="AitCategoryAbstract" containerTypeEnumId="AitContainerAbstract"/>
-            <aitree.meeting.AgendaContainer agendaContainerId="HdlClinicalAbstract" name="Clinical Review" shortName="Clinical" containerCategoryEnumId="AitCategoryAbstract" containerTypeEnumId="AitContainerAbstract"/>
+            <aitree.meeting.AgendaContainer agendaContainerId="HdlMorningAbstract" name="Morning Huddle" shortName="Huddle" containerCategoryEnumId="AitCategoryAbstract" containerTypeEnumId="AitContainerAbstract" statusId="AgdStatusActive"/>
+            <aitree.meeting.AgendaContainer agendaContainerId="HdlLeadershipAbstract" name="Leadership Sync" shortName="Leadership" containerCategoryEnumId="AitCategoryAbstract" containerTypeEnumId="AitContainerAbstract" statusId="AgdStatusActive"/>
+            <aitree.meeting.AgendaContainer agendaContainerId="HdlClinicalAbstract" name="Clinical Review" shortName="Clinical" containerCategoryEnumId="AitCategoryAbstract" containerTypeEnumId="AitContainerAbstract" statusId="AgdStatusActive"/>
+
+            <!-- Repository -->
+            <aitree.meeting.AgendaContainer agendaContainerId="BASE_REPO" name="Base Repository Container" shortName="Base Repo" containerCategoryEnumId="AitCategoryAbstract" containerTypeEnumId="AitContainerRepo" statusId="AgdStatusActive"/>
+
+            <!-- Relationships -->
+            <aitree.meeting.AgendaContainerRelationship parentAgendaContainerId="HdlMorningAbstract" childAgendaContainerId="BASE_REPO" statusId="AgdStatusActive"/>
+            <aitree.meeting.AgendaContainerRelationship parentAgendaContainerId="HdlLeadershipAbstract" childAgendaContainerId="BASE_REPO" statusId="AgdStatusActive"/>
         </seed-data>
+    </entity>
+
+    <entity entity-name="AgendaContainerRelationship" package="aitree.meeting">
+        <description>
+            Connects containers (e.g., Abstract Templates to Repositories).
+            Allows shared boilerplate messages within the repo to be 'available' to multiple meeting templates.
+        </description>
+        <field name="agendaContainerRelationshipId" type="id" is-pk="true"/>
+        <field name="parentAgendaContainerId" type="id"/>
+        <field name="childAgendaContainerId" type="id"/>
+        <field name="statusId" type="id"/>
+        <field name="fromDate" type="date-time"/>
+        <field name="thruDate" type="date-time"/>
+
+        <relationship type="one" title="ParentContainer" related="aitree.meeting.AgendaContainer">
+            <key-map field-name="parentAgendaContainerId" related="agendaContainerId"/>
+        </relationship>
+        <relationship type="one" title="ChildContainer" related="aitree.meeting.AgendaContainer">
+            <key-map field-name="childAgendaContainerId" related="agendaContainerId"/>
+        </relationship>
+        <relationship type="one" title="Status" related="moqui.basic.StatusItem">
+            <key-map field-name="statusId"/>
+        </relationship>
     </entity>
 
 

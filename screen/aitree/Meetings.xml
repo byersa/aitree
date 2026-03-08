@@ -1,0 +1,21 @@
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsd">
+    <subscreens default-item="MeetingInstances">
+        <subscreens-item name="MeetingInstances" location="component://aitree/screen/aitree/MeetingInstances.xml"/>
+        <subscreens-item name="ScheduledTopicCalendar" location="component://aitree/screen/aitree/ScheduledTopicCalendar.xml"/>
+    </subscreens>
+    <widgets>
+        <screen-layout id="meetings-layout">
+            <screen-header id="h-meetings">
+                <label text="Staff Meeting" type="h5"/>
+                <bp-tabbar id="m-tabs">
+                    <bp-tab name="MeetingInstances" text="Meeting Instances" icon="play_arrow"/>
+                    <bp-tab name="ScheduledTopicCalendar" text="Scheduled Topic Calendar" icon="event"/>
+                </bp-tabbar>
+            </screen-header>
+            <screen-content id="c-meetings">
+                <subscreens-active/>
+            </screen-content>
+        </screen-layout>
+    </widgets>
+</screen>

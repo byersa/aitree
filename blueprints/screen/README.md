@@ -17,6 +17,10 @@ This folder contains blueprints for defining UI screens and frontend components 
 - Follow the Single Page Architecture (SPA) model.
 - Always include ARIA id tags for `moqui-mcp` testability.
 
+## 🤖 Writing Effective Blueprints for AI Generation
+For comprehensive rules on how developers should structure their blueprints to maximize effectiveness with the `blueprint-gen` LLM tools, refer to the User Guide chapter:
+👉 **[moqui-ai/.agent/guide/extras/Writing_Effective_Blueprints.md](../../../moqui-ai/.agent/guide/extras/Writing_Effective_Blueprints.md)**
+
 ## Root SPA Shell Bolierplate (`aitree.xml`)
 When defining the root screen representing the base of the standalone SPA layout (`aitree/screen/aitree.xml`), you must always include the following critical blocks.
 
@@ -32,7 +36,7 @@ When defining the root screen representing the base of the standalone SPA layout
 
 2. **Routes.js & MenuData Transitions**: Required to generate routing JSON for the Vue app.
 ```xml
-    <transition name="menuDataQvt2" read-only="true" begin-transaction="false" require-session-token="false">
+    <transition name="menuDataQvt" read-only="true" begin-transaction="false" require-session-token="false">
         <actions><script><![CDATA[
             def sd = ec.screen.getScreenDefinition("component://aitree/screen/aitree.xml")
             def subscreens = []
@@ -98,7 +102,7 @@ When defining the root screen representing the base of the standalone SPA layout
 ```xml
     <widgets>
         <render-mode>
-            <text type="html" location="component://moqui-ai/template/spa/MoquiAiVue.qvt2.ftl"/>
+            <text type="html" location="component://moqui-ai/template/spa/MoquiAiVue.qvt.ftl"/>
         </render-mode>
 
         <container id="apps-root">

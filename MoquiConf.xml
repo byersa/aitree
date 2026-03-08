@@ -32,7 +32,7 @@
                         // Content Negotiation: If client asks for JSON (Blueprint), force qjson renderMode
                         def accept = ec.web.request.getHeader("Accept")
                         if (accept?.contains("application/json")) {
-                            // If we didn't force this, it would often stick with qvt2 (the shell mode) and return HTML
+                            // If we didn't force this, it would often stick with qvt (the shell mode) and return HTML
                             ec.web.requestParameters.renderMode = "qjson"
                             // ec.logger.warn("Content Negotiation: Forced qjson for request to ${ec.web.request.requestURI}")
                         }

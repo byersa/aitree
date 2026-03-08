@@ -28,12 +28,12 @@
         <default-response type="none"/>
     </transition>
 
-    <transition name="menuDataQvt2" read-only="true" begin-transaction="false" require-session-token="false">
+    <transition name="menuDataQvt" read-only="true" begin-transaction="false" require-session-token="false">
         <actions><script><![CDATA[
             List<String> fullPath = new ArrayList<>(sri.getActiveScreenPath())
             fullPath.addAll(sri.screenUrlInfo.extraPathNameList)
-            // ec.logger.warn("menuDataQvt2 transition hit! root: " + sri.getRootScreenDef().getLocation() + " | fullPath: " + fullPath)
-            List menuDataList = sri.getMenuData(fullPath, "", "", false)
+            // ec.logger.warn("menuDataQvt transition hit! root: " + sri.getRootScreenDef().getLocation() + " | fullPath: " + fullPath)
+            List menuDataList = ec.user.userId ? sri.getMenuData(fullPath) : []
             if (menuDataList != null) ec.web.sendJsonResponse(menuDataList)
         ]]></script></actions>
         <default-response type="none" save-parameters="true"/>
@@ -98,7 +98,7 @@
 
     <widgets>
         <render-mode>
-            <text type="html,qvt2" location="component://moqui-ai/template/spa/MoquiAiVue.qvt2.ftl"/>
+            <text type="html,qvt" location="component://moqui-ai/template/spa/MoquiAiVue.qvt.ftl"/>
         </render-mode>
 
         <container id="apps-root">
@@ -108,7 +108,7 @@
                     <screen-layout view="hHh lpR fFf" class="bg-grey-1">
                         <screen-header elevated="true" class="bg-primary text-white">
                             <screen-toolbar>
-                                <render-mode><text type="html,qvt2"><![CDATA[<q-btn :dense="true" :flat="true" :round="true" icon="menu" aria-label="Menu" @click="leftOpen = !leftOpen"></q-btn>]]></text></render-mode>
+                                <render-mode><text type="html,qvt"><![CDATA[<q-btn :dense="true" :flat="true" :round="true" icon="menu" aria-label="Menu" @click="leftOpen = !leftOpen"></q-btn>]]></text></render-mode>
                                 <label text="Staff Meeting" style="q-toolbar-title"/>
                                 <container type="q-space"/>
                                 <menu-item name="Home"/>

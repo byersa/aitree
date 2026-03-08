@@ -39,6 +39,6 @@
     </widgets>
     
     <render-mode>
-        <text type="qvt2" location="component://aitree/screen/aitree/ActiveMeetings/MainInstancePanel.qvt.js" />
+        <text type="qvt" location="component://aitree/screen/aitree/ActiveMeetings/MainInstancePanel.qvt.js" />
     </render-mode>
 </screen>
