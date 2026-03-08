@@ -114,7 +114,7 @@
                                 <menu-item name="Home"/>
                                 <menu-item name="PeopleOrgs"/>
                                 <menu-item name="MedicalRecords"/>
-                                <menu-dropdown text="Meetings" icon="groups" transition="getAgendaContainers" label-field="label" key-field="value" url-parameter="activeAgendaContainerId"/>
+                                <menu-item name="Meetings" text="Meetings" icon="groups"/>
                             </screen-toolbar>
                         </screen-header>
                         <screen-content class="q-pa-md">

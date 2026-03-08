@@ -13,6 +13,8 @@ This folder contains blueprints for defining UI screens and frontend components 
   - ❌ Incorrect: `<q-item-label>Case Review: Oncology</q-item-label>`
   - ✅ Correct: `<q-item-label><label text="Case Review: Oncology"/></q-item-label>`
 - **Subscreen Authorization**: Moqui enables screen-level authorization by default (`require-authentication="true"`). When scaffolding internal subscreens that are part of a larger SPA shell (like `Home.xml` inside `aitree.xml`), you must explicitly add `require-authentication="false"` to the root `<screen>` component of the subscreen so it inherits access from the master screen, avoiding `403 Forbidden` errors.
+- **Form List Data**: For `<form-list>` components, use standard Moqui attributes for data retrieval. The deterministic renderer will automatically handle data evaluation for `<display>` and `<display-entity>` widgets.
+- **Entity Values**: For descriptive fields (like Enumeration labels), use `<display-entity entity-name="..."/>`. The renderer evaluates these on the server so the frontend receives the formatted text value in the blueprint.
 - Adhere to the Vue macro usage and layout standards defined for the `moqui-ai` project.
 - Follow the Single Page Architecture (SPA) model.
 - Always include ARIA id tags for `moqui-mcp` testability.

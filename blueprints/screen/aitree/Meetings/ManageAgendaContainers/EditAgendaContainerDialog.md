@@ -1,0 +1,1 @@
+# EditAgendaContainerDialog is the form for creating and editing single AgendaContainer records.

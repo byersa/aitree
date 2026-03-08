@@ -1,16 +1,16 @@
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsd">
-    <subscreens default-item="MeetingInstances">
-        <subscreens-item name="MeetingInstances" location="component://aitree/screen/aitree/MeetingInstances.xml"/>
-        <subscreens-item name="ScheduledTopicCalendar" location="component://aitree/screen/aitree/ScheduledTopicCalendar.xml"/>
+        xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsd" require-authentication="false">
+    <subscreens default-item="ManageAgendaContainers">
+        <subscreens-item name="ManageAgendaContainers" location="component://aitree/screen/aitree/Meetings/ManageAgendaContainers.xml"/>
+        <subscreens-item name="ActiveScreens" location="component://aitree/screen/aitree/Meetings/ActiveScreens.xml"/>
     </subscreens>
     <widgets>
         <screen-layout id="meetings-layout">
             <screen-header id="h-meetings">
                 <label text="Staff Meeting" type="h5"/>
                 <bp-tabbar id="m-tabs">
-                    <bp-tab name="MeetingInstances" text="Meeting Instances" icon="play_arrow"/>
-                    <bp-tab name="ScheduledTopicCalendar" text="Scheduled Topic Calendar" icon="event"/>
+                    <bp-tab name="ManageAgendaContainers" text="Manage Containers" icon="settings"/>
+                    <bp-tab name="ActiveScreens" text="Active Meetings" icon="play_arrow"/>
                 </bp-tabbar>
             </screen-header>
             <screen-content id="c-meetings">

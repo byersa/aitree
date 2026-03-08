@@ -26,9 +26,10 @@ Allows for entry, retrieval, and general management of patient medical records.
 **Requirement**: Must adhere to all HIPAA requirements, including encryption.
 
 ### SMA Meetings page
-A top-level `subscreens-menu`/`tabs` page, keyed by available abstract meeting templates. 
-- Each tab contains another `subscreens-menu`/`tabs` page containing all the "active" meetings of that meeting template type, keyed by scheduled date of occurrence.
-- Each instance meeting is rendered by its own rendering component, mostly rendering the `<discussion-tree>` screen macro.
+A top-level screen utilizing a `bp-tabbar`. It provides horizontal tab navigation between its subscreens:
+- "ManageAgendaContainers" (Management of abstract and repo meetings)
+- "ActiveScreens" (Creation and listing of instance meetings)
+*Note: The main Header menu should render 'Meetings' as a standard `<menu-item>`, not a `<menu-dropdown>`.*
 
 ### Scheduled Topic Calendar (STC)
 A screen showing upcoming meetings.
