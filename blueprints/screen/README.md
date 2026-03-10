@@ -37,32 +37,49 @@ When defining the root screen representing the base of the standalone SPA layout
 ```
 
 2. **Routes.js & MenuData Transitions**: Required to generate routing JSON for the Vue app.
+   - **CRITICAL**: Do NOT use `sri.getMenuData()` for anonymous apps. It has a hard-coded 401 check. Always use the manual pattern below to ensure unauthenticated users receive navigation data.
+   - **CRITICAL**: Always append the active subscreen to the breadcrumb list response to ensure the SPA identifies the correct starting route on initial load.
+
 ```xml
     <transition name="menuDataQvt" read-only="true" begin-transaction="false" require-session-token="false">
         <actions><script><![CDATA[
             def sd = ec.screen.getScreenDefinition("component://aitree/screen/aitree.xml")
             def subscreens = []
+            // Determine active from extra path or default to Home
+            String activeName = sri.screenUrlInfo.extraPathNameList ? sri.screenUrlInfo.extraPathNameList[0] : "Home"
+            Map activeSub = null
             for (ssi in sd.getSubscreensItemsSorted()) {
                 if (!ssi.menuInclude) continue
-                subscreens.add([
+                def sub = [
                     name: ssi.name,
                     title: ssi.menuTitle ?: ssi.name,
-                    path: "/" + ssi.name,
-                    pathWithParams: "/" + ssi.name,
-                    active: sri.screenUrlInfo.extraPathNameList.contains(ssi.name)
-                ])
+                    path: "/aitree/" + ssi.name,
+                    pathWithParams: "/aitree/" + ssi.name,
+                    active: ssi.name == activeName
+                ]
+                subscreens.add(sub)
+                if (sub.active) activeSub = sub
             }
-            ec.web.sendJsonResponse([[
+            def menuData = [[
                 name: "aitree",
                 title: "Staff Meeting",
-                path: "/",
-                pathWithParams: "/",
+                path: "/aitree",
+                pathWithParams: "/aitree",
                 subscreens: subscreens
-            ]])
+            ]]
+            // Append active subscreen so Vue handles currentPathList correctly on load
+            if (activeSub) {
+                menuData.add([
+                    name: activeSub.name,
+                    title: activeSub.title,
+                    path: activeSub.path,
+                    pathWithParams: activeSub.pathWithParams
+                ])
+            }
+            ec.web.sendJsonResponse(menuData)
         ]]></script></actions>
-        <default-response type="none" save-parameters="true"/>
+        <default-response type="none"/>
     </transition>
-
     <transition name="routes.js" read-only="true">
         <actions>
             <set field="webappName" from="ec.web.request.servletContext.getInitParameter('moqui-name')"/>

@@ -10,17 +10,16 @@
                 <dynamic-dialog id="create-container" text="Create Container" icon="add" transition="EditAgendaContainerDialog"/>
             </screen-header>
             <screen-content id="c-manage-agenda-containers">
-                <form-list id="AgendaContainerList" list="containerList">
-                    <entity-find entity-name="aitree.meeting.AgendaContainer" list="containerList">
-                        <field name="agendaContainerId"/>
-                        <field name="name"/>
-                        <field name="shortName"/>
-                        <field name="containerTypeEnumId"/>
-                        <field name="statusId"/>
-                        <action name="Edit" icon="edit" transition="EditAgendaContainerDialog" parameters="agendaContainerId=${agendaContainerId}"/>
-                    </entity-find>
-                </form-list>
+                <subscreens-active/>
             </screen-content>
         </screen-layout>
     </widgets>
+    <transitions>
+        <transition name="EditAgendaContainerDialog">
+            <default-response url="ManageAgendaContainers/EditAgendaContainerDialog" parameter-map="true" access-re-authorize="true">
+                <parameter name="renderMode" value="qjson"/>
+                <parameter name="renderTargetOnly" value="true"/>
+            </default-response>
+        </transition>
+    </transitions>
 </screen>

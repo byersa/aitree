@@ -28,15 +28,74 @@
         <default-response type="none"/>
     </transition>
 
+    <transition name="getEnumerations" read-only="true" require-session-token="false">
+        <parameter name="enumTypeId" required="true"/>
+        <actions>
+            <entity-find entity-name="moqui.basic.Enumeration" list="enumList">
+                <econdition field-name="enumTypeId"/>
+                <order-by field-name="description"/>
+            </entity-find>
+            <script>
+                def result = enumList.collect { [label: it.description, value: it.enumId] }
+                ec.web.sendJsonResponse(result)
+            </script>
+        </actions>
+        <default-response type="none"/>
+    </transition>
+
+    <transition name="getStatusItems" read-only="true" require-session-token="false">
+        <parameter name="statusTypeId" required="true"/>
+        <actions>
+            <entity-find entity-name="moqui.basic.StatusItem" list="statusList">
+                <econdition field-name="statusTypeId"/>
+                <order-by field-name="description"/>
+            </entity-find>
+            <script>
+                def result = statusList.collect { [label: it.description, value: it.statusId] }
+                ec.web.sendJsonResponse(result)
+            </script>
+        </actions>
+        <default-response type="none"/>
+    </transition>
+
     <transition name="menuDataQvt" read-only="true" begin-transaction="false" require-session-token="false">
         <actions><script><![CDATA[
-            List<String> fullPath = new ArrayList<>(sri.getActiveScreenPath())
-            fullPath.addAll(sri.screenUrlInfo.extraPathNameList)
-            // ec.logger.warn("menuDataQvt transition hit! root: " + sri.getRootScreenDef().getLocation() + " | fullPath: " + fullPath)
-            List menuDataList = ec.user.userId ? sri.getMenuData(fullPath) : []
-            if (menuDataList != null) ec.web.sendJsonResponse(menuDataList)
+            def sd = ec.screen.getScreenDefinition("component://aitree/screen/aitree.xml")
+            def subscreens = []
+            // Determine active from extra path or default to Home
+            String activeName = sri.screenUrlInfo.extraPathNameList ? sri.screenUrlInfo.extraPathNameList[0] : "Home"
+            Map activeSub = null
+            for (ssi in sd.getSubscreensItemsSorted()) {
+                if (!ssi.menuInclude) continue
+                def sub = [
+                    name: ssi.name,
+                    title: ssi.menuTitle ?: ssi.name,
+                    path: "/aitree/" + ssi.name,
+                    pathWithParams: "/aitree/" + ssi.name,
+                    active: ssi.name == activeName
+                ]
+                subscreens.add(sub)
+                if (sub.active) activeSub = sub
+            }
+            def menuData = [[
+                name: "aitree",
+                title: "Staff Meeting",
+                path: "/aitree",
+                pathWithParams: "/aitree",
+                subscreens: subscreens
+            ]]
+            // Crucial: add active subscreen to breadcrumb list so Vue handles currentPathList/reloadSubscreens correctly
+            if (activeSub) {
+                menuData.add([
+                    name: activeSub.name,
+                    title: activeSub.title,
+                    path: activeSub.path,
+                    pathWithParams: activeSub.pathWithParams
+                ])
+            }
+            ec.web.sendJsonResponse(menuData)
         ]]></script></actions>
-        <default-response type="none" save-parameters="true"/>
+        <default-response type="none"/>
     </transition>
 
     <transition name="moquiaiJs" read-only="true" require-session-token="false">
@@ -103,7 +162,7 @@
 
         <container id="apps-root">
             <section name="ShellLayout">
-                <condition><expression>ec.web.parameters.last != 'true'</expression></condition>
+                <condition><expression>renderTargetOnly != true &amp;&amp; ec.web.parameters.renderTargetOnly != 'true' &amp;&amp; ec.web.parameters.last != 'true'</expression></condition>
                 <widgets>
                     <screen-layout view="hHh lpR fFf" class="bg-grey-1">
                         <screen-header elevated="true" class="bg-primary text-white">

@@ -13,21 +13,21 @@
             Modeled after legacy sh.MeetingTemplate.
         </description>
 
-        <field name="agendaContainerId" type="id" is-pk="true"/>
-        <field name="name" type="text-medium"/>
-        <field name="shortName" type="text-medium"/>
-        <field name="statusId" type="id"/>
-        <field name="containerTypeEnumId" type="id">
+        <field name="agendaContainerId" type="id" is-pk="true" title="ID"/>
+        <field name="name" type="text-medium" title="Name"/>
+        <field name="shortName" type="text-medium" title="Short Name"/>
+        <field name="statusId" type="id" title="Status"/>
+        <field name="containerTypeEnumId" type="id" title="Type">
             <description>Detailed type: RealTime, Virtual, Quality, Todo, Repository, etc.</description>
         </field>
-        <field name="containerCategoryEnumId" type="id">
+        <field name="containerCategoryEnumId" type="id" title="Category">
             <description>High-level category: AitCategoryAbstract or AitCategoryInstance.</description>
         </field>
-        <field name="orgId" type="id">
+        <field name="orgId" type="id" title="Owning Organization">
             <description>Base ownership hierarchy for PartyRelationship permission tree</description>
         </field>
-        <field name="fromDate" type="date-time"/>
-        <field name="thruDate" type="date-time"/>
+        <field name="fromDate" type="date-time" title="From Date"/>
+        <field name="thruDate" type="date-time" title="Thru Date"/>
 
         <index name="AGD_CONT_FROM_DT"><index-field name="fromDate"/></index>
 

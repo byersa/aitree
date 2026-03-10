@@ -1,27 +1,59 @@
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsd" require-authentication="false">
+    <parameter name="name"/>
+    <parameter name="containerCategoryEnumId"/>
+    <parameter name="containerTypeEnumId"/>
+    <parameter name="fromDate"/>
+    <parameter name="thruDate"/>
+
+    <subscreens>
+        <subscreens-item name="EditAgendaContainerDialog" location="component://aitree/screen/aitree/Meetings/ManageAgendaContainers/EditAgendaContainerDialog.xml" menu-include="false"/>
+    </subscreens>
+
+    <transitions>
+        <transition name="EditAgendaContainerDialog">
+            <default-response url="EditAgendaContainerDialog" parameter-map="true" access-re-authorize="true">
+                <parameter name="renderMode" value="qjson"/>
+                <parameter name="renderTargetOnly" value="true"/>
+            </default-response>
+        </transition>
+    </transitions>
+
+    <actions>
+        <entity-find entity-name="aitree.meeting.AgendaContainer" list="containerList">
+            <search-form-inputs default-order-by="name"/>
+        </entity-find>
+    </actions>
+
     <widgets>
-        <screen-layout id="manage-agenda-containers-layout">
-            <screen-header id="h-agenda-containers">
-                <label text="Manage Agenda Containers" type="h5"/>
-                <bp-tabbar id="m-tabs">
-                    <bp-tab name="ManageAgendaContainers" text="Manage Agenda Containers" icon="create_new_folder"/>
-                </bp-tabbar>
+        <screen-layout id="manage-containers-layout">
+            <screen-header id="h-manage-containers">
+                <container-row>
+                    <row-col class="col-grow"><label text="Manage Agenda Containers" type="h5"/></row-col>
+                    <row-col class="col-auto">
+                        <dynamic-dialog id="CreateContainerDialog" button-text="Create Container" icon="add" transition="EditAgendaContainerDialog" color="primary" title="Create New Agenda Container"/>
+                    </row-col>
+                </container-row>
             </screen-header>
-            <screen-content id="c-agenda-containers">
+            <screen-content id="c-manage-containers">
+                <form-query name="Search">
+                    <form-query-field name="name" type="text" operator="begins"/>
+                    <form-query-field name="containerCategoryEnumId" type="drop-down" enum-type-id="AgendaContainerCategory"/>
+                    <form-query-field name="containerTypeEnumId" type="drop-down" enum-type-id="AgendaContainerType"/>
+                    <form-query-field name="fromDate" type="date"/>
+                    <form-query-field name="thruDate" type="date"/>
+                </form-query>
+
                 <form-list name="AgendaContainerList" list="containerList">
-                    <entity-find entity-name="aitree.meeting.AgendaContainer" list="containerList"/>
+                    <field name="agendaContainerId"><header-field title="ID"/><default-field><display/></default-field></field>
+                    <field name="name"><header-field title="Name"/><default-field><display/></default-field></field>
+                    <field name="shortName"><header-field title="Short Name"/><default-field><display/></default-field></field>
+                    <field name="containerTypeEnumId"><header-field title="Type"/><default-field><display-entity entity-name="moqui.basic.Enumeration"/></default-field></field>
+                    <field name="statusId"><header-field title="Status"/><default-field><display-entity entity-name="moqui.basic.StatusItem"/></default-field></field>
                     
-                    <field name="agendaContainerId"><default-field title="ID"><display/></default-field></field>
-                    <field name="name"><default-field title="Name"><display/></default-field></field>
-                    <field name="shortName"><default-field title="Short Name"><display/></default-field></field>
-                    <field name="containerTypeEnumId"><default-field title="Container Type"><display-entity entity-name="moqui.basic.Enumeration"/></default-field></field>
-                    <field name="statusId"><default-field title="Status"><display-entity entity-name="moqui.basic.StatusItem"/></default-field></field>
-                    
-                    <field name="editAction">
-                        <header-field title="Edit"/>
+                    <field name="edit" align="center"><header-field title="Edit"/>
                         <default-field>
-                            <dynamic-dialog id="edit-dialog" button-text="Edit" icon="edit" transition="EditAgendaContainerDialog">
+                            <dynamic-dialog id="EditContainer" button-text="Edit" icon="edit" transition="EditAgendaContainerDialog">
                                 <parameter name="agendaContainerId" from="agendaContainerId"/>
                             </dynamic-dialog>
                         </default-field>
