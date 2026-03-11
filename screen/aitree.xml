@@ -43,6 +43,30 @@
         <default-response type="none"/>
     </transition>
 
+    <transition name="getOptions" read-only="true" require-session-token="false">
+        <parameter name="enumTypeId"/>
+        <parameter name="statusTypeId"/>
+        <actions>
+            <if condition="enumTypeId">
+                <entity-find entity-name="moqui.basic.Enumeration" list="optionList">
+                    <econdition field-name="enumTypeId"/>
+                    <order-by field-name="description"/>
+                </entity-find>
+            <else-if condition="statusTypeId">
+                <entity-find entity-name="moqui.basic.StatusItem" list="optionList">
+                    <econdition field-name="statusTypeId"/>
+                    <order-by field-name="description"/>
+                </entity-find>
+            </else-if>
+            </if>
+            <script>
+                def results = optionList?.collect { [value: (it.enumId ?: it.statusId), label: it.description] } ?: []
+                ec.web.sendJsonResponse(results)
+            </script>
+        </actions>
+        <default-response type="none"/>
+    </transition>
+
     <transition name="getStatusItems" read-only="true" require-session-token="false">
         <parameter name="statusTypeId" required="true"/>
         <actions>
@@ -114,6 +138,7 @@
             <set field="rootScreenDef" from="ec.screen.getScreenDefinition(rootScreenLocation)"/>
             <set field="realPathList" from="sri.screenUrlInfo.fullPathNameList"/>
             <set field="realPath" value="/${realPathList.join('/')}"/>
+            <set field="defaultSubscreen" from="rootScreenDef.getDefaultSubscreensItem() ?: 'Home'"/>
             <script><![CDATA[
                 def getSubscreenPaths (org.moqui.impl.screen.ScreenDefinition currentScreenDefinition,List<String> pathList,String basePath) {
                     def subscreenList = currentScreenDefinition?.getSubscreensItemsSorted()
@@ -151,6 +176,7 @@
         <subscreens-item name="Home" location="component://aitree/screen/aitree/Home.xml"/>
         <subscreens-item name="PeopleOrgs" location="component://aitree/screen/aitree/PeopleOrgs.xml"/>
         <subscreens-item name="MedicalRecords" location="component://aitree/screen/aitree/MedicalRecords.xml"/>
+        <subscreens-item name="Meetings" location="component://aitree/screen/aitree/Meetings.xml"/>
         <subscreens-item name="ActiveMeetings" location="component://aitree/screen/aitree/ActiveMeetings.xml" menu-include="false"/>
         <subscreens-item name="MeetingHistory" location="component://aitree/screen/aitree/MeetingHistory.xml" menu-include="false"/>
     </subscreens>

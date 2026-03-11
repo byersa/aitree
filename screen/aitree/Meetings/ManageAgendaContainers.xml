@@ -21,7 +21,7 @@
 
     <actions>
         <entity-find entity-name="aitree.meeting.AgendaContainer" list="containerList">
-            <search-form-inputs default-order-by="name"/>
+            <search-form-inputs/>
         </entity-find>
     </actions>
 

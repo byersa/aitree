@@ -6,7 +6,7 @@
     <!-- Agenda Container Entities (Replaces legacy Meeting)         -->
     <!-- ========================================================= -->
 
-    <entity entity-name="AgendaContainer" package="aitree.meeting">
+    <entity entity-name="AgendaContainer" package="aitree.meeting" authorize-skip="true">
         <description>
             The digital representation of any concept to which agenda messages (topics or replies) 
             can be attached. Represents the high-level boundary of a discussion context.
@@ -76,7 +76,7 @@
         </seed-data>
     </entity>
 
-    <entity entity-name="AgendaContainerRelationship" package="aitree.meeting">
+    <entity entity-name="AgendaContainerRelationship" package="aitree.meeting" authorize-skip="true">
         <description>
             Connects containers (e.g., Abstract Templates to Repositories).
             Allows shared boilerplate messages within the repo to be 'available' to multiple meeting templates.
