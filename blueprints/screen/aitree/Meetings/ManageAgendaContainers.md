@@ -75,11 +75,17 @@ No content available
 
 ## Quality Assurance
 
-### test-plan
-1. Verify the screen loads with title "Manage Agenda Containers".
-2. Ensure "Create Container" button opens a dialog.
-3. Verify the list displays records from `aitree.meeting.AgendaContainer`.
-4. Ensure "Edit" button for each row opens the dialog with the correct ID.
+### test-plan (MARIA/WebMCP Functional Test)
+1. **Navigate**: Use WebMCP to navigate to `/aitree/Meetings/ManageAgendaContainers`.
+2. **Verify Screen**: Obtain the MARIA JSON via `moqui-mcp` and verify the `role: "document"` has `name: "ManageAgendaContainers"`.
+3. **Verify Search Form**: Ensure a `role: "form"` with `name: "Search"` exists, containing MARIA identifiers for search fields.
+4. **Trigger Creation**: Use WebMCP to click the element with `data-maria-id="CreateContainerDialog"`.
+5. **Verify Dialog**: Verify the `EditAgendaContainerDialog` screen opens (checked via MARIA JSON).
+6. **Enter Data**: Use WebMCP to fill the form in the dialog using `data-maria-id` attributes (e.g., `name`, `shortName`).
+7. **Persist**: Click the element with `data-maria-id="submitButton"`.
+8. **Verify Database**: Call `moqui_query_entity` for `aitree.meeting.AgendaContainer` to verify the record was created with the test data.
+9. **Verify List**: Use `moqui_get_screen_details` or browse the `ManageAgendaContainers` screen again to ensure the new record appears in the `role: "grid"` (AgendaContainerList).
+10. **Cleanup**: Delete the test record from the database.
 
 ### test-result
 No content available

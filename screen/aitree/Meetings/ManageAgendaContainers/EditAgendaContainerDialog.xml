@@ -16,12 +16,12 @@
     </transitions>
 
     <widgets>
-        <form-single name="EditAgendaContainer" map="agendaContainer" transition="storeAgendaContainer">
+        <form-single name="EditAgendaContainerForm" map="agendaContainer" transition="storeAgendaContainer">
             <field name="agendaContainerId"><default-field><hidden/></default-field></field>
-            <field name="name"><default-field><text-line size="60"/></default-field></field>
-            <field name="shortName"><default-field><text-line size="30"/></default-field></field>
+            <field name="name"><default-field title="Full Name"><text-line size="60"/></default-field></field>
+            <field name="shortName"><default-field title="Short Name"><text-line size="30"/></default-field></field>
             
-            <field name="containerCategoryEnumId"><default-field>
+            <field name="containerCategoryEnumId"><default-field title="Category">
                 <drop-down allow-empty="true">
                     <entity-options key-field-name="enumId" text="${description}">
                         <entity-find entity-name="moqui.basic.Enumeration">
@@ -32,7 +32,7 @@
                 </drop-down>
             </default-field></field>
             
-            <field name="containerTypeEnumId"><default-field>
+            <field name="containerTypeEnumId"><default-field title="Type">
                 <drop-down allow-empty="true">
                     <entity-options key-field-name="enumId" text="${description}">
                         <entity-find entity-name="moqui.basic.Enumeration">
@@ -43,7 +43,7 @@
                 </drop-down>
             </default-field></field>
             
-            <field name="statusId"><default-field>
+            <field name="statusId"><default-field title="Status">
                 <drop-down allow-empty="false">
                     <entity-options key-field-name="statusId" text="${description}">
                         <entity-find entity-name="moqui.basic.StatusItem">
@@ -54,18 +54,21 @@
                 </drop-down>
             </default-field></field>
             
-            <field name="orgId"><default-field>
+            <field name="orgId"><default-field title="Organization">
                 <drop-down allow-empty="true">
-                    <entity-options key-field-name="partyId" text="${groupName}">
-                        <entity-find entity-name="mantle.party.OrganizationDetail"/>
+                    <entity-options key-field-name="partyId" text="${organizationName}">
+                        <entity-find entity-name="mantle.party.PartyDetail">
+                            <econdition field-name="partyTypeEnumId" value="PtyOrganization"/>
+                            <order-by field-name="organizationName"/>
+                        </entity-find>
                     </entity-options>
                 </drop-down>
             </default-field></field>
             
-            <field name="fromDate"><default-field><date-time/></default-field></field>
-            <field name="thruDate"><default-field><date-time/></default-field></field>
+            <field name="fromDate"><default-field title="From Date"><date-time/></default-field></field>
+            <field name="thruDate"><default-field title="Thru Date"><date-time/></default-field></field>
             
-            <field name="submitButton"><default-field title="Save"><submit/></default-field></field>
+            <field name="submitButton"><default-field title="Save Container"><submit/></default-field></field>
         </form-single>
     </widgets>
 </screen>

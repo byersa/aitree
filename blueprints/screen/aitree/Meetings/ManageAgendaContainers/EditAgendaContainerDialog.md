@@ -76,11 +76,12 @@ No content available
 
 ## Quality Assurance
 
-### test-plan
-1. Open the dialog for a new record: Verify all fields are empty.
-2. Open the dialog for an existing record: Verify fields are populated with entity data.
-3. Update a field and save: Verify the change is persisted in the database.
-4. Attempt to save without a name: Verify validation error.
+### test-plan (MARIA/WebMCP Functional Test)
+1. **Direct Access**: Use WebMCP to navigate directly to `/aitree/Meetings/ManageAgendaContainers/EditAgendaContainerDialog`.
+2. **Verify Form**: Obtain the MARIA JSON and confirm a `role: "form"` with `name: "EditAgendaContainer"` is present.
+3. **Check Identifiers**: Verify all fields in the form have corresponding identifiers (`data-maria-id`).
+4. **Validation Test**: Leave `name` blank, click `"submitButton"`, and verify that the `MARIA` state or UI shows a validation error.
+5. **Success Test**: Fill all required fields and save, verifying the transition to the parent screen.
 
 ### test-result
 No content available

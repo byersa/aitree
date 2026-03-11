@@ -26,17 +26,17 @@
     </actions>
 
     <widgets>
-        <screen-layout id="manage-containers-layout">
-            <screen-header id="h-manage-containers">
-                <container-row>
-                    <row-col class="col-grow"><label text="Manage Agenda Containers" type="h5"/></row-col>
+        <screen-layout id="ManageAgendaContainersLayout">
+            <screen-header id="ManageAgendaContainersHeader">
+                <container-row id="HeaderRow">
+                    <row-col class="col-grow"><label text="Manage Agenda Containers" type="h5" id="PageTitle"/></row-col>
                     <row-col class="col-auto">
                         <dynamic-dialog id="CreateContainerDialog" button-text="Create Container" icon="add" transition="EditAgendaContainerDialog" color="primary" title="Create New Agenda Container"/>
                     </row-col>
                 </container-row>
             </screen-header>
-            <screen-content id="c-manage-containers">
-                <form-query name="Search">
+            <screen-content id="ManageAgendaContainersContent">
+                <form-query name="SearchForm">
                     <form-query-field name="name" type="text" operator="begins"/>
                     <form-query-field name="containerCategoryEnumId" type="drop-down" enum-type-id="AgendaContainerCategory"/>
                     <form-query-field name="containerTypeEnumId" type="drop-down" enum-type-id="AgendaContainerType"/>
@@ -53,7 +53,7 @@
                     
                     <field name="edit" align="center"><header-field title="Edit"/>
                         <default-field>
-                            <dynamic-dialog id="EditContainer" button-text="Edit" icon="edit" transition="EditAgendaContainerDialog">
+                            <dynamic-dialog id="EditContainerButton" button-text="Edit" icon="edit" transition="EditAgendaContainerDialog">
                                 <parameter name="agendaContainerId" from="agendaContainerId"/>
                             </dynamic-dialog>
                         </default-field>
