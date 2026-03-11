@@ -122,15 +122,7 @@
         <default-response type="none"/>
     </transition>
 
-    <transition name="moquiaiJs" read-only="true" require-session-token="false">
-        <actions>
-            <script><![CDATA[
-                def path = sri.screenUrlInfo.extraPathNameList.join("/")
-                ec.web.sendResourceResponse("component://moqui-ai/screen/moquiai/js/" + path)
-            ]]></script>
-        </actions>
-        <default-response type="none"/>
-    </transition>
+
 
     <transition name="routes.js" read-only="true">
         <actions>
