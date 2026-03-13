@@ -1,0 +1,61 @@
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsd" require-authentication="false">
+    
+    <parameter name="activeScreenIds"/>
+
+    <transition name="searchContainers">
+        <actions>
+            <!-- Perform entity-find based on incoming search parameters -->
+            <entity-find entity-name="aitree.meeting.AgendaContainer" list="containerResultList">
+                <search-form-inputs/>
+                <!-- Implementation for dynamic attributes and content search would go here, 
+                     potentially using a view-entity -->
+            </entity-find>
+        </actions>
+        <default-response url="." parameter-map="true"/>
+    </transition>
+
+    <widgets>
+        <screen-layout id="ACSP_Layout">
+            <screen-content id="ACSP_Content">
+                <screen-accordion id="ACSP_Accordion">
+                    <section name="SearchSection" title="Search Agenda Containers">
+                        <widgets>
+                            <form-query name="acsp_query" list-form="acsp_results_list" transition="searchContainers">
+                                <form-query-field name="containerCategoryEnumId" type="drop-down" enum-type-id="AgendaContainerCategory"/>
+                                <form-query-field name="containerTypeEnumId" type="drop-down" enum-type-id="AgendaContainerType"/>
+                                <form-query-field name="fromDate" type="date"/>
+                                <form-query-field name="thruDate" type="date"/>
+                                <form-query-field name="name" type="text" operator="contains"/>
+                                <form-query-field name="statusId" type="drop-down" status-type-id="AgendaContainerStatus"/>
+                                
+                                <!-- Skeleton placeholders for dynamic attribute and content search -->
+                                <form-query-field name="attrTypeEnumId" type="drop-down" enum-type-id="AgendaAttributeType" 
+                                                  title="Attribute Type (Dynamic)"/>
+                                <form-query-field name="attrValue" type="text" title="Attribute Value"/>
+                                <form-query-field name="contentDescription" type="text" title="Content Search"/>
+                                
+                                <form-query-field name="submitButton" type="submit" title="Find"/>
+                            </form-query>
+
+                            <form-list name="acsp_results_list" list="containerResultList">
+                                <field name="agendaContainerId"><default-field><hidden/></default-field></field>
+                                <field name="name"><header-field show-order-by="case-insensitive"/><default-field><display/></default-field></field>
+                                <field name="containerCategoryEnumId"><header-field title="Category"/><default-field><display-entity entity-name="moqui.basic.Enumeration"/></default-field></field>
+                                <field name="statusId"><header-field title="Status"/><default-field><display-entity entity-name="moqui.basic.StatusItem"/></default-field></field>
+                                
+                                <field name="toggleAction" align="center">
+                                    <header-field title="Display"/>
+                                    <default-field>
+                                        <!-- Implementation logic in Vue will handle the actual split-screen toggle -->
+                                        <link text="Toggle" icon="visibility" url-type="plain" url="javascript:void(0)"/>
+                                    </default-field>
+                                </field>
+                            </form-list>
+                        </widgets>
+                    </section>
+                </screen-accordion>
+            </screen-content>
+        </screen-layout>
+    </widgets>
+</screen>

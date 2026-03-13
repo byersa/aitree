@@ -1,25 +1,23 @@
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsd" require-authentication="false">
-    <subscreens default-item="ManageAgendaContainers">
-        <subscreens-item name="ManageAgendaContainers" location="component://aitree/screen/aitree/Meetings/ManageAgendaContainers.xml"/>
+    
+    <subscreens>
+        <subscreens-item name="SelectPage" location="component://aitree/screen/aitree/Meetings/ActiveScreens/AgendaContainerSelectPage.xml"/>
+        <subscreens-item name="MainInstance" location="component://aitree/screen/aitree/Meetings/ActiveScreens/MainInstancePage.xml"/>
     </subscreens>
+
     <widgets>
-        <screen-layout id="manage-agenda-containers-layout">
-            <screen-header id="h-manage-agenda-containers">
-                <label text="Manage Agenda Containers" type="h5"/>
-                <dynamic-dialog id="create-container" text="Create Container" icon="add" transition="EditAgendaContainerDialog"/>
+        <screen-layout id="ActiveScreensLayout">
+            <screen-header id="ActiveScreensHeader">
+                <label text="Active Screens Manager" type="h5"/>
             </screen-header>
-            <screen-content id="c-manage-agenda-containers">
-                <subscreens-active/>
+            <screen-content id="ActiveScreensContent">
+                <!-- Using screen-accordion to manage the SelectPage on the left and dynamic instances on the right -->
+                <screen-accordion id="MeetingsSplitter" model="30">
+                    <subscreens-active id="SelectPageContainer" item-name="SelectPage"/>
+                    <subscreens-active id="MainInstanceContainer" item-name="MainInstance"/>
+                </screen-accordion>
             </screen-content>
         </screen-layout>
     </widgets>
-    <transitions>
-        <transition name="EditAgendaContainerDialog">
-            <default-response url="ManageAgendaContainers/EditAgendaContainerDialog" parameter-map="true" access-re-authorize="true">
-                <parameter name="renderMode" value="qjson"/>
-                <parameter name="renderTargetOnly" value="true"/>
-            </default-response>
-        </transition>
-    </transitions>
 </screen>

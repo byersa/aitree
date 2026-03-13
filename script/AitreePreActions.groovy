@@ -10,7 +10,7 @@ ec.context.put("linkBasePath", "/aitree")
 footer_scripts.remove('/js/WebrootVue.qvt.js')
 
 // Aitree Vue App
-String scriptPath = '/moqui-ai/js/MoquiAiVue.qvt.js'
+String scriptPath = '/moquiai/js/MoquiAiVue.qvt.js'
 String instancePurpose = System.getProperty("instance_purpose")
 boolean isProd = !instancePurpose || instancePurpose == 'production'
 
@@ -38,10 +38,10 @@ footer_scripts.add('https://unpkg.com/quasar@2.12.6/dist/quasar.umd.prod.js')
 footer_scripts.add('https://unpkg.com/vue3-sfc-loader@0.8.4/dist/vue3-sfc-loader.min.js')
 footer_scripts.add('https://unpkg.com/vue-demi@0.14.7/lib/index.iife.js')
 footer_scripts.add('https://unpkg.com/pinia@2.1.7/dist/pinia.iife.js')
-footer_scripts.add('/moqui-ai/js/webmcp.js')
+footer_scripts.add('/moquiai/js/webmcp.js')
 
 // Load Pinia Stores
-footer_scripts.add('/moqui-ai/js/stores/meetingsStore.js')
+footer_scripts.add('/moquiai/js/stores/meetingsStore.js')
 
 // Load Routing - always use the clean base path for the script
 footer_scripts.add('/aitree/routes.js')
@@ -55,7 +55,7 @@ if (ec.resource.getLocationReference("component://moqui-ai/screen/moquiai/js/Moq
     ec.logger.warn("AitreeVue script not found: " + scriptPath)
 }
 
-String blueprintClientUrl = '/moqui-ai/js/BlueprintClient.js'
+String blueprintClientUrl = '/moquiai/js/BlueprintClient.js'
 if (ec.resource.getLocationReference("component://moqui-ai/screen/moquiai/js/BlueprintClient.js").exists) {
     footer_scripts.add(blueprintClientUrl + "?v=" + System.currentTimeMillis())
 }

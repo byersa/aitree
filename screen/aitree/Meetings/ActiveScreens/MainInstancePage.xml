@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-3.xsd"
+        default-menu-title="Main Instance Page" standalone="true">
+    
+    <parameter name="targetAgendaContainerId"/>
+    <parameter name="meetingInstanceId"/>
+    <parameter name="meetingTemplateId"/>
+    <parameter name="repositoryMeetingTemplateId"/>
+    <parameter name="locale"/>
+    <parameter name="loadedInstanceIdList"/>
+    <parameter name="threadWidthMap"/>
+
+    <widgets>
+        <screen-layout>
+            <screen-header>
+                <!-- Include menu items here if needed -->
+            </screen-header>
+            <screen-content>
+                <discussion-tree name="dt_${targetAgendaContainerId}" store-function="useAiTreeStore"/>
+            </screen-content>
+        </screen-layout>
+    </widgets>
+</screen>

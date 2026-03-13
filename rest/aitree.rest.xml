@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/rest-api-2.1.xsd"
+          name="aitree" version="1.0" authenticate="false">
+
+    <resource name="AgendaContainer">
+        <method type="POST">
+            <service name="aitree.meeting.MeetingServices.create#AgendaContainer"/>
+        </method>
+        <method type="PATCH">
+            <service name="aitree.meeting.MeetingServices.update#AgendaContainer"/>
+        </method>
+        <resource name="{agendaContainerId}">
+            <method type="GET">
+                <entity name="aitree.meeting.AgendaContainer" operation="one"/>
+            </method>
+            <method type="POST">
+                <service name="aitree.meeting.MeetingServices.update#AgendaContainer"/>
+            </method>
+        </resource>
+    </resource>
+</resource>

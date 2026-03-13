@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-3.xsd"
+        default-menu-title="Discussion Thread" standalone="true">
+
+    <parameter name="parentAgendaTopicId"/>
+    <parameter name="meetingTemplateId"/>
+    <parameter name="meetingISO"/>
+
+    <widgets>
+        <screen-layout>
+            <screen-content>
+                <discussion-thread name="dt_${targetAgendaContainerId}"/>
+            </screen-content>
+        </screen-layout>
+    </widgets>
+</screen>

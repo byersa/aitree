@@ -2,18 +2,16 @@
         xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-3.xsd" require-authentication="false">
     <parameter name="agendaContainerId"/>
 
+    <transition name="storeAgendaContainer">
+        <service-call name="aitree.MeetingServices.store#AgendaContainer" in-map="true"/>
+        <default-response type="none"/>
+    </transition>
+
     <actions>
         <if condition="agendaContainerId">
             <entity-find-one entity-name="aitree.meeting.AgendaContainer" value-field="agendaContainer"/>
         </if>
     </actions>
-
-    <transitions>
-        <transition name="storeAgendaContainer">
-            <service-call name="store#aitree.meeting.AgendaContainer" in-map="context"/>
-            <default-response url=".."/>
-        </transition>
-    </transitions>
 
     <widgets>
         <form-single name="EditAgendaContainerForm" map="agendaContainer" transition="storeAgendaContainer">

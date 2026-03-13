@@ -41,4 +41,5 @@
             </before-request>
         </webapp>
     </webapp-list>
+    <rest-api name="aitree" location="component://aitree/rest/aitree.rest.xml"/>
 </moqui-conf>

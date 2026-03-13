@@ -12,7 +12,7 @@ This document tracks the purpose and functionality of services defined in `Agend
 | `init` | `FacetType` | Recursively loads facet types and values from the database into the cache. |
 | `get` | `AgendaTopics` | Fetches all relevant agenda topics for a specific person and meeting ISO. |
 | `merge` | `ReturnData` | Utility to merge two internal data maps. |
-| `merge` | `ShortDataMap2Stores` | Merges small retrieved data maps into session-scoped `transferDataMap` and `topicStoreDB`. |
+| `merge` | `ShortDataMap2Stores` | Merges small retrieved data maps into session-scoped `` and `topicStoreDB`. |
 | `merge` | `TransferDataMap2TopicStore` | Syncs `transferDataMap` into the persistent `topicStoreDB` cache. |
 | `complete` | `AbstractTopic` | Recursively fetches the full thread of an abstract (template) topic with permission filtering. |
 | `get` | `AgendaTopic` | Fetches basic metadata and localized content for a single topic. |
