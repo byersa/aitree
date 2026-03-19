@@ -82,6 +82,20 @@
         <default-response type="none"/>
     </transition>
 
+    <transition name="getOrganizations" read-only="true" require-session-token="false">
+        <actions>
+            <entity-find entity-name="mantle.party.PartyDetail" list="partyList">
+                <econdition field-name="partyTypeEnumId" value="PtyOrganization"/>
+                <order-by field-name="organizationName"/>
+            </entity-find>
+            <script>
+                def result = partyList.collect { [label: it.organizationName, value: it.partyId] }
+                ec.web.sendJsonResponse(result)
+            </script>
+        </actions>
+        <default-response type="none"/>
+    </transition>
+
     <transition name="menuDataQvt" read-only="true" begin-transaction="false" require-session-token="false">
         <actions><script><![CDATA[
             def sd = ec.screen.getScreenDefinition("component://aitree/screen/aitree.xml")

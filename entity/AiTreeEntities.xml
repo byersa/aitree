@@ -207,7 +207,7 @@
         <field name="attrValue" type="text-medium">
             <description>The physical string value</description>
         </field>
-        <field name="attrEnumId" type="id">
+        <field name="attrEnumTypeId" type="id">
             <description>Optional: Enforces strict validation mapping to moqui.basic.Enumeration</description>
         </field>
 
@@ -215,7 +215,7 @@
             <key-map field-name="agendaMessageId"/>
         </relationship>
         <relationship type="one" title="AttributeTypeEnum" related="moqui.basic.Enumeration">
-            <key-map field-name="attrEnumId" related="enumId"/>
+            <key-map field-name="attrTypeEnumId" related="enumId"/>
         </relationship>
     </entity>
 

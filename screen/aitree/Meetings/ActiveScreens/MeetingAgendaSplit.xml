@@ -1,0 +1,8 @@
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsd" require-authentication="false">
+    <!-- This screen contains the screen-split widget for displaying multiple MainInstancePage instances -->
+    <widgets>
+        <screen-split name="as_screen_split" model="30" horizontal="false"
+                  list="activeScreenIds" component="MainInstance"
+                  fail-message="No active containers selected. Use the Select Containers menu to add containers."/>
+    </widgets>
+</screen>

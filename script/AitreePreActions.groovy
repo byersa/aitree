@@ -42,6 +42,7 @@ footer_scripts.add('/moquiai/js/webmcp.js')
 
 // Load Pinia Stores
 footer_scripts.add('/moquiai/js/stores/meetingsStore.js')
+footer_scripts.add('/aitree/js/stores/AiTreeStore.js')
 
 // Load Routing - always use the clean base path for the script
 footer_scripts.add('/aitree/routes.js')
@@ -59,6 +60,9 @@ String blueprintClientUrl = '/moquiai/js/BlueprintClient.js'
 if (ec.resource.getLocationReference("component://moqui-ai/screen/moquiai/js/BlueprintClient.js").exists) {
     footer_scripts.add(blueprintClientUrl + "?v=" + System.currentTimeMillis())
 }
+
+// Load Modular Components (Must come after MoquiAiVue)
+footer_scripts.add('/moquiai/components/ScreenSplit.qvt.js')
 
 // Auto-register JS scripts for all subscreens
 org.moqui.util.ContextStack cs = ec.context
