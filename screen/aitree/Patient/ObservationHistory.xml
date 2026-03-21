@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-4.0.xsd"
+        default-menu-title="Observation History" default-menu-index="2">
+
+    <parameter name="patientPartyId" required="true"/>
+
+    <actions>
+        <entity-find entity-name="nursinghome.medical.PatientObservation" list="obsHistoryList">
+            <econdition field-name="patientPartyId" from="patientPartyId"/>
+            <econdition field-name="observationTypeEnumId" from="observationTypeEnumId" ignore-if-empty="true"/>
+            <econdition field-name="observationDate" operator="greater-equals" from="fromDate" ignore-if-empty="true"/>
+            <econdition field-name="observationDate" operator="less-equals" from="thruDate" ignore-if-empty="true"/>
+            <order-by field-name="-observationDate"/>
+        </entity-find>
+    </actions>
+
+    <widgets>
+        <screen-layout>
+            <screen-header>
+                <label text="Patient Observation History" type="h5"/>
+            </screen-header>
+            
+            <screen-content>
+                <container-panel id="ObservationFilterPanel">
+                    <panel-header><label text="Filter History" type="h6"/></panel-header>
+                    <panel-content>
+                        <form-single name="ObservationFilter" transition=".">
+                            <field name="patientPartyId"><default-field><hidden/></default-field></field>
+                            <field name="observationTypeEnumId" title="Metric Type">
+                                <default-field>
+                                    <drop-down allow-empty="true">
+                                        <entity-options entity-name="moqui.basic.Enumeration">
+                                            <econdition field-name="enumTypeId" value="PatientObservationType"/>
+                                            <order-by field-name="description"/>
+                                        </entity-options>
+                                    </drop-down>
+                                </default-field>
+                            </field>
+                            <field name="fromDate" title="From"><default-field><date-time type="date"/></default-field></field>
+                            <field name="thruDate" title="Thru"><default-field><date-time type="date"/></default-field></field>
+                            <field name="submitButton">
+                                <default-field title="Update List"><submit/></default-field>
+                            </field>
+                            
+                            <field-layout>
+                                <field-row><field-ref name="observationTypeEnumId"/><field-ref name="fromDate"/><field-ref name="thruDate"/><field-ref name="submitButton"/></field-row>
+                            </field-layout>
+                        </form-single>
+                    </panel-content>
+                </container-panel>
+
+                <form-list name="ObservationHistoryList" list="obsHistoryList" skip-form="true">
+                    <field name="observationDate" title="Date/Time">
+                        <header-field show-order-by="true"/>
+                        <default-field><display format="yyyy-MM-dd HH:mm"/></default-field>
+                    </field>
+                    <field name="observationTypeEnumId" title="Metric">
+                        <default-field>
+                            <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"/>
+                        </default-field>
+                    </field>
+                    <field name="valueQuantity" title="Value">
+                        <default-field><display/></default-field>
+                    </field>
+                    <field name="valueUnitEnumId" title="Unit">
+                        <default-field>
+                            <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"/>
+                        </default-field>
+                    </field>
+                    
+                    <field name="clinicalNote" title="Staff Notes">
+                        <default-field><display/></default-field>
+                    </field>
+
+                    <field name="agendaMessageId" title="Context">
+                        <default-field>
+                            <link url="viewMessage" text="View Session" 
+                                  parameter-map="[agendaMessageId:agendaMessageId]"
+                                  condition="agendaMessageId"/>
+                        </default-field>
+                    </field>
+                </form-list>
+            </screen-content>
+        </screen-layout>
+    </widgets>
+</screen>

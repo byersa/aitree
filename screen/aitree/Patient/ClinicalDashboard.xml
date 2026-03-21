@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-4.0.xsd"
+        default-menu-title="Clinical Dashboard" default-menu-index="1">
+
+    <parameter name="patientPartyId" required="true"/>
+
+    <actions>
+        <entity-find entity-name="nursinghome.medical.PatientObservation" list="recentVitalsList" limit="5">
+            <econdition field-name="patientPartyId" from="patientPartyId"/>
+            <order-by field-name="-observationDate"/>
+        </entity-find>
+
+        <entity-find entity-name="aitree.meeting.AgendaMessage" list="clinicalTopicsList" limit="10">
+            <econdition field-name="orgId" from="activeOrgId"/>
+            <econdition field-name="statusId" value="AgdStatusActive"/>
+            <order-by field-name="-fromDate"/>
+        </entity-find>
+    </actions>
+
+    <widgets>
+        <screen-layout>
+            <screen-header>
+                <label text="Clinical Summary: Patient ${patientPartyId}" type="h5"/>
+            </screen-header>
+            
+            <screen-content>
+                <container-row>
+                    <container-col md="6">
+                        <section name="VitalsSnapshot">
+                            <widgets>
+                                <container-panel>
+                                    <panel-header><label text="Recent Vitals" type="h6"/></panel-header>
+                                    <panel-content>
+                                        <form-list name="VitalsSummaryList" list="recentVitalsList" skip-form="true">
+                                            <field name="observationDate" title="Time">
+                                                <default-field><display format="HH:mm"/></default-field>
+                                            </field>
+                                            <field name="observationTypeEnumId" title="Type">
+                                                <default-field>
+                                                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"/>
+                                                </default-field>
+                                            </field>
+                                            <field name="valueQuantity" title="Value">
+                                                <default-field><display/></default-field>
+                                            </field>
+                                            <field name="valueUnitEnumId" title="Unit">
+                                                <default-field>
+                                                    <display-entity entity-name="moqui.basic.Enumeration" key-field-name="enumId"/>
+                                                </default-field>
+                                            </field>
+                                        </form-list>
+                                        <container style="text-right margin-top-sm">
+                                            <link url="../ObservationHistory" text="View Full History" 
+                                                  parameter-map="[patientPartyId:patientPartyId]" style="btn btn-primary btn-sm"/>
+                                        </container>
+                                    </panel-content>
+                                </container-panel>
+                            </widgets>
+                        </section>
+                    </container-col>
+
+                    <container-col md="6">
+                        <section name="ClinicalHuddles">
+                            <widgets>
+                                <container-panel>
+                                    <panel-header><label text="Active Clinical Discussions" type="h6"/></panel-header>
+                                    <panel-content>
+                                        <form-list name="DiscussionList" list="clinicalTopicsList" skip-form="true">
+                                            <field name="fromDate" title="Date">
+                                                <default-field><display format="MMM dd"/></default-field>
+                                            </field>
+                                            <field name="agendaMessageId" title="Topic Context">
+                                                <default-field>
+                                                    <link url="viewMessage" text="Open Huddle" 
+                                                          parameter-map="[agendaMessageId:agendaMessageId]"
+                                                          style="btn btn-link"/>
+                                                </default-field>
+                                            </field>
+                                            <field name="partyId" title="Author">
+                                                <default-field>
+                                                    <display-entity entity-name="mantle.party.Person" key-field-name="partyId" text="${firstName} ${lastName}"/>
+                                                </default-field>
+                                            </field>
+                                        </form-list>
+                                    </panel-content>
+                                </container-panel>
+                            </widgets>
+                        </section>
+                    </container-col>
+                </container-row>
+            </screen-content>
+        </screen-layout>
+    </widgets>
+</screen>

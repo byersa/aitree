@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-4.0.xsd">
+
+    <service verb="create" noun="ClinicalSession" type="inline">
+        <in-parameters>
+            <parameter name="patientPartyId" athlete="id" required="true"/>
+            <parameter name="parentMessageId" type="id" required="true"/>
+            <parameter name="observationGroupId" type="id" required="true"/>
+            <parameter name="sysBP" type="number-decimal"/>
+            <parameter name="diaBP" type="number-decimal"/>
+            <parameter name="heartRate" type="number-decimal"/>
+            <parameter name="temp" type="number-decimal"/>
+            <parameter name="clinicalNote" type="text-medium"/>
+        </in-parameters>
+        <actions>
+            <service-call name="create#aitree.meeting.AgendaMessage" 
+                          in-map="[parentMessageId:parentMessageId, partyId:ec.user.userAccount.partyId, 
+                                   statusId:'AgdStatusActive', fromDate:ec.user.nowTimestamp]" 
+                          out-map="msgOut"/>
+            
+            <set field="agendaMessageId" from="msgOut.agendaMessageId"/>
+
+            <set field="vitalsMap" from="[PotVitalsBP_Sys:sysBP, PotVitalsBP_Dia:diaBP, PotVitalsPulse:heartRate, PotVitalsTemp:temp]"/>
+
+            <iterate list="vitalsMap.entrySet()" entry="vital">
+                <if condition="vital.value">
+                    <service-call name="create#nursinghome.medical.PatientObservation" 
+                                  in-map="[patientPartyId:patientPartyId, 
+                                           agendaMessageId:agendaMessageId, 
+                                           observationGroupId:observationGroupId,
+                                           observationTypeEnumId:vital.key, 
+                                           valueQuantity:vital.value, 
+                                           observationDate:ec.user.nowTimestamp]"/>
+                </if>
+            </iterate>
+
+            <if condition="clinicalNote">
+                <service-call name="create#nursinghome.medical.PatientObservation" 
+                              in-map="[patientPartyId:patientPartyId, 
+                                       agendaMessageId:agendaMessageId, 
+                                       observationGroupId:observationGroupId,
+                                       observationTypeEnumId:'PotClinicalNote', 
+                                       valueString:clinicalNote, 
+                                       observationDate:ec.user.nowTimestamp]"/>
+            </if>
+        </actions>
+    </service>
+</services>

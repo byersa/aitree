@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-4.0.xsd"
+        default-menu-title="Record Vitals" default-menu-index="3">
+
+    <parameter name="patientPartyId" required="true"/>
+    <parameter name="parentMessageId" required="true"/>
+
+    <actions>
+        <set field="observationGroupId" from="java.util.UUID.randomUUID().toString()"/>
+        
+        <entity-find-one entity-name="mantle.party.Person" value-field="patient">
+            <field-map field-name="partyId" from="patientPartyId"/>
+        </entity-find-one>
+    </actions>
+
+    <widgets>
+        <screen-layout>
+            <screen-header>
+                <label text="Vitals Entry: ${patient?.firstName} ${patient?.lastName}" type="h5"/>
+            </screen-header>
+            
+            <screen-content>
+                <container-panel>
+                    <panel-header><label text="New Observation Session" type="h6"/></panel-header>
+                    <panel-content>
+                        <form-single name="ObservationEntryForm" transition="createClinicalSession">
+                            <field name="patientPartyId"><default-field><hidden/></default-field></field>
+                            <field name="parentMessageId"><default-field><hidden/></default-field></field>
+                            <field name="observationGroupId"><default-field><hidden/></default-field></field>
+
+                            <field-group title="Vital Signs">
+                                <field name="sysBP" title="Systolic BP (mmHg)">
+                                    <default-field><text-line size="5" pattern="[0-9]*"/></default-field>
+                                </field>
+                                <field name="diaBP" title="Diastolic BP (mmHg)">
+                                    <default-field><text-line size="5" pattern="[0-9]*"/></default-field>
+                                </field>
+                                <field name="heartRate" title="Pulse (bpm)">
+                                    <default-field><text-line size="5" pattern="[0-9]*"/></default-field>
+                                </field>
+                                <field name="temp" title="Temp (°F)">
+                                    <default-field><text-line size="5" pattern="[0-9.]*"/></default-field>
+                                </field>
+                            </field-group>
+
+                            <field-group title="Clinical Narrative">
+                                <field name="clinicalNote" title="Observations/Notes">
+                                    <default-field>
+                                        <text-area rows="4" cols="80"/>
+                                    </default-field>
+                                </field>
+                            </field-group>
+
+                            <field name="submitButton">
+                                <default-field title="Save &amp; Post to Huddle">
+                                    <submit style="btn btn-success"/>
+                                </default-field>
+                            </field>
+                        </form-single>
+                    </panel-content>
+                </container-panel>
+            </screen-content>
+        </screen-layout>
+    </widgets>
+</screen>
