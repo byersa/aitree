@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsd"
+        require-authentication="false">
+
+    <parameter name="patientPartyId" required="true"/>
+
+    <subscreens>
+        <subscreens-item name="ClinicalDashboard" location="component://aitree/screen/aitree/Patient/ClinicalDashboard.xml" default-menu-title="Clinical Dashboard"/>
+        <subscreens-item name="ObservationHistory" location="component://aitree/screen/aitree/Patient/ObservationHistory.xml" default-menu-title="Observation History"/>
+        <subscreens-item name="TrendAnalysis" location="component://aitree/screen/aitree/Patient/TrendAnalysis.xml" default-menu-title="Trend Analysis"/>
+        <subscreens-item name="PointOfCareEntry" location="component://aitree/screen/aitree/Patient/PointOfCareEntry.xml" default-menu-title="Point-of-Care Entry"/>
+    </subscreens>
+
+    <widgets>
+        <screen-layout id="PatientLayout">
+            <screen-header id="PatientHeader">
+                <container-row id="PatientHeaderRow" class="q-pa-md bg-grey-2">
+                    <row-col class="col-grow">
+                        <label text="Patient Details: ID ${patientPartyId}" type="h5"/>
+                    </row-col>
+                    <row-col align="right">
+                        <subscreens-menu id="PatientMenu" icon="medical_services"/>
+                    </row-col>
+                </container-row>
+            </screen-header>
+            <screen-content id="PatientContent">
+                <subscreens-active id="PatientSubscreens"/>
+            </screen-content>
+        </screen-layout>
+    </widgets>
+</screen>

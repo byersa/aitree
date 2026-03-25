@@ -3,7 +3,7 @@ Instructions for AI: When reading this blueprint to generate Moqui XML:
 
 Prefer standard UI widgets (<form-single>, <form-list>).
 
-Use <form-query> macro BEFORE <form-list> for search/filtering.
+Use <form-query> macro along with  <form-list> for search/filtering.
 
 Identify parameters mapped in form-query and establish them in parameter sections.
 
