@@ -1,146 +1,20 @@
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsd" require-authentication="false">
-
-    <parameter name="isEditing" type="Boolean"/>
-    <parameter name="agendaContainerId"/>
-    <parameter name="containerCategoryEnumId"/>
-    <parameter name="containerTypeEnumId"/>
-    <parameter name="targetDate" type="Date"/>
-    <parameter name="name"/>
-
-    <subscreens>
-        <subscreens-item name="ActiveScreens" location="component://aitree/screen/aitree/Meetings/ActiveScreens.xml" menu-include="false"/>
+    <subscreens default-item="ManageMeetings">
+        <subscreens-item name="ManageMeetings" location="component://aitree/screen/aitree/Meetings/ManageMeetings.xml"/>
+        <subscreens-item name="ActiveMeetings" location="component://aitree/screen/aitree/Meetings/ActiveMeetings.xml"/>
     </subscreens>
-
-    <transition name="toggleEditMode">
-        <default-response url="." parameter-map="true"/>
-    </transition>
-
-    <transition name="saveContainer">
-        <actions>
-            <if condition="agendaContainerId">
-                <service-call name="update#aitree.meeting.AgendaContainer" in-map="context"/>
-                <else><service-call name="create#aitree.meeting.AgendaContainer" in-map="context" out-map="context"/></else>
-            </if>
-        </actions>
-        <default-response url="." parameter-map="[isEditing:false]"/>
-    </transition>
-
-    <transition name="selectForDisplay">
-        <default-response url="ActiveScreens/MeetingAgendaSplit" parameter-map="true"/>
-    </transition>
-
-    <actions>
-        <script>ec.logger.warn("DEBUG: Meetings.xml actions - isEditing: ${isEditing}, agendaContainerId: ${agendaContainerId}")</script>
-        <!-- Logic for Instance Generation -->
-        <if condition="containerCategoryEnumId == 'AitCategoryInstance' &amp;&amp; targetDate">
-            <script><![CDATA[
-                // Create a range for the target date (start and end of day)
-                def cal = Calendar.getInstance()
-                cal.setTime(targetDate)
-                cal.set(Calendar.HOUR_OF_DAY, 0); cal.set(Calendar.MINUTE, 0); cal.set(Calendar.SECOND, 0); cal.set(Calendar.MILLISECOND, 0)
-                context.startOfDay = new java.sql.Timestamp(cal.getTimeInMillis())
-                cal.set(Calendar.HOUR_OF_DAY, 23); cal.set(Calendar.MINUTE, 59); cal.set(Calendar.SECOND, 59); cal.set(Calendar.MILLISECOND, 999)
-                context.endOfDay = new java.sql.Timestamp(cal.getTimeInMillis())
-            ]]></script>
-            <entity-find entity-name="aitree.meeting.AgendaContainer" list="instanceList">
-                <econdition field-name="containerCategoryEnumId" value="AitCategoryInstance"/>
-                <econdition field-name="fromDate" operator="greater-equals" from="startOfDay"/>
-                <econdition field-name="fromDate" operator="less-equals" from="endOfDay"/>
-            </entity-find>
-            <if condition="!instanceList">
-                <script>
-                    def formattedDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(targetDate)
-                    context.instanceName = "Meeting " + formattedDate
-                </script>
-                <service-call name="create#aitree.meeting.AgendaContainer" 
-                              in-map="[name:instanceName, containerCategoryEnumId:'AitCategoryInstance', fromDate:startOfDay, statusId:'AgdStatusActive']"/>
-            </if>
-        </if>
-
-        <entity-find entity-name="aitree.meeting.AgendaContainer" list="containerList">
-            <search-form-inputs/>
-            <order-by field-name="name"/>
-        </entity-find>
-    </actions>
-
     <widgets>
-        <screen-layout id="MeetingsLayout">
-            <screen-header id="MeetingsHeader">
-                <container-row id="HeaderRow">
-                    <row-col class="col-grow"><label text="Meetings" type="h5"/></row-col>
-                </container-row>
+        <screen-layout id="meetings-layout">
+            <screen-header id="h-meetings">
+                <label text="Staff Meeting" type="h5"/>
+                <bp-tabbar id="m-tabs">
+                    <bp-tab name="ManageMeetings" text="Manage" icon="list"/>
+                    <bp-tab name="ActiveMeetings" text="Active" icon="play_arrow"/>
+                </bp-tabbar>
             </screen-header>
-            <screen-content id="MeetingsContent">
-                <container-panel id="SearchEditPanel" class="q-mb-md">
-                    <panel-center>
-                        <section name="SearchSection" condition="!isEditing">
-                            <widgets>
-                                <container-row class="q-mb-sm">
-                                    <row-col>
-                                        <label text="Find Agenda Containers" type="h6" class="q-mb-sm"/>
-                                    </row-col>
-                                    <row-col align="right">
-                                        <link id="new-container-btn" text="New Container" icon="add" url="." class="bg-primary text-white">
-                                            <parameter name="isEditing" value="true"/>
-                                        </link>
-                                    </row-col>
-                                </container-row>
-                                <form-query id="meeting-search-form" name="MeetingSearch" list-form="MeetingList">
-                                    <form-query-field name="containerCategoryEnumId" type="drop-down" enum-type-id="AgendaContainerCategory" title="Category"/>
-                                    <form-query-field name="containerTypeEnumId" type="drop-down" enum-type-id="AgendaContainerType" title="Type"/>
-                                    <form-query-field name="name" type="text" operator="contains" title="Name"/>
-                                    <form-query-field name="targetDate" type="date" title="Meeting Date"/>
-                                    <form-query-field name="submitButton" type="submit" title="Find"/>
-                                </form-query>
-                            </widgets>
-                        </section>
-                        <section name="EditSection" condition="isEditing">
-                            <actions>
-                                <entity-find-one entity-name="aitree.meeting.AgendaContainer" value-field="fieldValues"/>
-                            </actions>
-                            <widgets>
-                                <form-single name="EditContainer" transition="saveContainer" map="fieldValues">
-                                    <field name="agendaContainerId"><default-field><hidden/></default-field></field>
-                                    <field name="name"><default-field title="Name"><text-line/></default-field></field>
-                                    <field name="shortName"><default-field title="Short Name"><text-line/></default-field></field>
-                                    <field name="containerCategoryEnumId"><default-field title="Category"><drop-down enum-type-id="AgendaContainerCategory"/></default-field></field>
-                                    <field name="containerTypeEnumId"><default-field title="Type"><drop-down enum-type-id="AgendaContainerType"/></default-field></field>
-                                    
-                                    <field name="submitButton"><default-field><submit text="Save"/></default-field></field>
-                                    <field name="cancelButton"><default-field><link id="cancel-btn" text="Cancel" url=".">
-                                        <parameter name="isEditing" value="false"/>
-                                    </link></default-field></field>
-                                </form-single>
-                            </widgets>
-                        </section>
-                    </panel-center>
-                </container-panel>
-
-                <container-row class="q-mb-sm">
-                    <row-col>
-                        <menu-dropdown text="Batch Actions" id="BatchActions" icon="settings">
-                            <dynamic-dialog id="SelectForDisplayAction" button-text="Select for Display" icon="play_arrow" transition="selectForDisplay" multi-select="true" list-form="MeetingList"/>
-                        </menu-dropdown>
-                    </row-col>
-                </container-row>
-
-                <form-list id="meeting-list" name="MeetingList" list="containerList" multi-select="true">
-                    <field name="agendaContainerId"><default-field><hidden/></default-field></field>
-                    <field name="name"><header-field show-order-by="case-insensitive"/><default-field><display/></default-field></field>
-                    <field name="containerCategoryEnumId"><header-field title="Category"/><default-field><display-entity entity-name="moqui.basic.Enumeration"/></default-field></field>
-                    <field name="containerTypeEnumId"><header-field title="Type"/><default-field><display-entity entity-name="moqui.basic.Enumeration"/></default-field></field>
-                    <field name="statusId"><header-field title="Status"/><default-field><display-entity entity-name="moqui.basic.StatusItem"/></default-field></field>
-                    <field name="edit" align="center">
-                        <header-field title="Edit"/>
-                        <default-field>
-                            <link id="edit-agenda-btn" text="Edit" icon="edit" url=".">
-                                <parameter name="isEditing" value="true"/>
-                                <parameter name="agendaContainerId" from="agendaContainerId"/>
-                            </link>
-                        </default-field>
-                    </field>
-                </form-list>
+            <screen-content id="c-meetings">
+                <subscreens-active/>
             </screen-content>
         </screen-layout>
     </widgets>

@@ -1,0 +1,84 @@
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="component://moqui-ai/xsd/moqui-ai-screen.xsd" require-authentication="false">
+    <parameter name="isEditing" default="false"/>
+    <parameter name="agendaContainerId"/>
+    <parameter name="containerCategoryEnumId"/>
+    <parameter name="targetDate"/>
+    
+    <actions>
+        <if condition="containerCategoryEnumId == 'AitCategoryInstance' &amp;&amp; targetDate">
+            <entity-find entity-name="aitree.meeting.AgendaContainer" list="containerList">
+                <search-form-inputs/>
+                <econdition field-name="targetDate" from="targetDate"/>
+            </entity-find>
+            <else>
+                <entity-find entity-name="aitree.meeting.AgendaContainer" list="containerList">
+                    <search-form-inputs/>
+                </entity-find>
+            </else>
+        </if>
+    </actions>
+    
+    <widgets>
+        <screen-layout id="manage-meetings-layout">
+            <screen-header id="h-manage">
+                <label text="Manage Meetings" type="h5"/>
+            </screen-header>
+            <screen-content id="c-manage">
+                <container-panel id="SearchEditPanel">
+                    <panel-center>
+                        <section name="SearchSection" condition="!isEditing">
+                            <widgets>
+                                <form-query name="MeetingSearch" list-form="MeetingList">
+                                    <form-query-field name="name" label="Name" operator="contains"/>
+                                    <form-query-field name="containerCategoryEnumId" label="Category" type="drop-down" enum-type-id="AgendaContainerCategory"/>
+                                    <form-query-field name="containerTypeEnumId" label="Type" type="drop-down" enum-type-id="AgendaContainerType"/>
+                                    <form-query-field name="statusId" label="Status" type="drop-down" status-type-id="AgendaContainerStatus"/>
+                                    <form-query-field name="targetDate" label="Target Date" type="date-picker"/>
+                                    
+                                    <form-query-button name="submit" label="Search"/>
+                                    <form-query-button name="create" label="New Container" action="toggleEditMode" is-editing="true"/>
+                                </form-query>
+                            </widgets>
+                        </section>
+                        <section name="EditSection" condition="isEditing">
+                            <widgets>
+                                <form-single name="EditContainer" transition="saveContainer" column-count="2">
+                                    <auto-fields-entity entity-name="aitree.meeting.AgendaContainer" field-type="edit">
+                                        <exclude field-name="agendaContainerId"/>
+                                    </auto-fields-entity>
+                                    <field name="agendaContainerId"><default-field><hidden/></default-field></field>
+                                    
+                                    <field name="containerCategoryEnumId" title="Category">
+                                        <default-field><drop-down><entity-options key="${enumId}" text="${description}">
+                                            <entity-find entity-name="moqui.basic.Enumeration"><econdition field-name="enumTypeId" value="AgendaContainerCategory"/></entity-find>
+                                        </entity-options></drop-down></default-field>
+                                    </field>
+                                    <field name="containerTypeEnumId" title="Type">
+                                        <default-field><drop-down><entity-options key="${enumId}" text="${description}">
+                                            <entity-find entity-name="moqui.basic.Enumeration"><econdition field-name="enumTypeId" value="AgendaContainerType"/></entity-find>
+                                        </entity-options></drop-down></default-field>
+                                    </field>
+                                    <field name="statusId" title="Status">
+                                        <default-field><drop-down><entity-options key="${statusId}" text="${description}">
+                                            <entity-find entity-name="moqui.basic.StatusItem"><econdition field-name="statusTypeId" value="AgendaContainerStatus"/></entity-find>
+                                        </entity-options></drop-down></default-field>
+                                    </field>
+
+                                    <form-single-button name="cancel" label="Cancel" action="toggleEditMode" is-editing="false"/>
+                                    <form-single-button name="submit" label="Save"/>
+                                </form-single>
+                            </widgets>
+                        </section>
+                    </panel-center>
+                </container-panel>
+                
+                <form-list name="MeetingList" list="containerList" multi-select="true">
+                    <auto-fields-entity entity-name="aitree.meeting.AgendaContainer" field-type="display"/>
+                    <form-list-field name="_select" type="checkbox"/>
+                    <form-list-button name="edit" label="Edit" action="toggleEditMode" is-editing="true" agenda-container-id="agendaContainerId"/>
+                </form-list>
+            </screen-content>
+        </screen-layout>
+    </widgets>
+</screen>

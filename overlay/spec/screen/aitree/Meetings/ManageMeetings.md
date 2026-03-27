@@ -1,7 +1,7 @@
 # Combined Meetings Screen Blueprint
 
 ## Overview
-This document defines the architecture and UI requirements for the combined "Meetings" screen. It merges the functionality of `ManageAgendaContainers.xml` and `AgendaContainerSelectPage.xml` into a single, comprehensive management and selection interface, optimized for both desktop and mobile by avoiding modal dialogs.
+This document defines the architecture and UI requirements for the combined "ManageMeetings" screen. It merges the functionality of `ManageAgendaContainers.xml` and `AgendaContainerSelectPage.xml` into a single, comprehensive management and selection interface, optimized for both desktop and mobile by avoiding modal dialogs.
 
 ## User Review Required
 > [!IMPORTANT]
@@ -25,7 +25,7 @@ This document defines the architecture and UI requirements for the combined "Mee
 
 ## Actions
 - **Data Fetch**: 
-    - Use `<entity-find entity-name="aitree.meeting.AgendaContainer" list="containerList">` with `<search-form-inputs/>`.
+    - Use `<entity-find entity-name="aitree.meeting.AgendaContainer" list="containerList">` and just auto-include all fields so we can search/edit everything at once. Use `<search-form-inputs/>`.
     - **Logic for Instance Generation**: If `containerCategoryEnumId == 'Instance'` and a `targetDate` is provided, find or create the `AgendaContainer` for that date before returning the list.
 
 ## Transitions
@@ -42,17 +42,14 @@ This document defines the architecture and UI requirements for the combined "Mee
 - **Container**: `<container-panel id="SearchEditPanel">`
     - **If `!isEditing`**:
         - `<form-query name="MeetingSearch" list-form="MeetingList">`
-            - `containerCategoryEnumId`: Drop-down.
-            - `name`: Text (contains).
-            - `targetDate`: Date picker (Visible when Category is "Instance").
+            - **Fields**: Just include all fields from the `AgendaContainer` entity for filtering.
+            - **Layout**: Use 2-column layout.
             - `submit`: Button "Search".
             - `create`: Button "New Container" (triggers `toggleEditMode` with `isEditing=true`).
     - **If `isEditing`**:
         - `<form-single name="EditContainer" transition="saveContainer">`
-            - `agendaContainerId`: Hidden.
-            - `name`: Text.
-            - `shortName`: Text.
-            - `containerTypeEnumId`: Drop-down.
+            - **Fields**: Just include all fields from the `AgendaContainer` entity for editing (with `agendaContainerId` being hidden if it's there).
+            - **Layout**: Use 2-column layout.
             - `cancel`: Button (triggers `toggleEditMode` with `isEditing=false`).
             - `submit`: Button "Save".
 
@@ -71,5 +68,3 @@ This document defines the architecture and UI requirements for the combined "Mee
 1. **Toggle Test**: click "New Container", verify Search form is replaced by Edit form.
 2. **Inline Edit**: Edit a record, save, verify it remains on the same screen and updates the list.
 3. **Mobile Flow**: Ensure no popups appear during the entire CRUD and selection process.
-
-
