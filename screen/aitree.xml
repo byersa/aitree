@@ -96,6 +96,10 @@
         <default-response type="none"/>
     </transition>
 
+    <transition name="moquiai" read-only="true">
+        <default-response url="component://moqui-ai/screen/moquiai.xml"/>
+    </transition>
+
     <transition name="menuDataQvt" read-only="true" begin-transaction="false" require-session-token="false">
         <actions><script><![CDATA[
             def sd = ec.screen.getScreenDefinition("component://aitree/screen/aitree.xml")
@@ -185,11 +189,13 @@
         <subscreens-item name="Meetings" location="component://aitree/screen/aitree/Meetings.xml"/>
         <subscreens-item name="ActiveMeetings" location="component://aitree/screen/aitree/ActiveMeetings.xml" menu-include="false"/>
         <subscreens-item name="MeetingHistory" location="component://aitree/screen/aitree/MeetingHistory.xml" menu-include="false"/>
+        <subscreens-item name="moquiai" location="component://moqui-ai/screen/moquiai.xml" menu-include="false"/>
+        <subscreens-item name="ScreenBuilder" location="component://aitree/screen/aitree/ScreenBuilder.xml" menu-include="true"/>
     </subscreens>
 
     <widgets>
         <render-mode>
-            <text type="html,qvt" location="component://moqui-ai/template/spa/MoquiAiVue.qvt.ftl"/>
+            <text type="html" location="component://moqui-ai/template/spa/MoquiAiVue.qvt.ftl"/>
         </render-mode>
 
         <container id="apps-root">

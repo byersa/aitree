@@ -8,6 +8,8 @@ ec.context.put("linkBasePath", "/aitree")
 
 // Defensively remove standard WebrootVue to prevent double-initialization
 footer_scripts.remove('/js/WebrootVue.qvt.js')
+footer_scripts.remove('/js/WebrootVue.min.js')
+footer_scripts.remove('/js/WebrootVue.min.js')
 
 // Aitree Vue App
 String scriptPath = '/moquiai/js/MoquiAiVue.qvt.js'
@@ -17,6 +19,7 @@ boolean isProd = !instancePurpose || instancePurpose == 'production'
 // Load Base Libraries
 html_scripts.add('/libs/moment.js/moment-with-locales.min.js')
 html_scripts.add('/libs/jquery/jquery.min.js')
+html_scripts.add('https://unpkg.com/konva@9.2.0/konva.min.js')
 
 if (isProd) {
     html_scripts.add('/js/MoquiLib.min.js')
@@ -50,19 +53,12 @@ footer_scripts.add('/aitree/routes.js')
 // moqui.routes will handle the client-side routing based on window.location.
 
 // Load Main App
-if (ec.resource.getLocationReference("component://moqui-ai/screen/moquiai/js/MoquiAiVue.qvt.js").exists) {
-    footer_scripts.add(scriptPath + "?v=" + System.currentTimeMillis())
-} else {
-    ec.logger.warn("AitreeVue script not found: " + scriptPath)
-}
+String scriptPrefix = "/aitree/moquiai/js/"
+footer_scripts.add(scriptPrefix + "MoquiAiVue.qvt.js?v=" + System.currentTimeMillis())
+footer_scripts.add(scriptPrefix + "BlueprintClient.js?v=" + System.currentTimeMillis())
 
-String blueprintClientUrl = '/moquiai/js/BlueprintClient.js'
-if (ec.resource.getLocationReference("component://moqui-ai/screen/moquiai/js/BlueprintClient.js").exists) {
-    footer_scripts.add(blueprintClientUrl + "?v=" + System.currentTimeMillis())
-}
-
-// Load Modular Components (Must come after MoquiAiVue)
-footer_scripts.add('/moquiai/components/ScreenSplit.qvt.js')
+// Load Modular Components
+footer_scripts.add(scriptPrefix + "components/ScreenSplit.qvt.js")
 
 // Auto-register JS scripts for all subscreens
 org.moqui.util.ContextStack cs = ec.context

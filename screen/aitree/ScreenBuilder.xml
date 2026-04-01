@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-3.xsd"
+        default-menu-title="Screen Builder" default-menu-index="99"
+        require-authentication="anonymous-all">
+
+    <parameter name="specPath"/>
+
+    <pre-actions>
+        <script>
+            if (!context.specPath) context.specPath = "component://aitree/overlay/spec/screen/aitree/Meetings/ActiveScreens/MeetingAgendaSplit.md"
+            footer_scripts.add(sri.buildUrl("component://moqui-ai/screen/moquiai/js/BlueprintClient.js").url)
+            footer_scripts.add(sri.buildUrl("component://moqui-ai/screen/moquiai/js/MoquiCanvasEditor.qvt.js").url)
+        </script>
+    </pre-actions>
+
+    <transition name="syncCanvas" read-only="false">
+        <parameter name="specPath" required="true"/>
+        <parameter name="widgetId" required="true"/>
+        <parameter name="newX" required="true" type="Double"/>
+        <parameter name="newY" required="true" type="Double"/>
+        <actions>
+            <script location="component://moqui-ai/src/main/groovy/org/moqui/ai/impl/canvas/SyncCanvasToSpec.groovy"/>
+        </actions>
+        <default-response type="none"/>
+    </transition>
+
+    <actions>
+        <script><![CDATA[
+            import groovy.xml.MarkupBuilder
+            import groovy.util.Node
+            import groovy.xml.XmlParser
+
+            // 1. Read the Spec Markdown
+            ec.logger.warn("DEBUG: Compiling spec at: ${specPath}")
+            String markdownText = ec.resource.getLocationText(specPath, false)
+            
+            if (!markdownText) {
+                ec.logger.warn("DEBUG: Spec file not found at ${specPath}")
+                ec.message.addError("Spec file not found at ${specPath}")
+            } else {
+                // 2. Extract DSL blocks (support both XML and Groovy)
+                def matcher = markdownText =~ /(?s)```(groovy|xml)(.*?)```/
+                String xmlOutputString = ""
+                int blockCount = 0
+                
+                while (matcher.find()) {
+                    blockCount++
+                    String type = matcher.group(1)
+                    String content = matcher.group(2).trim()
+                    ec.logger.warn("DEBUG: Found block ${blockCount} of type ${type}")
+                    
+                    if (type == "xml") {
+                        xmlOutputString += content + "\n"
+                    } else if (type == "groovy") {
+                        StringWriter writer = new StringWriter()
+                        MarkupBuilder xml = new MarkupBuilder(writer)
+                        xml.setDoubleQuotes(true)
+                        Binding binding = new Binding([
+                            xml: xml,
+                            logic: { String code -> xml.script { xml.mkp.yieldUnescaped("<![CDATA[\n${code.trim()}\n]" + "]>") } }
+                        ])
+                        try {
+                            GroovyShell shell = new GroovyShell(binding)
+                            shell.evaluate(content)
+                            xmlOutputString += writer.toString() + "\n"
+                        } catch (Exception e) {
+                            ec.logger.warn("DEBUG: Groovy Error: " + e.message)
+                        }
+                    }
+                }
+
+                if (xmlOutputString) {
+                    def nodeToMapClosure
+                    nodeToMapClosure = { Node node ->
+                        def map = [name: node.name(), attributes: node.attributes()]
+                        def children = node.children().findAll { it instanceof Node }.collect { nodeToMapClosure(it) }
+                        if (children) map.children = children
+                        def text = node.text().trim()
+                        if (text) map.text = text
+                        return map
+                    }
+                    try {
+                        def parser = new XmlParser()
+                        parser.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false)
+                        parser.setFeature("http://xml.org/sax/features/external-general-entities", false)
+                        String wrappedXml = "<screen-structure>${xmlOutputString}</screen-structure>"
+                        Node rootNode = parser.parseText(wrappedXml)
+                        context.screenData = nodeToMapClosure(rootNode)
+                    } catch (Exception e) {
+                        ec.logger.warn("DEBUG: XML Error: " + e.message)
+                    }
+                } else {
+                    ec.logger.warn("DEBUG: No blocks found in ${specPath}")
+                }
+            }
+            context.screenDataJson = groovy.json.JsonOutput.toJson(context.screenData ?: [name:'No Blocks Found', children:[]])
+        ]]></script>
+    </actions>
+
+    <widgets>
+        <!-- The 'type' attribute is mapped to @type in BlueprintNode, triggering the moqui-canvas-editor component -->
+        <container id="screen-builder-root" type="moqui-canvas-editor" screen-data="${screenDataJson}" spec-path="${specPath}">
+            <!-- Empty content, the component handles rendering from screen-data -->
+        </container>
+    </widgets>
+</screen>

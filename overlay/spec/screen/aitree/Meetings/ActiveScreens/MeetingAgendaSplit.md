@@ -45,7 +45,7 @@ No content available
 ```xml
 <screen-split name="as_screen_split" model="30" horizontal="false"
               list="activeContainerIds" component="MainInstance"
-              fail-message="No active containers selected. Use the Select Containers menu to add containers."/>
+              fail-message="No active containers selected. Use the Select Containers menu to add containers." location="[x: 64, y: 230]"/>
 ```
 
 **Widget Notes:**
